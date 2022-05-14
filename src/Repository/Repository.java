@@ -18,7 +18,12 @@ import java.util.StringJoiner;
  * @author Donghyeon <20183188>
  * @param <T>
  * @param <ID>
+ * 
+ * !! Repository 사용시 주의 점 !!
+ * Entity 클래스 생성 시 ID에 해당하는 필드는 제일 첫 번쨰에 선언 해야함
+ * Repository 상속 받아서 사용 시 하위 Repository 생성자에서 사용할 Entity 타입을 지정 해줘야함
  */
+
 public class Repository<T, ID> {
     private final Database db;
     private Connection con;
