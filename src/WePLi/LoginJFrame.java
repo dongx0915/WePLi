@@ -18,12 +18,19 @@ public class LoginJFrame extends javax.swing.JFrame {
      * Creates new form LoginJFrame
      */
     public LoginJFrame() {
+        setResizable(false); // 크기 변경 불가능하도록 함
+        setUndecorated(true); // 프레임의 타이틀바를 없앰
+        
         initComponents();
+
+        setVisible(true);
         // 화면 중앙에서 실행
         setLocationRelativeTo(null);
         
         IdTextField.setForeground(new Color(187,187,187, 255));
         PwTextField.setForeground(new Color(187,187,187, 255));
+        
+        
     }
 
     /**
@@ -50,6 +57,7 @@ public class LoginJFrame extends javax.swing.JFrame {
 
         IdTextField.setBackground(new java.awt.Color(255,255,255,0));
         IdTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        IdTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         IdTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 IdTextFieldFocusGained(evt);

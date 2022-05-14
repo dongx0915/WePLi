@@ -54,6 +54,9 @@
                 <EmptyBorder/>
               </Border>
             </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="&#xd14d;&#xc2a4;&#xd2b8; &#xcee4;&#xc11c;"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="IdTextFieldFocusGained"/>
