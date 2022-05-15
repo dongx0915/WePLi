@@ -6,7 +6,12 @@ package WePLi;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
@@ -131,6 +136,11 @@ public class LoginJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    /* Controller 이벤트 리스너(컨트롤러) 등록 메소드 */
+    public void setLoginListner(MouseListener listener){
+        this.LoginLabel.addMouseListener(listener);
+    }
     
     /* 로그인 버튼 마우스 이벤트 */
     private void LoginLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginLabelMouseEntered
@@ -212,6 +222,38 @@ public class LoginJFrame extends javax.swing.JFrame {
                 new LoginJFrame().setVisible(true);
             }
         });
+    }
+
+    public JLabel getBackgroundLabel() {
+        return BackgroundLabel;
+    }
+
+    public JPanel getBackgroundPanel() {
+        return BackgroundPanel;
+    }
+
+    public JLabel getIdFieldLabel() {
+        return IdFieldLabel;
+    }
+
+    public JTextField getIdTextField() {
+        return IdTextField;
+    }
+
+    public JLabel getLoginLabel() {
+        return LoginLabel;
+    }
+
+    public JLabel getPwFieldLabel() {
+        return PwFieldLabel;
+    }
+
+    public JPasswordField getPwTextField() {
+        return PwTextField;
+    }
+
+    public JLabel getSignUpTextLabel() {
+        return SignUpTextLabel;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
