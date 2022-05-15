@@ -4,7 +4,7 @@
  */
 package Entity;
 
-import java.sql.Date;
+import Dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,5 +25,11 @@ import lombok.ToString;
 public class User {
     private String id;
     private String pw;
-    
+ 
+    public static User toEntity(UserDto dto){
+        return User.builder()
+                .id(dto.getId())
+                .pw(dto.getPw())
+                .build();
+    }
 }

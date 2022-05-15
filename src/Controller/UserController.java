@@ -4,11 +4,11 @@
  */
 package Controller;
 
+import Dto.UserDto;
+import Service.UserService;
 import WePLi.LoginJFrame;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
 
 /**
  *
@@ -16,26 +16,30 @@ import javax.swing.JTextField;
  */
 public class UserController implements MouseListener{
     
+    // view
     private LoginJFrame loginFrame;
-
+    // service
+    private UserService userService;
     
     public UserController(LoginJFrame loginFrame) {
         this.loginFrame = loginFrame;
         this.loginFrame.setLoginListner(this);
+        this.userService = new UserService();
     }
-    
-    private String id;
-    private String pw;
-    
-    
+
     
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("로그인 버튼 클릭 됨");
-        id = loginFrame.getIdTextField().getText();
-        pw = loginFrame.getPwTextField().getText();
-        System.out.println(id);
-        System.out.println(pw);
+        
+        // id, pw 변수에 저장
+        String id = loginFrame.getIdTextField().getText();
+        String pw = loginFrame.getPwTextField().getText();
+        
+        UserDto dto = UserDto.builder().id(id).pw(pw).build();
+
+        userService.login(dto);        
+        
     }
 
     @Override
