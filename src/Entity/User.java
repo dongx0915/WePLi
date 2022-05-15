@@ -27,6 +27,4 @@ import lombok.ToString;
 public class User {
     private String id;
     private String pw;
-    public int cnt;
-    public Date date;
 }
