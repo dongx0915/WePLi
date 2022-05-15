@@ -21,11 +21,4 @@ import lombok.*;
 public class UserDto {
     private String id;
     private String pw;
-    
-    public User toEntity(UserDto dto){
-        return User.builder()
-                .id(dto.id)
-                .pw(dto.pw)
-                .build();
-    }
 }
