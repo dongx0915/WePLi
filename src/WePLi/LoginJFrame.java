@@ -27,8 +27,8 @@ public class LoginJFrame extends javax.swing.JFrame {
         // 화면 중앙에서 실행
         setLocationRelativeTo(null);
         
-        IdTextField.setForeground(new Color(187,187,187, 255));
-        PwTextField.setForeground(new Color(187,187,187, 255));
+//        IdTextField.setForeground(new Color(187,187,187, 255));
+//        PwTextField.setForeground(new Color(187,187,187, 255));
         
         
     }
@@ -43,6 +43,7 @@ public class LoginJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         BackgroundPanel = new javax.swing.JPanel();
+        SignUpTextLabel = new javax.swing.JLabel();
         IdTextField = new javax.swing.JTextField();
         PwTextField = new javax.swing.JPasswordField();
         IdFieldLabel = new javax.swing.JLabel();
@@ -55,7 +56,21 @@ public class LoginJFrame extends javax.swing.JFrame {
         BackgroundPanel.setBackground(new java.awt.Color(255, 255, 255));
         BackgroundPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        SignUpTextLabel.setFont(new java.awt.Font("나눔스퀘어", 0, 13)); // NOI18N
+        SignUpTextLabel.setForeground(new java.awt.Color(102, 102, 102));
+        SignUpTextLabel.setText("회원가입");
+        SignUpTextLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                SignUpTextLabelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                SignUpTextLabelMouseExited(evt);
+            }
+        });
+        BackgroundPanel.add(SignUpTextLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 530, 50, 30));
+
         IdTextField.setBackground(new java.awt.Color(255,255,255,0));
+        IdTextField.setForeground(new java.awt.Color(51, 51, 51));
         IdTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         IdTextField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         IdTextField.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -66,10 +81,11 @@ public class LoginJFrame extends javax.swing.JFrame {
                 IdTextFieldFocusLost(evt);
             }
         });
-        BackgroundPanel.add(IdTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 292, 240, 30));
+        BackgroundPanel.add(IdTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 263, 240, 30));
 
         PwTextField.setBackground(new java.awt.Color(255,255,255,0)
         );
+        PwTextField.setForeground(new java.awt.Color(51, 51, 51));
         PwTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         PwTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -79,13 +95,13 @@ public class LoginJFrame extends javax.swing.JFrame {
                 PwTextFieldFocusLost(evt);
             }
         });
-        BackgroundPanel.add(PwTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 350, 240, 30));
+        BackgroundPanel.add(PwTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 325, 240, 30));
 
         IdFieldLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/id_field.png"))); // NOI18N
-        BackgroundPanel.add(IdFieldLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, 266, 20));
+        BackgroundPanel.add(IdFieldLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 270, 266, 20));
 
         PwFieldLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/pw_field.png"))); // NOI18N
-        BackgroundPanel.add(PwFieldLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 266, 22));
+        BackgroundPanel.add(PwFieldLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 330, 266, 22));
 
         LoginLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/login_btn.png"))); // NOI18N
         LoginLabel.setText("jLabel1");
@@ -97,7 +113,7 @@ public class LoginJFrame extends javax.swing.JFrame {
                 LoginLabelMouseExited(evt);
             }
         });
-        BackgroundPanel.add(LoginLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 430, 194, 41));
+        BackgroundPanel.add(LoginLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 400, 194, 41));
 
         BackgroundLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/Login.png"))); // NOI18N
         BackgroundPanel.add(BackgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -151,6 +167,18 @@ public class LoginJFrame extends javax.swing.JFrame {
         PwFieldLabel.setIcon(new ImageIcon("./src/resources/layout/field/normal/pw_field.png"));
     }//GEN-LAST:event_PwTextFieldFocusLost
 
+    private void SignUpTextLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SignUpTextLabelMouseEntered
+        // TODO add your handling code here:
+        SignUpTextLabel.setForeground(new Color(0, 142, 244, 255));
+        SignUpTextLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_SignUpTextLabelMouseEntered
+
+    private void SignUpTextLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SignUpTextLabelMouseExited
+        // TODO add your handling code here:
+        SignUpTextLabel.setForeground(new Color(102, 102, 102, 255));
+        SignUpTextLabel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_SignUpTextLabelMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -194,5 +222,6 @@ public class LoginJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel LoginLabel;
     private javax.swing.JLabel PwFieldLabel;
     private javax.swing.JPasswordField PwTextField;
+    private javax.swing.JLabel SignUpTextLabel;
     // End of variables declaration//GEN-END:variables
 }
