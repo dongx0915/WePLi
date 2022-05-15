@@ -5,9 +5,8 @@ package WePLi;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-import Entity.User;
+import Controller.UserController;
 import Repository.UserRepository;
-import java.sql.Date;
 
 /**
  *
@@ -16,5 +15,9 @@ import java.sql.Date;
 public class Main {
     public static void main(String[] args) {
         UserRepository ur = new UserRepository();
+        
+        LoginJFrame login = new LoginJFrame();
+        
+        UserController uc = new UserController(login);
     }
 }

@@ -2,28 +2,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entity;
+package Dto;
 
-import java.sql.Date;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
+import Entity.User;
+import lombok.*;
 
 /**
  *
- * @author Donghyeon <20183188>
+ * @author kimkyeonghyun
  */
 
 @ToString
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserDto {
     private String id;
     private String pw;
     
+    public User toEntity(UserDto dto){
+        return User.builder()
+                .id(dto.id)
+                .pw(dto.pw)
+                .build();
+    }
 }
