@@ -46,7 +46,8 @@ public class Repository<T, ID> {
         Class<?> ec = this.entity.getClass();
         
         this.className = ec.getName();
-        this.tableName = ec.getSimpleName().toLowerCase();
+        this.tableName = ec.getSimpleName();
+        this.tableName = this.tableName.substring(0, 1).toLowerCase() + this.tableName.substring(1);
         this.idFieldName = ec.getDeclaredFields()[0].getName();
         this.fieldList = ec.getDeclaredFields();
         
