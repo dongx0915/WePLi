@@ -15,7 +15,7 @@ public class Database {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     
-    String url = "jdbc:mysql://localhost:3306/WePLi?serverTimezone=UTC&autoReconnect=true";
+    String url = "jdbc:mysql://113.198.236.99:3306/WePLi?serverTimezone=UTC&autoReconnect=true";
     String id = "root";
     String pw = "blue!@795132486";
     

@@ -4,6 +4,8 @@
  */
 package Crawler;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author joon
@@ -11,8 +13,10 @@ package Crawler;
 public class MusicCrawler {
         public static void main(String[] args) {
             
-            MusicCrawlerFactory factory = new MusicCrawlerFactory();
-            factory.crawlSearch("genie", "사랑아");
+            ArrayList<Song> musicList = new ArrayList<>();
             
+            MusicCrawlerFactory factory = new MusicCrawlerFactory();
+            musicList = factory.crawlSearch("bugs", "나는 트로트가 싫어요");
+            System.out.println(musicList);
         }
 }

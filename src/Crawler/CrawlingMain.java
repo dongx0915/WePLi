@@ -29,18 +29,18 @@ public class CrawlingMain {
         String BugsSearchUrl ="https://music.bugs.co.kr/search/track?q=" + searchKeyword; //벅스 검색
         
         // 크롤러 생성
-        
-        Crawler melonChart = new MelonChartCrawler();
-        Crawler melonSearch = new MelonSearchCrawler();
-        
-        
-        
-        Crawler genieChart = new GenieChartCrawler();
-        
-        Crawler genieSearch = new GenieSearchCrawler();
-        
-        Crawler bugsChart = new BugsChartCrawler();
-        Crawler bugsSearch = new BugsSearchCrawler();
+//        
+//        Crawler melonChart = new MelonChartCrawler();
+//        Crawler melonSearch = new MelonSearchCrawler();
+//        
+//        
+//        
+//        Crawler genieChart = new GenieChartCrawler();
+//        
+//        Crawler genieSearch = new GenieSearchCrawler();
+//        
+//        Crawler bugsChart = new BugsChartCrawler();
+//        Crawler bugsSearch = new BugsSearchCrawler();
         
         
         
@@ -48,19 +48,19 @@ public class CrawlingMain {
         
 
         
-        // 크롤러 호출
-        
-        melonChart.getSongList(MelonChartUrl);
-     
-        melonSearch.getSongList(MelonSearchUrl);
-        
-        genieChart.getSongList(GenieChartUrl);
-        
-        genieSearch.getSongList(GenieSearchUrl);
-        bugsChart.getSongList(BugsChartUrl);
-
-        bugsSearch.getSongList(BugsSearchUrl);
-        
+//        // 크롤러 호출
+//        
+//        melonChart.getSongList(MelonChartUrl);
+//     
+//        melonSearch.getSongList(MelonSearchUrl);
+//        
+//        genieChart.getSongList(GenieChartUrl);
+//        
+//        genieSearch.getSongList(GenieSearchUrl);
+//        bugsChart.getSongList(BugsChartUrl);
+//
+//        bugsSearch.getSongList(BugsSearchUrl);
+//        
     }
    
 }

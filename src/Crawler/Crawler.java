@@ -51,12 +51,11 @@ public abstract class Crawler {
     
     abstract ArrayList<Song> parseSongChart(ArrayList<Element> chartBody);
     
-    void getSongList(String url){  
+    ArrayList<Song> getSongList(String url){  
         ArrayList<Element> chartBody = this.getChartBody(url);
-       
         ArrayList<Song> songList = new ArrayList<>();
-        songList = this.parseSongChart(chartBody); // 리스트 리턴됨 쓸거면 쓰셈
-        System.out.println(songList);
+        return this.parseSongChart(chartBody); // 리스트 리턴됨 쓸거면 쓰셈
+       
         
     }
 

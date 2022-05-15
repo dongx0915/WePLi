@@ -4,6 +4,7 @@
  */
 package Crawler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,17 +17,15 @@ public class MusicCrawlerFactory {
     private final static Map<String, Crawler> map = new HashMap<>();
     
     static {
-        map.put("melon", new MelonSearchCrawler());
-        map.put("genie", new GenieSearchCrawler());
-        map.put("bugs", new BugsSearchCrawler());
+        map.put("melon", MelonSearchCrawler.getCrawler());
+        map.put("genie", GenieSearchCrawler.getCrawler());
+        map.put("bugs",  BugsSearchCrawler.getCrawler());
     }
-    public void crawlSearch(String site ,String keyword){
+    public ArrayList<Song> crawlSearch(String site ,String keyword){
         
-        System.out.println(site);
         Crawler crawler = map.get(site);
         String url=crawler.getURL()+keyword;
-        System.out.println(url);
-        crawler.getSongList(url);
+        return crawler.getSongList(url);
         
     }
 

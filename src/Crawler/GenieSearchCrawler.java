@@ -13,7 +13,14 @@ import org.jsoup.nodes.Element;
  */
 public class GenieSearchCrawler extends Crawler{
     
-    public GenieSearchCrawler() {
+    private static GenieSearchCrawler Crawler = new GenieSearchCrawler();
+ 
+    public static GenieSearchCrawler getCrawler(){
+        return Crawler;
+    }
+    
+    
+    private GenieSearchCrawler() {
          this.URL = "https://www.genie.co.kr/search/searchSong?pagesize=50&query=";
     }
     

@@ -13,11 +13,15 @@ import org.jsoup.nodes.Element;
  */
 public class MelonSearchCrawler extends Crawler{
     
+    private static MelonSearchCrawler Crawler = new MelonSearchCrawler();
     
-    public MelonSearchCrawler() {
+    private MelonSearchCrawler() {
          this.URL = "https://www.melon.com/search/song/index.htm?q=";
     }
     
+    public static MelonSearchCrawler getCrawler(){
+        return Crawler;
+    }
     
     public String getURL() {
         return URL;

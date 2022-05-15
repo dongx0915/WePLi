@@ -13,7 +13,15 @@ import org.jsoup.nodes.Element;
  */
 public class BugsSearchCrawler extends Crawler{
 
-    public BugsSearchCrawler() {
+    private static BugsSearchCrawler Crawler = new BugsSearchCrawler();
+ 
+    public static BugsSearchCrawler getCrawler(){
+        return Crawler;
+    }
+    
+    
+    
+    private BugsSearchCrawler() {
          this.URL = "https://music.bugs.co.kr/search/track?q=";
     }
     
