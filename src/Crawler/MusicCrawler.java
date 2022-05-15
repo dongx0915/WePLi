@@ -13,17 +13,22 @@ import java.util.ArrayList;
 public class MusicCrawler {
         public static void main(String[] args) {
             
-            Crawler crawler ;
-            String keyword="사랑아";
+
             
             MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
             
+            
+            System.out.println("--------------------- 노래 검색 (키워드 : 사랑아) ------------------------"); 
+            
+            Crawler crawler ;
+            String keyword="사랑아";
+            
             crawler = musicFactory.MusicSearch("genie");
             String SearchURL=crawler.getURL()+keyword;
-            //System.out.println(crawler.getSongList(SearchURL));
+            System.out.println(crawler.getSongList(SearchURL));
             
             
-            // --------------------------------------------
+            System.out.println("\n----------------------------- 인기차트 ----------------------------------"); 
             
             
             ArrayList<Crawler> CrawlChart ;
