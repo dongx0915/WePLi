@@ -16,11 +16,5 @@ import java.sql.Date;
 public class Main {
     public static void main(String[] args) {
         UserRepository ur = new UserRepository();
-
-        System.out.println(ur.update(User.builder().id("id5").pw("pw").cnt(100).date(new Date(new java.util.Date().getTime())).build()));
-            
-        for (User u : ur.findAll()) System.out.println(u);
-        
-        // 수정
     }
 }

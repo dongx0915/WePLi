@@ -4,10 +4,20 @@
  */
 package Dto;
 
+import lombok.*;
+
 /**
  *
  * @author kimkyeonghyun
  */
-public class UserLoginDto {
-    
+
+@ToString
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDto {
+    private String id;
+    private String pw;
 }

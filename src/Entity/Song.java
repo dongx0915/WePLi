@@ -4,13 +4,11 @@
  */
 package Entity;
 
-import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 
 /**
  *
@@ -22,7 +20,10 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private String id;
-    private String pw;
+public class Song {
+    private int id;
+    public String title;
+    public String singer;
+    public String album;
+    public String coverImg;
 }
