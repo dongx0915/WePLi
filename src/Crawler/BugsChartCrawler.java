@@ -13,6 +13,11 @@ import org.jsoup.nodes.Element;
  */
 public class BugsChartCrawler extends Crawler{
 
+    private static BugsChartCrawler Crawler = new BugsChartCrawler();
+    
+    public static BugsChartCrawler getCrawler(){
+        return Crawler;
+    }
         public BugsChartCrawler() {
          this.URL = "https://music.bugs.co.kr/chart/track/day/total";
     }

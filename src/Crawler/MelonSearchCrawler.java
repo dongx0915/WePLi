@@ -14,7 +14,7 @@ import org.jsoup.nodes.Element;
 public class MelonSearchCrawler extends Crawler{
     
     private static MelonSearchCrawler Crawler = new MelonSearchCrawler();
-    
+        
     private MelonSearchCrawler() {
          this.URL = "https://www.melon.com/search/song/index.htm?q=";
     }

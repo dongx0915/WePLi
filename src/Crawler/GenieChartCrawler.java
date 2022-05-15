@@ -13,6 +13,13 @@ import org.jsoup.nodes.Element;
  */
 public class GenieChartCrawler extends Crawler{
     
+    private static GenieChartCrawler Crawler = new GenieChartCrawler();
+    
+     public static GenieChartCrawler getCrawler(){
+        return Crawler;
+    }
+    
+    
     public GenieChartCrawler() {
          this.URL = "https://genie.co.kr/chart/top200?pgsize=100&rtm=N";
     }
@@ -51,7 +58,7 @@ public class GenieChartCrawler extends Crawler{
                     .build();
             
             songlist.add(song);
-           System.out.println(song.toString());
+       
         }
         
         return songlist;

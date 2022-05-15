@@ -13,6 +13,13 @@ import org.jsoup.nodes.Element;
  */
 public class MelonChartCrawler extends Crawler{
 
+    private static MelonChartCrawler Crawler = new MelonChartCrawler();
+    
+     public static MelonChartCrawler getCrawler(){
+        return Crawler;
+    }
+    
+    
     public MelonChartCrawler() { this.URL = "https://www.melon.com/chart/index.htm"; }
     
     public String getURL() { return URL; }

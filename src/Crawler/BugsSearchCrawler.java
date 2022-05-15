@@ -12,7 +12,9 @@ import org.jsoup.nodes.Element;
  * @author joon
  */
 public class BugsSearchCrawler extends Crawler{
+    
 
+     
     private static BugsSearchCrawler Crawler = new BugsSearchCrawler();
  
     public static BugsSearchCrawler getCrawler(){

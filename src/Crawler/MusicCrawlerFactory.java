@@ -21,21 +21,25 @@ public class MusicCrawlerFactory {
         map.put("genie", GenieSearchCrawler.getCrawler());
         map.put("bugs",  BugsSearchCrawler.getCrawler());
     }
-    public ArrayList<Song> crawlSearch(String site ,String keyword){
-        
+    
+    public Crawler MusicSearch(String site){
         Crawler crawler = map.get(site);
-        String url=crawler.getURL()+keyword;
-        return crawler.getSongList(url);
-        
+        return crawler;
+
     }
 
+
     
-    public void crawlChart(){
-        Crawler melonChart = new MelonChartCrawler();
-        Crawler genieChart = new GenieChartCrawler();
-        Crawler bugsChart = new BugsChartCrawler();
+    
+    public ArrayList<Crawler> MusicChart(){
         
+        ArrayList<Crawler> CrawlChart = new ArrayList<>();
         
+        CrawlChart.add(MelonChartCrawler.getCrawler());
+        CrawlChart.add(GenieChartCrawler.getCrawler());
+        CrawlChart.add(BugsChartCrawler.getCrawler());
+     
+        return CrawlChart;
     }
     
     
