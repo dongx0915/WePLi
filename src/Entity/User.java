@@ -4,7 +4,7 @@
  */
 package Entity;
 
-import Dto.UserDto;
+import Dto.User.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
