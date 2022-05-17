@@ -20,16 +20,17 @@ public class UserController implements MouseListener{
     private LoginJFrame loginFrame;
     // service
     private UserService userService;
-    
+
     public UserController(LoginJFrame loginFrame) {
         this.loginFrame = loginFrame;
         this.loginFrame.setLoginListner(this);
         this.userService = new UserService();
     }
-
     
     @Override
     public void mouseClicked(MouseEvent e) {
+        System.out.println(e.getSource());
+        
         System.out.println("로그인 버튼 클릭 됨");
         
         // id, pw 변수에 저장
@@ -39,26 +40,17 @@ public class UserController implements MouseListener{
         UserDto dto = UserDto.builder().id(id).pw(pw).build();
 
         userService.login(dto);        
-        
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        
-    }
+    public void mousePressed(MouseEvent e) { }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-    }
+    public void mouseReleased(MouseEvent e) { }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-    }
+    public void mouseEntered(MouseEvent e) { }
 
     @Override
-    public void mouseExited(MouseEvent e) {
-    }
-    
-    
-    
+    public void mouseExited(MouseEvent e) { }
 }
