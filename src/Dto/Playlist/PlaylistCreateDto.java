@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entity;
+package Dto.Playlist;
 
-import Dto.User.UserDto;
+import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
-
 
 /**
  *
@@ -19,17 +19,13 @@ import lombok.ToString;
 
 @ToString
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private String id;
-    private String pw;
- 
-    public static User toEntity(UserDto dto){
-        return User.builder()
-                .id(dto.getId())
-                .pw(dto.getPw())
-                .build();
-    }
+public class PlaylistCreateDto {
+    public String title;
+    public String author;   // FK >- User.Id
+    public String inform;
+    public Date createTime;
 }

@@ -3,14 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Entity;
-
-import Dto.User.UserDto;
+import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 
 /**
  *
@@ -22,14 +20,19 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private String id;
-    private String pw;
- 
-    public static User toEntity(UserDto dto){
-        return User.builder()
-                .id(dto.getId())
-                .pw(dto.getPw())
-                .build();
+public class Relaylist {
+    public String id;       // PK
+    public String title;
+    public String author;   // FK >- User.Id
+    public String inform;
+    public int likes;
+    public Date createTime;
+    public String firstSongTitle ;
+    public String firstSongSinger;
+    public String firstSongImage;
+    
+    public static Playlist toEntity(/* RelaylistDto 필요 */){
+        /* RelaylistDto 선언 후 구현 */
+        return null;
     }
 }

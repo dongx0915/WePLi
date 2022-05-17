@@ -4,7 +4,7 @@
  */
 package Controller;
 
-import Dto.UserDto;
+import Dto.User.UserDto;
 import Service.UserService;
 import WePLi.LoginJFrame;
 import java.awt.event.MouseEvent;

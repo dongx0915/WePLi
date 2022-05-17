@@ -4,7 +4,7 @@
  */
 package Service;
 
-import Dto.UserDto;
+import Dto.User.UserDto;
 import Entity.User;
 import Repository.UserRepository;
 

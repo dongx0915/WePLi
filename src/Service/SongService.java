@@ -69,6 +69,7 @@ public class SongService {
             a.musicSearch("bugs","My Universe");
             a.musicChart();
             
+            //---------------------테스트 ------------------------------
             HashMap<String, Integer> ChartMap = new HashMap();
             ChartMap.put("사과",10);
             ChartMap.put("사과",ChartMap.get("사과")+12);

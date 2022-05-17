@@ -5,8 +5,12 @@ package WePLi;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+import Controller.PlaylistController;
 import Controller.UserController;
+import Entity.Playlist;
 import Repository.UserRepository;
+import java.util.regex.*;
+
 
 /**
  *
@@ -15,9 +19,17 @@ import Repository.UserRepository;
 public class Main {
     public static void main(String[] args) {
         UserRepository ur = new UserRepository();
+                
+        PlaylistController pc = new PlaylistController();
         
-        LoginJFrame login = new LoginJFrame();
+        for (Playlist allPlaylist : pc.getAllPlaylists()) {
+            System.out.println(allPlaylist);
+        }
         
-        UserController uc = new UserController(login);
+        pc.deletePlaylist("P0000000");
+        
+        for (Playlist allPlaylist : pc.getAllPlaylists()) {
+            System.out.println(allPlaylist);
+        }
     }
 }

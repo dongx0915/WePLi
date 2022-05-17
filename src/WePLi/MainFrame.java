@@ -234,6 +234,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        ChartTable.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 12)); // NOI18N
         ChartTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

@@ -14,6 +14,7 @@
             <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Entity/Song.java</file>
         </group>
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/MelonSearchCrawler.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/Crawler.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/MelonChartCrawler.java</file>
@@ -30,6 +31,23 @@
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/GenieChartCrawler.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/Song.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Repository/Repository.java</file>
+=======
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Database/Database.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/layout/menu/normal/home.png</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/UserController.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/layout/menu/hover/home_hover.png</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/layout/background/Login.png</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/UserService.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/Repository.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/MainFrame.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/UserDto.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/LoginJFrame.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/UserRepository.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/nbproject/private/private.xml</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/Main.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/User.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/Song.java</file>
+>>>>>>> 9eced2be3dd914c5fb04390d0408700742a59b3f
         </group>
     </open-files>
 </project-private>
