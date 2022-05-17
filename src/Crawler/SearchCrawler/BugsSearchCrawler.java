@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Crawler;
+package Crawler.SearchCrawler;
 
+import Crawler.Crawler;
+import Dto.SongDto;
 import java.util.ArrayList;
 import org.jsoup.nodes.Element;
 
@@ -11,42 +13,51 @@ import org.jsoup.nodes.Element;
  *
  * @author joon
  */
-public class BugsChartCrawler extends Crawler{
-
-    private static BugsChartCrawler Crawler = new BugsChartCrawler();
+public class BugsSearchCrawler extends Crawler{
     
-    public static BugsChartCrawler getCrawler(){
+
+     
+    private static BugsSearchCrawler Crawler = new BugsSearchCrawler();
+ 
+    public static BugsSearchCrawler getCrawler(){
         return Crawler;
     }
-        public BugsChartCrawler() {
-         this.URL = "https://music.bugs.co.kr/chart/track/day/total";
+    
+    
+    
+    private BugsSearchCrawler() {
+         this.URL = "https://music.bugs.co.kr/search/track?q=";
     }
     
     
     public String getURL() {
         return URL;
     }
+
+    
     
     
     @Override
-    ArrayList<Song> parseSongChart(ArrayList<Element> chartBody) {
-        ArrayList<Song> songlist = new ArrayList<>();
+    protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody) {
+        ArrayList<SongDto> songlist = new ArrayList<>();
 
+        
+
+        
         //select(img) 태그를 가져온다.
         // .이 붙으면 클래스를 찾는다
         //attr 속성 정보 값을 가져온다.
         for(Element element : chartBody){
             
-            int rank = Integer.parseInt(element.select(".ranking").select("strong").text());   // 순위 크롤링
-            
-            String image = element.select("img").attr("src");                 // 이미지 크롤링
+            String coverImg = element.select("img").attr("src");                 // 이미지 크롤링
             String title = element.select(".title").text();                  // 노래제목 크롤링
-            String singer = element.select(".artist").text();                  // 가수 크롤링
+            String singer = element.select(".artist").select("a").get(0).text();                 // 가수 크롤링
             String album = element.select(".left").text();                  // 앨범명 크롤링
             
-            Song song = new Song.SongBuilder()
-                    .rank(rank)
-                    .image(image)
+          
+            
+            SongDto song = SongDto.builder()
+                    .coverImg(coverImg)
                     .title(title)
                     .singer(singer)
                     .album(album)

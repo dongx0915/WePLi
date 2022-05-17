@@ -2,8 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Crawler;
+package Crawler.CrawlerFactory;
 
+import Crawler.ChartCrawler.BugsChartCrawler;
+import Crawler.SearchCrawler.BugsSearchCrawler;
+import Crawler.Crawler;
+import Crawler.ChartCrawler.GenieChartCrawler;
+import Crawler.SearchCrawler.GenieSearchCrawler;
+import Crawler.ChartCrawler.MelonChartCrawler;
+import Crawler.SearchCrawler.MelonSearchCrawler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +35,6 @@ public class MusicCrawlerFactory {
 
     }
 
-
-    
     
     public ArrayList<Crawler> MusicChart(){
         

@@ -2,20 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Crawler;
+package Dto;
 
 /**
  *
  * @author joon
  */
-public class Song {
+public class SongDto2 {
     public int rank = 0;
     public String image = null;
     public String title;
     public String singer;
     public String album;
 
-    public Song(int rank, String image, String title, String singer, String album) {
+    public SongDto2(int rank, String image, String title, String singer, String album) {
         this.rank = rank;
         this.image = image;
         this.title = title;
@@ -23,44 +23,44 @@ public class Song {
         this.album = album;
     }
     
-    public static class SongBuilder{
+    public static class SongBuilder2{
         private int rank;
         private String image;
         private String title;
         private String singer;
         private String album;
         
-        public SongBuilder rank(int rank){
+        public SongBuilder2 rank(int rank){
             this.rank = rank;
             return this;
         }
         
-        public SongBuilder image(String image){
+        public SongBuilder2 image(String image){
             this.image = image;
             return this;
         }
         
-        public SongBuilder title(String title){
+        public SongBuilder2 title(String title){
             this.title = title;
             return this;
         }
         
-        public SongBuilder singer(String singer){
+        public SongBuilder2 singer(String singer){
             this.singer = singer;
             return this;
         }
         
-        public SongBuilder album(String album){
+        public SongBuilder2 album(String album){
             this.album = album;
             return this;
         }
         
-        public Song build(){
-            return new Song(this);
+        public SongDto2 build(){
+            return new SongDto2(this);
         }
     }
 
-    public Song(SongBuilder songBuilder) {
+    public SongDto2(SongBuilder2 songBuilder) {
         this.rank = songBuilder.rank;
         this.title = songBuilder.title;
         this.singer = songBuilder.singer;
@@ -72,5 +72,14 @@ public class Song {
     public String toString() {
         return "[ " + Integer.toString(rank) + ", " + image + ", " + title + ", " + singer + ", " + album + " ]";
     }
+    
+    public String getIntegrateString() {
+        return this.title + "\\\\" + this.singer;
+    }
+    
+    public int getRank(){
+        return this.rank;
+    }
+    
 } 
    
