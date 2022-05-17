@@ -4,6 +4,7 @@
  */
 package Crawler;
 
+import Dto.SongDto;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.jsoup.Jsoup;
@@ -33,40 +34,27 @@ public abstract class Crawler {
         
        Element element = null;
        
-        if(doc.select("tbody").size()==3) //bugs라면
+        if(doc.select("tbody").size()==3) //bugs검색에서 bugs는 tbody size가 3
             element = doc.select("tbody").get(1);
-        else
+        else    // bugs 인기차트는 size=2 / 나머지 1
             element = doc.select("tbody").get(0);
         
-            
-            
-            
+
         for(Element el : element.select("tr")) {
             crawl_Result.add(el);
-            
         }
+        
         return crawl_Result;
         
     }
     
-    abstract ArrayList<Song> parseSongChart(ArrayList<Element> chartBody);
+    abstract protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody);
     
-    ArrayList<Song> getSongList(String url){  
+    public ArrayList<SongDto> getSongList(String url){  
         ArrayList<Element> chartBody = this.getChartBody(url);
-        ArrayList<Song> songList = new ArrayList<>();
-        return this.parseSongChart(chartBody); // 리스트 리턴됨 쓸거면 쓰셈
-       
-        
+        ArrayList<SongDto> songList = new ArrayList<>();
+        return this.parseSongChart(chartBody); // 노래 리스트 리턴됨 
     }
 
-    abstract String getURL();
-
-    boolean get(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-        
-    
-
-
-    
+    abstract public String getURL();
 }
