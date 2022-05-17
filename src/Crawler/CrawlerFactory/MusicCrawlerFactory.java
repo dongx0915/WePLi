@@ -20,7 +20,6 @@ import java.util.Map;
  * @author joon
  */
 public class MusicCrawlerFactory {
-    
     private final static Map<String, Crawler> map = new HashMap<>();
     
     static {
@@ -29,15 +28,12 @@ public class MusicCrawlerFactory {
         map.put("bugs",  BugsSearchCrawler.getCrawler());
     }
     
-    public Crawler MusicSearch(String site){
+    public Crawler getSearchCrawler(String site){
         Crawler crawler = map.get(site);
         return crawler;
-
     }
-
     
-    public ArrayList<Crawler> MusicChart(){
-        
+    public ArrayList<Crawler> getChartCrawler(){
         ArrayList<Crawler> CrawlChart = new ArrayList<>();
         
         CrawlChart.add(MelonChartCrawler.getCrawler());
@@ -46,7 +42,4 @@ public class MusicCrawlerFactory {
      
         return CrawlChart;
     }
-    
-    
-            
 }

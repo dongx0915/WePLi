@@ -17,7 +17,6 @@ import org.jsoup.nodes.Element;
  */
 
 public abstract class Crawler {
-   
     protected String URL;
     
     ArrayList<Element> getChartBody(String url){
@@ -52,9 +51,9 @@ public abstract class Crawler {
     
     public ArrayList<SongDto> getSongList(String url){  
         ArrayList<Element> chartBody = this.getChartBody(url);
-        ArrayList<SongDto> songList = new ArrayList<>();
+        
         return this.parseSongChart(chartBody); // 노래 리스트 리턴됨 
     }
 
-    abstract public String getURL();
+    public String getURL(){ return this.URL; }
 }

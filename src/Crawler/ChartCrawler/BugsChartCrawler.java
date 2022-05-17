@@ -16,19 +16,9 @@ import org.jsoup.nodes.Element;
 public class BugsChartCrawler extends Crawler{
 
     private static BugsChartCrawler Crawler = new BugsChartCrawler();
+    public BugsChartCrawler() { this.URL = "https://music.bugs.co.kr/chart/track/day/total"; }
     
-    public static BugsChartCrawler getCrawler(){
-        return Crawler;
-    }
-        public BugsChartCrawler() {
-         this.URL = "https://music.bugs.co.kr/chart/track/day/total";
-    }
-    
-    
-    public String getURL() {
-        return URL;
-    }
-    
+    public static BugsChartCrawler getCrawler(){ return Crawler; }
     
     @Override
     protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody) {
