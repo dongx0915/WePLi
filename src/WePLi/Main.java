@@ -5,6 +5,7 @@ package WePLi;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+import Controller.SignUpController;
 import Controller.UserController;
 import Entity.Song;
 import java.lang.reflect.InvocationTargetException;
@@ -21,8 +22,10 @@ public class Main {
 //        LoginJFrame lj = new LoginJFrame();
 //        UserController uc = new UserController(lj);
         
-        
-        MainFrame mj = new MainFrame();
+          SignUpFrame sp = new SignUpFrame();
+          SignUpController sc = new SignUpController(sp);
+          
+//        MainFrame mj = new MainFrame();
         
     }
 }

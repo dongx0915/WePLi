@@ -103,6 +103,11 @@ public class LoginJFrame extends javax.swing.JFrame {
                 LoginBtnMouseExited(evt);
             }
         });
+        LoginBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoginBtnActionPerformed(evt);
+            }
+        });
         BackgroundPanel.add(LoginBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 420, 194, 41));
 
         SignUpTextLabel.setFont(new java.awt.Font("나눔스퀘어", 0, 13)); // NOI18N
@@ -222,6 +227,10 @@ public class LoginJFrame extends javax.swing.JFrame {
         this.PwFieldLabel.setIcon(new ImageIcon("./src/resources/layout/button/normal/pw_field.png"));
         this.PwFieldLabel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_pwTextFieldFocusLost
+
+    private void LoginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LoginBtnActionPerformed
 
     /**
      * @param args the command line arguments
