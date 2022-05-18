@@ -8,15 +8,11 @@ import Dto.User.UserDto;
 import Entity.User;
 import Service.UserService;
 import WePLi.LoginJFrame;
-<<<<<<< HEAD
 import WePLi.MainFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-=======
 import WePLi.SignUpFrame;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
->>>>>>> 049a04c26051094ab21c97eb220d33f6fabf884a
+
 
 /**
  *
