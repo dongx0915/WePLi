@@ -8,6 +8,8 @@ package Dto;
  *
  * @author joon
  */
+
+// 어노테이션 가능?
 public class SongDto2 {
     public int rank = 0;
     public String image = null;

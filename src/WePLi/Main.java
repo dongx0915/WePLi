@@ -30,6 +30,6 @@ public class Main {
         
         for (Playlist allPlaylist : pc.getAllPlaylists()) {
             System.out.println(allPlaylist);
-        }
+        } 
     }
 }
