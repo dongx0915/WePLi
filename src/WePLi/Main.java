@@ -6,8 +6,9 @@ package WePLi;
  */
 
 import Controller.UserController;
-import Entity.Song;
+import Dto.User.UserDto;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 
 /**
@@ -18,11 +19,10 @@ public class Main {
     public static void main(String[] args) throws InterruptedException, InvocationTargetException {
         //UserRepository ur = new UserRepository();
         
-//        LoginJFrame lj = new LoginJFrame();
-//        UserController uc = new UserController(lj);
+        LoginJFrame lj = new LoginJFrame();
+        UserController uc = new UserController(lj);
+
         
-        
-        MainFrame mj = new MainFrame();
-        
+        MainFrame mf = new MainFrame();
     }
 }

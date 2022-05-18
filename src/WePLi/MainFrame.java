@@ -49,8 +49,9 @@ public class MainFrame extends javax.swing.JFrame {
     private static MainFrame mainFrame;
     
     public MainFrame() {
+        UiInit();
         initComponents();
-//        setVisible(true);
+        setVisible(true);
         setLocationRelativeTo(null);
         
         /* 테이블 기본 디자인 세팅 */
@@ -100,7 +101,6 @@ public class MainFrame extends javax.swing.JFrame {
     /* 테이블 기본 디자인 세팅 */
     public void tableInit(JScrollPane jScrollPane, JTable jTable) {
         /* 스크롤 패널 배경 색상 변경 */
-        jScrollPane.setOpaque(true);
         jScrollPane.setBackground(new Color(255, 255, 255, 0));
         jScrollPane.getViewport().setOpaque(true);
 
@@ -363,9 +363,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ChartScrollPanelMouseWheelMoved
 
-    public void init(){
 
-    }
     /**
      * @param args the command line arguments
      */
@@ -402,7 +400,30 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
     }
-
+    public void UiInit(){
+       //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+    }
+    
     public static MainFrame getMainFrame() {
         return mainFrame;
     }

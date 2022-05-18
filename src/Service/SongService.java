@@ -24,14 +24,17 @@ public class SongService {
         crawlChart = musicFactory.getChartCrawler(); // 크롤링한 리스트 
             
         //chartIntegrate(CrawlChart); 음악 순위 합치기 구현중
-            
-            
+        
         System.out.println("--------------------------- 인기 차트 -------------------------------"); 
         ;
         for(int i = 0 ; i < crawlChart.size(); i++){
             String Charturl = crawlChart.get(i).getURL();
             System.out.println(Charturl);
-            System.out.println("전체 리스트 : " + crawlChart.get(i).getSongList(Charturl)); // 전체 리스트 출력
+            
+            for (SongDto dto : crawlChart.get(i).getSongList(Charturl)) {
+                System.out.println("Title = " + dto.getTitle() + " Singer = " + dto.getSinger() + " Album = " + dto.getAlbum());
+            }
+            //System.out.println("전체 리스트 : " + crawlChart.get(i).getSongList(Charturl)); // 전체 리스트 출력
             
            // System.out.println(CrawlChart.get(i).getSongList(Charturl).get(1).getTitle()); // 음악사 별 1등 노래 출력
             }            
@@ -80,6 +83,7 @@ public class SongService {
             
             //---------------------테스트 ------------------------------
             HashMap<String, Integer> ChartMap = new HashMap();
+            
             ChartMap.put("사과",10);
             ChartMap.put("사과",ChartMap.get("사과")+12);
             

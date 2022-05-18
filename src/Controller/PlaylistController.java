@@ -8,6 +8,7 @@ import Dto.Playlist.PlaylistCreateDto;
 import Dto.Playlist.PlaylistUpdateDto;
 import Entity.Playlist;
 import Service.PlaylistService;
+import java.awt.event.ActionEvent;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  *
  * @author Donghyeon <20183188>
  */
-public class PlaylistController {
+public class PlaylistController{
     private PlaylistService playlistService;
 
     public PlaylistController() { this.playlistService = new PlaylistService(); }
@@ -85,4 +86,5 @@ public class PlaylistController {
         
         return playlists;
     }
+
 }

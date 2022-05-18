@@ -37,7 +37,14 @@ public class UserController implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("클릭 된 컴포넌트 : " + e.getSource().getClass().getSimpleName());
+        if(e.getSource() == loginFrame.getLoginBtn()) System.out.println("일치함");
+        
+        System.out.println("e : " + e.paramString());
+        System.out.println("e : " + e.getActionCommand());
+        System.out.println("e : " + e.getID());
+        System.out.println("클릭 된 컴포넌트 : " + e.getSource());
+        System.out.println("클릭 된 컴포넌트 클래스 : " + e.getSource().getClass());
+        System.out.println("클릭 된 컴포넌트 클래스 이름: " + e.getSource().getClass().getSimpleName());
         
         // id, pw 변수에 저장
         String id = loginFrame.getIdTextField().getText();

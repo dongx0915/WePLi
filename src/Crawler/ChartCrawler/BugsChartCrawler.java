@@ -31,7 +31,7 @@ public class BugsChartCrawler extends Crawler{
                         
             String coverImg = element.select("img").attr("src");                 // 이미지 크롤링
             String title = element.select(".title").text();                  // 노래제목 크롤링
-            String singer = element.select(".artist").select("a").get(0).text();                  // 가수 크롤링
+            String singer = element.select("p.artist > a").text();                  // 가수 크롤링
             String album = element.select(".left").text();                  // 앨범명 크롤링
             
             
