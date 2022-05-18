@@ -14,11 +14,10 @@ import org.jsoup.nodes.Element;
  * @author joon
  */
 public class MelonChartCrawler extends Crawler{
-
-    private static MelonChartCrawler Crawler = new MelonChartCrawler();
-    public MelonChartCrawler() { this.URL = "https://www.melon.com/chart/index.htm"; }
+    private static MelonChartCrawler crawler = new MelonChartCrawler();
+    private MelonChartCrawler() { this.URL = "https://www.melon.com/chart/index.htm"; }
     
-    public static MelonChartCrawler getCrawler(){ return Crawler; }
+    public static MelonChartCrawler getCrawler(){ return crawler; }
     
     @Override
     protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody) {

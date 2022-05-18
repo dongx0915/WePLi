@@ -18,10 +18,10 @@ public class SongService {
     
     MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
        
-    public void musicChart(){
+    public ArrayList<Crawler> musicChart(){
             
         ArrayList<Crawler> CrawlChart ;
-        CrawlChart = musicFactory.getChartCrawler(); // 크롤ㄹ링한 리스트 
+        CrawlChart = musicFactory.getChartCrawler(); // 크롤링한 리스트 
             
         //chartIntegrate(CrawlChart); 음악 순위 합치기 구현중
             
@@ -32,9 +32,11 @@ public class SongService {
            // System.out.println(CrawlChart.get(i).getSongList(Charturl)); // 전체 리스트 출력
             System.out.println(CrawlChart.get(i).getSongList(Charturl).get(1).getTitle()); // 음악사 별 1등 노래 출력
             }            
+        
+            return null;
         }
         
-    public void chartIntegrate(ArrayList<Crawler> crawlChart){
+    public ArrayList<SongDto> chartIntegrate(ArrayList<Crawler> crawlChart){
         ArrayList<SongDto> songList = new ArrayList<>();
             
         for(int i = 0 ; i< crawlChart.size(); i++){
@@ -44,12 +46,13 @@ public class SongService {
                     
             }
         }
+        return null;
     }
 
         
         
 
-        public void musicSearch(String type, String keyword){
+        public ArrayList<SongDto> musicSearch(String type, String keyword){
             
             System.out.println("--------------------------- 노래 검색 -------------------------------"); 
             
@@ -57,6 +60,8 @@ public class SongService {
             crawler = musicFactory.getSearchCrawler(type);
             String SearchURL=crawler.getURL()+keyword;
             System.out.println(crawler.getSongList(SearchURL));
+            
+            return crawler.getSongList(SearchURL);
         }
         
  

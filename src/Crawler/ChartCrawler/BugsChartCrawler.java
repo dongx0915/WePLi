@@ -15,10 +15,10 @@ import org.jsoup.nodes.Element;
  */
 public class BugsChartCrawler extends Crawler{
 
-    private static BugsChartCrawler Crawler = new BugsChartCrawler();
-    public BugsChartCrawler() { this.URL = "https://music.bugs.co.kr/chart/track/day/total"; }
+    private static BugsChartCrawler crawler = new BugsChartCrawler();
+    private BugsChartCrawler() { this.URL = "https://music.bugs.co.kr/chart/track/day/total"; }
     
-    public static BugsChartCrawler getCrawler(){ return Crawler; }
+    public static BugsChartCrawler getCrawler(){ return crawler; }
     
     @Override
     protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody) {

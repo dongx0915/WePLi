@@ -14,12 +14,11 @@ import org.jsoup.nodes.Element;
  * @author joon
  */
 public class BugsSearchCrawler extends Crawler{
-    private static BugsSearchCrawler Crawler = new BugsSearchCrawler();
-
+    private static BugsSearchCrawler crawler = new BugsSearchCrawler();
     private BugsSearchCrawler() { this.URL = "https://music.bugs.co.kr/search/track?q="; }
     
     // 싱글턴 패턴
-    public static BugsSearchCrawler getCrawler(){ return Crawler; }
+    public static BugsSearchCrawler getCrawler(){ return crawler; }
     
     @Override
     protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody) {

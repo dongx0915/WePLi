@@ -34,12 +34,13 @@ public class MusicCrawlerFactory {
     }
     
     public ArrayList<Crawler> getChartCrawler(){
-        ArrayList<Crawler> CrawlChart = new ArrayList<>();
+        ArrayList<Crawler> crawlChart = new ArrayList<>();
         
-        CrawlChart.add(MelonChartCrawler.getCrawler());
-        CrawlChart.add(GenieChartCrawler.getCrawler());
-        CrawlChart.add(BugsChartCrawler.getCrawler());
+        // entrySet을 통해 모든 크롤러 객체를 리스트에 추가
+        for (Map.Entry<String, Crawler> entry : map.entrySet()) {
+            crawlChart.add(entry.getValue());
+        }
      
-        return CrawlChart;
+        return crawlChart;
     }
 }

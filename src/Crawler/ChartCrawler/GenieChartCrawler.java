@@ -15,10 +15,10 @@ import org.jsoup.nodes.Element;
  */
 public class GenieChartCrawler extends Crawler{
     
-    private static GenieChartCrawler Crawler = new GenieChartCrawler();
-    public GenieChartCrawler() { this.URL = "https://genie.co.kr/chart/top200?pgsize=100&rtm=N"; }
+    private static GenieChartCrawler crawler = new GenieChartCrawler();
+    private GenieChartCrawler() { this.URL = "https://genie.co.kr/chart/top200?pgsize=100&rtm=N"; }
     
-    public static GenieChartCrawler getCrawler(){ return Crawler; }
+    public static GenieChartCrawler getCrawler(){ return crawler; }
     
     @Override
     protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody) {
