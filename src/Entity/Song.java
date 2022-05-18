@@ -21,9 +21,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Song {
+    
     private int id;
     public String title;
     public String singer;
     public String album;
     public String coverImg;
+    
 }

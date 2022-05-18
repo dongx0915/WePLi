@@ -15,6 +15,7 @@
         </group>
         <group>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Playlist/PlaylistUpdateDto.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/layout/button/hover/login_hover.png</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Database/Database.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/layout/menu/normal/home.png</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/User/UserDto.java</file>
@@ -34,6 +35,7 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/GenieSearchCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/Song.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/BugsSearchCrawler.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/layout/button/normal/login_btn.png</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/nbproject/genfiles.properties</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/Crawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/MelonSearchCrawler.java</file>
@@ -48,6 +50,7 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/LoginJFrame.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/ChartCrawler/GenieChartCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/nbproject/private/private.xml</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/layout/button/hover/id_field_focus.png</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/nbproject/build-impl.xml</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/Main.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/nbproject/project.xml</file>

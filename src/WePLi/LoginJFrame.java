@@ -234,7 +234,7 @@ public class LoginJFrame extends javax.swing.JFrame {
             }
         });
     }
-
+    
     public JLabel getBackgroundLabel() { return BackgroundLabel; }
     public JPanel getBackgroundPanel() { return BackgroundPanel; }
     public JLabel getIdFieldLabel() { return IdFieldLabel; }
@@ -243,8 +243,7 @@ public class LoginJFrame extends javax.swing.JFrame {
     public JButton getLoginBtn() { return LoginBtn; }
     public JTextField getIdTextField() { return idTextField; }
     public JPasswordField getPwTextField() { return pwTextField; }
-    
-    
+        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BackgroundLabel;
     private javax.swing.JPanel BackgroundPanel;
