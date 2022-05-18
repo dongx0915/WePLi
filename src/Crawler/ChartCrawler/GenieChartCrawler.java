@@ -8,6 +8,7 @@ import Crawler.Crawler;
 import Dto.SongDto;
 import java.util.ArrayList;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Selector;
 
 /**
  *
@@ -32,14 +33,18 @@ public class GenieChartCrawler extends Crawler{
         
         for(Element element : chartBody){
             
+            int rank = Integer.parseInt(element.select(".number").text().split(" ")[0]);
             String coverImg = element.select("img").attr("src");                 // 이미지 크롤링 - url ???,0으로 끝남
             String title = element.select(".info").select(".title").text();                  // 노래제목 크롤링
+
+            title = title.replaceAll("^19금 ","");
             String singer = element.select(".info").select(".artist").text();                  // 가수 크롤링
             String album = element.select(".info").select(".albumtitle").text();                  // 앨범명 크롤링    
             
             //System.out.println(singer);
             
             SongDto song = SongDto.builder()
+                    .rank(rank)
                     .coverImg(coverImg)
                     .title(title)
                     .singer(singer)

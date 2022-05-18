@@ -29,15 +29,17 @@ public class BugsChartCrawler extends Crawler{
         //attr 속성 정보 값을 가져온다.
         for(Element element : chartBody){
                         
+            int rank = Integer.parseInt(element.select(".ranking").select("strong").text());   // 순위 크롤링
             String coverImg = element.select("img").attr("src");                 // 이미지 크롤링
-            String title = element.select(".title").text();                  // 노래제목 크롤링
-            String singer = element.select("p.artist > a").text();                  // 가수 크롤링
+            String title = element.select(".title").select("a").text();                  // 노래제목 크롤링
+            String singer = element.select(".artist").select("a").get(0).text();                  // 가수 크롤링
             String album = element.select(".left").text();                  // 앨범명 크롤링
             
             
             //System.out.println(singer);
             
               SongDto song = SongDto.builder()
+                    .rank(rank)
                     .coverImg(coverImg)
                     .title(title)
                     .singer(singer)

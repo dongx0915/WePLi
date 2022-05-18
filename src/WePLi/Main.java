@@ -5,6 +5,7 @@ package WePLi;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+import Controller.SignUpController;
 import Controller.UserController;
 import Dto.User.UserDto;
 import java.lang.reflect.InvocationTargetException;
@@ -19,10 +20,14 @@ public class Main {
     public static void main(String[] args) throws InterruptedException, InvocationTargetException {
         //UserRepository ur = new UserRepository();
         
-        LoginJFrame lj = new LoginJFrame();
-        UserController uc = new UserController(lj);
-
+//        LoginJFrame lj = new LoginJFrame();
+//        UserController uc = new UserController(lj);
         
-        MainFrame mf = new MainFrame();
+          SignUpFrame sp = new SignUpFrame();
+          SignUpController sc = new SignUpController(sp);
+          
+//        MainFrame mj = new MainFrame();
+        
+
     }
 }
