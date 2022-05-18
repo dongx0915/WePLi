@@ -4,7 +4,9 @@
  */
 package Service;
 
+import Dto.User.SignUpDto;
 import Dto.User.UserDto;
+import Entity.SignUp;
 import Entity.User;
 import Repository.UserRepository;
 
@@ -22,7 +24,7 @@ public class UserService {
     }
     
     
-    
+    // 로그인 성공 여부 확인
     public User login(UserDto dto){
         System.out.println(dto);
         User user = User.toEntity(dto);
@@ -49,6 +51,43 @@ public class UserService {
         
         return null;
     }
+    
+    
+    
+    
+    // 회원가입 method
+    public SignUp SignUp(SignUpDto dto){
+                
+        SignUp signUp = SignUp.toEntity(dto);
+        
+        User target = userRepository.findById(signUp.getId());
+        
+        // id 중복 아닐 때 
+        if(target == null){
+            
+            if(signUp.getPw().equals(signUp.getPw2())){
+                System.out.println("회원가입 완료");
+                // save
+                User user = userRepository.save(User.builder().id(dto.getId()).pw(dto.getPw()).build());
+                if(user == null){
+                    System.out.println("Faild");        
+                }
+                else{
+                    System.out.println("Success");
+                }
+            }
+            else{
+                System.out.println("비밀번호가 맞지 않습니다.");
+            }
+            
+        }
+        else{
+            System.out.println("중복된 ID가 있습니다.");
+        }
+        
+        return null;
+    }
+    
     
     
 }

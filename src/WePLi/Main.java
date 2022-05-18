@@ -5,11 +5,10 @@ package WePLi;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-import Controller.PlaylistController;
+import Controller.SignUpController;
 import Controller.UserController;
-import Entity.Playlist;
-import Repository.UserRepository;
-import java.util.regex.*;
+import Entity.Song;
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -17,19 +16,17 @@ import java.util.regex.*;
  * @author Donghyeon <20183188>
  */
 public class Main {
-    public static void main(String[] args) {
-        UserRepository ur = new UserRepository();
-                
-        PlaylistController pc = new PlaylistController();
+    public static void main(String[] args) throws InterruptedException, InvocationTargetException {
+        //UserRepository ur = new UserRepository();
         
-        for (Playlist allPlaylist : pc.getAllPlaylists()) {
-            System.out.println(allPlaylist);
-        }
+//        LoginJFrame lj = new LoginJFrame();
+//        UserController uc = new UserController(lj);
         
-        pc.deletePlaylist("P0000000");
+          SignUpFrame sp = new SignUpFrame();
+          SignUpController sc = new SignUpController(sp);
+          
+//        MainFrame mj = new MainFrame();
         
-        for (Playlist allPlaylist : pc.getAllPlaylists()) {
-            System.out.println(allPlaylist);
-        } 
+
     }
 }

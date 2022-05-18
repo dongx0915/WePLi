@@ -15,20 +15,10 @@ import org.jsoup.nodes.Element;
  * @author joon
  */
 public class MelonSearchCrawler extends Crawler{
+    private static MelonSearchCrawler crawler = new MelonSearchCrawler();
+    private MelonSearchCrawler() { this.URL = "https://www.melon.com/search/song/index.htm?q="; }
     
-    private static MelonSearchCrawler Crawler = new MelonSearchCrawler();
-        
-    private MelonSearchCrawler() {
-         this.URL = "https://www.melon.com/search/song/index.htm?q=";
-    }
-    
-    public static MelonSearchCrawler getCrawler(){
-        return Crawler;
-    }
-    
-    public String getURL() {
-        return URL;
-    }
+    public static MelonSearchCrawler getCrawler(){ return crawler; }
     
     @Override
     protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody) {
@@ -47,12 +37,10 @@ public class MelonSearchCrawler extends Crawler{
                     .build();
             
             songlist.add(song);
-            
         }
         
         return songlist;
     }
-
 }
     
 

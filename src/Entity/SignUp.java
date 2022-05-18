@@ -4,6 +4,8 @@
  */
 package Entity;
 
+import Dto.User.SignUpDto;
+import Dto.User.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,20 +14,24 @@ import lombok.ToString;
 
 /**
  *
- * @author Donghyeon <20183188>
+ * @author kimkyeonghyun
  */
-
 @ToString
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Song {
+public class SignUp {
+    private String id;
+    private String pw;
+    private String pw2;
     
-    private int id;
-    public String title;
-    public String singer;
-    public String album;
-    public String coverImg;
+    public static SignUp toEntity(SignUpDto dto){
+        return SignUp.builder()
+                .id(dto.getId())
+                .pw(dto.getPw())
+                .pw2(dto.getPw2())
+                .build();
+    }
     
 }

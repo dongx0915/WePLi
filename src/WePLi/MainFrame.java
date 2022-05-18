@@ -9,13 +9,16 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicTableHeaderUI;
 import javax.swing.plaf.basic.BasicTableUI;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -40,17 +43,19 @@ class ImageRenderer extends DefaultTableCellRenderer {
 }
 
 public class MainFrame extends javax.swing.JFrame {
-
     /**
      * Creates new form MainFrame
      */
+    private static MainFrame mainFrame;
+    
     public MainFrame() {
         initComponents();
+//        setVisible(true);
         setLocationRelativeTo(null);
-
+        
         /* 테이블 기본 디자인 세팅 */
         tableInit(ChartScrollPanel, ChartTable);
-
+        
         /* 테스트 값 생성 */
         String url1 = "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/662/688/82662688_1651196114166_1_600x600.JPG/dims/resize/Q_80,0";
         String url2 = "https://image.bugsm.co.kr/album/images/50/40756/4075667.jpg?version=20220515063240.0";
@@ -95,25 +100,25 @@ public class MainFrame extends javax.swing.JFrame {
     /* 테이블 기본 디자인 세팅 */
     public void tableInit(JScrollPane jScrollPane, JTable jTable) {
         /* 스크롤 패널 배경 색상 변경 */
-        jScrollPane.setBackground(new Color(255, 255, 255, 255));
         jScrollPane.setOpaque(true);
+        jScrollPane.setBackground(new Color(255, 255, 255, 0));
         jScrollPane.getViewport().setOpaque(true);
 
         /* 테이블 UI, 테이블 헤더 UI 변경 */
+        jTable.setOpaque(true);
         jTable.setUI(new BasicTableUI());
         jTable.getTableHeader().setUI(new BasicTableHeaderUI());
-
+        
         /* 테이블 헤더 색상, 글자색 변경 */
         JTableHeader tbh = jTable.getTableHeader();
+        
+        tbh.setOpaque(true);                             // Opaque(투명도) 를 false로 해줘야 색상 적용됨
         tbh.setPreferredSize(new Dimension(ChartScrollPanel.getWidth(), 100));
-        //tbh.setFont(new Font("Segoe UI", Font.BOLD, 12)); // 테이블 헤더의 폰트 설정
-        tbh.setOpaque(false);                             // Opaque(투명도) 를 false로 해줘야 색상 적용됨
         tbh.setBackground(new Color(243, 248, 255));      // 테이블 헤더의 배경색 설정
         tbh.setForeground(new Color(0, 0, 0));            // 테이블 헤더의 글자색 설정
-
+        
         /* 테이블의 2번째 컬럼은 이미지를 출력 */
         jTable.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
-        
         
         /* 테이블 컬럼 중앙 정렬 */
         DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // 디폴트테이블셀렌더러를 생성
@@ -134,9 +139,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     /* 테이블 배경 색상 변경 메소드 */
     private void setTableBackground(JTable jTable) {
-        jTable.setOpaque(true);
         jTable.setFillsViewportHeight(true);
         jTable.setBackground(new Color(243, 248, 255));
+        jTable.setOpaque(false);
     }
 
     /* 테이블 셀 크기 변경 메소드 */
@@ -224,7 +229,10 @@ public class MainFrame extends javax.swing.JFrame {
         BackgroundPanel.add(SidebarLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 168, -1));
 
         ChartPanel.setBackground(new java.awt.Color(243, 248, 255));
+        ChartPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        ChartPanel.setOpaque(false);
 
+        ChartScrollPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         ChartScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         ChartScrollPanel.setToolTipText("");
         ChartScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -234,6 +242,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        ChartTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         ChartTable.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 12)); // NOI18N
         ChartTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -253,20 +262,28 @@ public class MainFrame extends javax.swing.JFrame {
         });
         ChartTable.setMinimumSize(new java.awt.Dimension(10, 400));
         ChartTable.setRowHeight(80);
+        ChartTable.getTableHeader().setResizingAllowed(false);
+        ChartTable.getTableHeader().setReorderingAllowed(false);
         ChartScrollPanel.setViewportView(ChartTable);
 
         javax.swing.GroupLayout ChartPanelLayout = new javax.swing.GroupLayout(ChartPanel);
         ChartPanel.setLayout(ChartPanelLayout);
         ChartPanelLayout.setHorizontalGroup(
             ChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ChartScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
+            .addGroup(ChartPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ChartScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 896, Short.MAX_VALUE)
+                .addContainerGap())
         );
         ChartPanelLayout.setVerticalGroup(
             ChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ChartScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ChartPanelLayout.createSequentialGroup()
+                .addContainerGap(113, Short.MAX_VALUE)
+                .addComponent(ChartScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        BackgroundPanel.add(ChartPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, 890, 560));
+        BackgroundPanel.add(ChartPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 70, 910, 650));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -346,11 +363,14 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ChartScrollPanelMouseWheelMoved
 
+    public void init(){
+
+    }
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+    public static void main(String args[]) throws InterruptedException, InvocationTargetException {
+                        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -372,15 +392,20 @@ public class MainFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+            
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+                System.out.println("호출 됨");
+                MainFrame.mainFrame = new MainFrame();
+                MainFrame.mainFrame.setVisible(true);
             }
         });
     }
 
+    public static MainFrame getMainFrame() {
+        return mainFrame;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackgroundPanel;

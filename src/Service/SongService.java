@@ -23,7 +23,7 @@ public class SongService {
         System.out.println("--------------------------- 노래 검색 -------------------------------"); 
             
         Crawler crawler ;
-        crawler = musicFactory.MusicSearch(type);
+        crawler = musicFactory.getSearchCrawler(type);
         String SearchURL=crawler.getURL()+keyword;
         System.out.println(crawler.getSongList(SearchURL));
     }
@@ -32,7 +32,7 @@ public class SongService {
     public SongDto OneMusicSearch(String keyword){  // 검색 음악 하나만 선택 - 음악 이퀄라이저
                     
         Crawler crawler ;
-        crawler = musicFactory.MusicSearch("genie");
+        crawler = musicFactory.getSearchCrawler("genie");
         String SearchURL=crawler.getURL()+keyword;  
         
         return crawler.getSongList(SearchURL).get(0);
@@ -50,7 +50,7 @@ public class SongService {
     public void musicChart(){
             
         ArrayList<Crawler> CrawlChart ;
-        CrawlChart = musicFactory.MusicChart(); // 크롤링한 리스트 
+        CrawlChart = musicFactory.getChartCrawler(); // 크롤링한 리스트 
             
         //chartIntegrate(CrawlChart); //음악 순위 합치기 구현중
             
@@ -82,6 +82,7 @@ public class SongService {
             
             System.out.println(target);
             System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0));
+            
             
 //            SongDto target = CrawlChart.get(i).getSongList(Charturl).get(0);
   //          target.setTitle(songdto.getTitle());

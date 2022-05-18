@@ -16,24 +16,11 @@ import org.jsoup.select.Selector;
  */
 public class GenieChartCrawler extends Crawler{
     
-    private static GenieChartCrawler Crawler = new GenieChartCrawler();
+    private static GenieChartCrawler crawler = new GenieChartCrawler();
+    private GenieChartCrawler() { this.URL = "https://genie.co.kr/chart/top200?pgsize=100&rtm=N"; }
     
-     public static GenieChartCrawler getCrawler(){
-        return Crawler;
-    }
+    public static GenieChartCrawler getCrawler(){ return crawler; }
     
-    
-    public GenieChartCrawler() {
-         this.URL = "https://genie.co.kr/chart/top200?pgsize=100&rtm=N";
-    }
-    
-    
-    public String getURL() {
-        return URL;
-    }
-    
-    
-
     @Override
     protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody) {
         ArrayList<SongDto> songlist = new ArrayList<>();

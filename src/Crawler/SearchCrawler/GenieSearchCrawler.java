@@ -14,23 +14,10 @@ import org.jsoup.nodes.Element;
  * @author joon
  */
 public class GenieSearchCrawler extends Crawler{
+    private static GenieSearchCrawler crawler = new GenieSearchCrawler();
+    private GenieSearchCrawler() { this.URL = "https://www.genie.co.kr/search/searchSong?pagesize=50&query="; }
     
-    private static GenieSearchCrawler Crawler = new GenieSearchCrawler();
- 
-    public static GenieSearchCrawler getCrawler(){
-        return Crawler;
-    }
-    
-    
-    private GenieSearchCrawler() {
-         this.URL = "https://www.genie.co.kr/search/searchSong?pagesize=50&query=";
-    }
-    
-    
-    public String getURL() {
-        return URL;
-    }
-    
+    public static GenieSearchCrawler getCrawler(){ return crawler; }
 
     @Override
     protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody) {
@@ -46,8 +33,6 @@ public class GenieSearchCrawler extends Crawler{
             String singer = element.select(".artist").text();              // 가수 크롤링
             String album = element.select(".albumtitle").text();                // 앨범명 크롤링.
             
-   
-            
             SongDto song = SongDto.builder()
                     .coverImg(coverImg)
                     .title(title)
@@ -57,12 +42,10 @@ public class GenieSearchCrawler extends Crawler{
             
             
             songlist.add(song);
-            //System.out.println(song.toString());
         }
         
         return songlist;
     }
-
 }
     
 
