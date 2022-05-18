@@ -5,16 +5,18 @@
 package Controller;
 
 import Dto.User.UserDto;
+import Entity.User;
 import Service.UserService;
 import WePLi.LoginJFrame;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import WePLi.MainFrame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
  * @author kimkyeonghyun
  */
-public class UserController implements MouseListener{
+public class UserController implements ActionListener{
     
     // view
     private LoginJFrame loginFrame;
@@ -26,12 +28,10 @@ public class UserController implements MouseListener{
         this.loginFrame.setLoginListner(this);
         this.userService = new UserService();
     }
-    
+
     @Override
-    public void mouseClicked(MouseEvent e) {
-        System.out.println(e.getSource());
-        
-        System.out.println("로그인 버튼 클릭 됨");
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("클릭 된 컴포넌트 : " + e.getSource().getClass().getSimpleName());
         
         // id, pw 변수에 저장
         String id = loginFrame.getIdTextField().getText();
@@ -39,18 +39,8 @@ public class UserController implements MouseListener{
         
         UserDto dto = UserDto.builder().id(id).pw(pw).build();
 
-        userService.login(dto);        
+        User user = userService.login(dto);  
+        MainFrame mf;
+        if(user != null) mf = new MainFrame();
     }
-
-    @Override
-    public void mousePressed(MouseEvent e) { }
-
-    @Override
-    public void mouseReleased(MouseEvent e) { }
-
-    @Override
-    public void mouseEntered(MouseEvent e) { }
-
-    @Override
-    public void mouseExited(MouseEvent e) { }
 }
