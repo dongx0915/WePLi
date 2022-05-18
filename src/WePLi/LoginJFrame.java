@@ -255,6 +255,8 @@ public class LoginJFrame extends javax.swing.JFrame {
     public JLabel getSignUpTextLabel() {
         return SignUpTextLabel;
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BackgroundLabel;

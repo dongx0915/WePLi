@@ -22,7 +22,7 @@ public class UserService {
     }
     
     
-    
+    // 로그인 성공 여부 확인
     public User login(UserDto dto){
         System.out.println(dto);
         User user = User.toEntity(dto);
@@ -49,6 +49,20 @@ public class UserService {
         
         return null;
     }
+    
+    
+    
+    // 회원가입 method
+    public User Signup(UserDto dto){
+        
+        
+        
+        
+        
+        
+        return null;
+    }
+    
     
     
 }

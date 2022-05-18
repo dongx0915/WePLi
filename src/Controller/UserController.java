@@ -7,6 +7,7 @@ package Controller;
 import Dto.User.UserDto;
 import Service.UserService;
 import WePLi.LoginJFrame;
+import WePLi.SignUpFrame;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -16,8 +17,12 @@ import java.awt.event.MouseListener;
  */
 public class UserController implements MouseListener{
     
-    // view
+    // Login view
     private LoginJFrame loginFrame;
+    
+    // Sign view
+    private SignUpFrame signupFrame;
+    
     // service
     private UserService userService;
 
