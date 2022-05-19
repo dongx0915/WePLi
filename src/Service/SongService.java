@@ -56,43 +56,29 @@ public class SongService {
             
             
         System.out.println("--------------------------- 인기 차트 -------------------------------"); 
-        //for(int i = 0 ; i < CrawlChart.size(); i++)
-        for(int i = 0 ; i < 1; i++){
+        for(int i = 0 ; i < CrawlChart.size(); i++){
+        //for(int i = 0 ; i < 1; i++){
             String Charturl = CrawlChart.get(i).getURL();
+            ArrayList<SongDto> songList = CrawlChart.get(i).getSongList(Charturl);
             //System.out.println(CrawlChart.get(i).getSongList(Charturl)); // 전체 리스트 출력
             //System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0).getTitle()); // 음악사 별 1등 노래 출력
-   
-            String title_temp = CrawlChart.get(i).getSongList(Charturl).get(0).getTitle();  // 기존 제목 저장
-            String singer_temp = CrawlChart.get(i).getSongList(Charturl).get(0).getSinger();    // 기존 가수 저장
-            int rank_temp = CrawlChart.get(i).getSongList(Charturl).get(0).getRank();   // 기존 순위 저장
+                
+           
+            String title_temp = songList.get(0).getTitle();  // 기존 제목 저장
+            String singer_temp = songList.get(0).getSinger();    // 기존 가수 저장
+            int rank_temp = songList.get(0).getRank();   // 기존 순위 저장
             SongDto songdto = OneMusicSearch(title_temp + " " + singer_temp);   // 기존 제목과 가수명으로 검색
             
             System.out.println("기존 정보 : " + title_temp + ", " + singer_temp + ", " + rank_temp);
             System.out.println("검색된 정보 : " + songdto.getTitle() + " - " + songdto.getSinger());
-            SongDto target = CrawlChart.get(i).getSongList(Charturl).get(0);
+                     
             
-            CrawlChart.get(i).getSongList(Charturl).get(0).setTitle(songdto.getTitle());
-            CrawlChart.get(i).getSongList(Charturl).get(0).setSinger(songdto.getSinger());
+            songList.get(0).setTitle(songdto.getTitle());
+            songList.get(0).setSinger(songdto.getSinger());
             
-            System.out.println(target);
-            System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0));
-            
-            target.setSinger("asdsadsad");
-            CrawlChart.get(i).getSongList(Charturl).get(0).setSinger("asdsdadasd");
-            
-            System.out.println(target);
-            System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0));
-            
-            
-//            SongDto target = CrawlChart.get(i).getSongList(Charturl).get(0);
-  //          target.setTitle(songdto.getTitle());
-    //        target.setSinger(songdto.getSinger());
-            
-//            System.out.println("Target = " + target);
-            //CrawlChart.get(i).getSongList(Charturl).get(0).setTitle(songdto.getTitle());
-            //CrawlChart.get(i).getSongList(Charturl).get(0).setSinger("시발");
-            
-            //System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0).getSinger());
+         
+            System.out.println(songList.get(0));
+
             
             }            
         }
