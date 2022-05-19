@@ -30,7 +30,7 @@ public class GenieChartCrawler extends Crawler{
         // .이 붙으면 클래스를 찾는다
         //attr 속성 정보 값을 가져온다.
         // #은 아이디를 가져온다
-        
+     
         for(Element element : chartBody){
             
             int rank = Integer.parseInt(element.select(".number").text().split(" ")[0]);
@@ -55,7 +55,7 @@ public class GenieChartCrawler extends Crawler{
             songlist.add(song);
        
         }
-        
+       
         return songlist;
     }
 

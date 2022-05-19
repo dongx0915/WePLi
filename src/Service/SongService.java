@@ -25,22 +25,31 @@ public class SongService {
         Crawler crawler ;
         crawler = musicFactory.getSearchCrawler(type);
         String SearchURL=crawler.getURL()+keyword;
-        System.out.println(crawler.getSongList(SearchURL));
+        ArrayList<SongDto> SongList = crawler.getSongList(SearchURL);
+        
+        if(SongList.isEmpty())
+            System.out.println("검색된 노래 없음");
+        else
+            System.out.println(SongList);
     }
     
     
     public SongDto OneMusicSearch(String keyword){  // 검색 음악 하나만 선택 - 음악 이퀄라이저
                     
         Crawler crawler ;
-        crawler = musicFactory.getSearchCrawler("genie");
+        crawler = musicFactory.getSearchCrawler("bugs");
         String SearchURL=crawler.getURL()+keyword;  
+        ArrayList<SongDto> SongList = crawler.getSongList(SearchURL);
         
-        return crawler.getSongList(SearchURL).get(0);
+        if(SongList.isEmpty())
+            return null;
+
+        return SongList.get(0);
+    
     }
     
-    
     public void EqualizeMusic(){
-        
+       
         
         
     }
@@ -63,23 +72,26 @@ public class SongService {
             //System.out.println(CrawlChart.get(i).getSongList(Charturl)); // 전체 리스트 출력
             //System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0).getTitle()); // 음악사 별 1등 노래 출력
                 
-           
-            String title_temp = songList.get(0).getTitle();  // 기존 제목 저장
-            String singer_temp = songList.get(0).getSinger();    // 기존 가수 저장
-            int rank_temp = songList.get(0).getRank();   // 기존 순위 저장
-            SongDto songdto = OneMusicSearch(title_temp + " " + singer_temp);   // 기존 제목과 가수명으로 검색
-            
-            System.out.println("기존 정보 : " + title_temp + ", " + singer_temp + ", " + rank_temp);
-            System.out.println("검색된 정보 : " + songdto.getTitle() + " - " + songdto.getSinger());
+            for(int j = 0 ; j < songList.size() ; j++){
+         //   int j=47;
+                String title_temp = songList.get(j).getTitle();  // 기존 제목 저장
+                String singer_temp = songList.get(j).getSinger();    // 기존 가수 저장
+                //int rank_temp = songList.get(j).getRank();   // 기존 순위 저장
+//                System.out.println(title_temp);
+//                System.out.println(singer_temp);
+                SongDto songdto = OneMusicSearch(title_temp + " " + singer_temp);   // 기존 제목과 가수명으로 검색
+                //System.out.println(songdto);
+       //          System.out.println("기존 정보 : " + title_temp + ", " + singer_temp + ", " + rank_temp);
+         //        System.out.println("검색된 정보 : " + songdto.getTitle() + " - " + songdto.getSinger());
                      
-            
-            songList.get(0).setTitle(songdto.getTitle());
-            songList.get(0).setSinger(songdto.getSinger());
-            
+                if(songdto!=null){
+                    songList.get(j).setTitle(songdto.getTitle());
+                    songList.get(j).setSinger(songdto.getSinger());
+                }
          
-            System.out.println(songList.get(0));
+                System.out.println(songList.get(j).getRank() +"\t" + songList.get(j).getTitle()+ "\t" + songList.get(j).getSinger());
 
-            
+                }
             }            
         }
         
@@ -108,9 +120,10 @@ public class SongService {
             
             SongService a = new SongService();
             //a.musicSearch("melon","My Universe");
-            //a.musicSearch("genie","abcdefu");
+            //a.musicSearch("genie","사건의 지평선");
             //a.OneMusicSearch("my universe");
-            //a.musicSearch("bugs","My Universe");
+            //a.musicSearch("bugs","드라마 아이유");
+            //a.musicSearch("bugs","my universe 방탄소년단");
             a.musicChart();
             
             //---------------------테스트 ------------------------------

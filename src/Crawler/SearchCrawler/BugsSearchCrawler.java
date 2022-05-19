@@ -29,9 +29,15 @@ public class BugsSearchCrawler extends Crawler{
         //attr 속성 정보 값을 가져온다.
         for(Element element : chartBody){
             String coverImg = element.select("img").attr("src");                 // 이미지 크롤링
-            String title = element.select(".title").text();                  // 노래제목 크롤링
-            String singer = element.select(".artist").select("a").get(0).text();                 // 가수 크롤링
+            String title = element.select(".title").text();    
+            String singer ;// 노래제목 크롤링
+            try {
+                singer = element.select(".artist").select("a").get(0).text();                 // 가수 크롤링
+            } catch (Exception e){
+                singer = element.select(".artist").get(0).text();                 // 가수 크롤링
+            }
             String album = element.select(".left").text();                  // 앨범명 크롤링
+            
             
             SongDto song = SongDto.builder()
                     .coverImg(coverImg)
@@ -40,8 +46,10 @@ public class BugsSearchCrawler extends Crawler{
                     .album(album)
                     .build();
             
+            
             songlist.add(song);
         }
+        
         return songlist;
     }
 }
