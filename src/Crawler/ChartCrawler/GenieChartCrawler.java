@@ -56,7 +56,7 @@ public class GenieChartCrawler extends Crawler{
             songlist.add(song);
        
         }
-       
+
         return songlist;
     }
 

@@ -6,20 +6,21 @@ package Dto.User;
 
 import Entity.User;
 import lombok.*;
+import Dto.User.UserDto;
 
 /**
  *
  * @author kimkyeonghyun
  */
-
 @ToString
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpDto {
+public class PwChangeDto {
     private String id;
     private String pw;
-    private String pw2;
+    private String newPw;
+    private String checkPw;
 }

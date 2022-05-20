@@ -38,7 +38,6 @@ public class MelonChartCrawler extends Crawler{
             String coverImg = element.select("img").attr("src");                 // 이미지 크롤링
             String title = element.select(".rank01").select("a").text();                  // 노래제목 크롤링
             String singer = element.select(".rank02").select("a").get(0).text();                  // 가수 크롤링
-            
             String album = element.select(".rank03").text();                  // 앨범명 크롤링
             
 

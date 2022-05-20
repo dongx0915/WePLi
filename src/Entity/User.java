@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import Dto.User.PwChangeDto;
 import Dto.User.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     private String id;
     private String pw;
  

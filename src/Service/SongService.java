@@ -66,8 +66,10 @@ public class SongService {
             
         ArrayList<Crawler> CrawlChart ;
         CrawlChart = musicFactory.getChartCrawler(); // 크롤링한 리스트 
+
               
         HashMap<String, SongDto> ChartMap = new HashMap<String, SongDto>();       
+
         
         for(int i = 0 ; i < CrawlChart.size(); i++)
         {    //멜론 -> 벅스 -> 지니

@@ -4,33 +4,35 @@
  */
 package Entity;
 
-import Dto.User.SignUpDto;
-import Dto.User.UserDto;
+
+import Dto.User.PwChangeDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 /**
  *
  * @author kimkyeonghyun
  */
+
 @ToString
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUp {
+public class PwChange {
     private String id;
     private String pw;
-    private String pw2;
+    private String newPw;
+    private String checkPw;
     
-    public static SignUp toEntity(SignUpDto dto){
-        return SignUp.builder()
+    public static PwChange toEntity(PwChangeDto dto){
+        return PwChange.builder()
                 .id(dto.getId())
                 .pw(dto.getPw())
-                .pw2(dto.getPw2())
+                .newPw(dto.getNewPw())
+                .checkPw(dto.getCheckPw())
                 .build();
     }
     

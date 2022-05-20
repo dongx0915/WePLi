@@ -5,9 +5,8 @@ package WePLi;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-import Controller.SignUpController;
 import Controller.UserController;
-import Entity.Song;
+import WePLi.UserFrame.LoginJFrame;
 import java.lang.reflect.InvocationTargetException;
 
 
@@ -18,15 +17,10 @@ import java.lang.reflect.InvocationTargetException;
 public class Main {
     public static void main(String[] args) throws InterruptedException, InvocationTargetException {
         //UserRepository ur = new UserRepository();
-        
-//        LoginJFrame lj = new LoginJFrame();
-//        UserController uc = new UserController(lj);
-        
-          SignUpFrame sp = new SignUpFrame();
-          SignUpController sc = new SignUpController(sp);
-          
-//        MainFrame mj = new MainFrame();
-        
 
+//          PwChangeJFrame pj = new PwChangeJFrame();
+//          PwChangeController pc = new PwChangeController(pj);
+
+        UserController uc = new UserController(new LoginJFrame());
     }
 }
