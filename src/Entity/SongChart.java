@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import Dto.Song.SongDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,12 +21,21 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Song {
+public class SongChart {
     
     private int id;
     public String title;
     public String singer;
     public String album;
     public String coverImg;
+    
+     public static SongChart toEntity(SongDto dto){
+        return SongChart.builder()
+                .title(dto.getTitle())
+                .singer(dto.getSinger())
+                .album(dto.getAlbum())
+                .coverImg(dto.getCoverImg())
+                .build();
+    }
     
 }

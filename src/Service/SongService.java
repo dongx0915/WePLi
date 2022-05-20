@@ -6,9 +6,18 @@ package Service;
 
 import Crawler.Crawler;
 import Crawler.CrawlerFactory.MusicCrawlerFactory;
-import Dto.SongDto;
+import Dto.Song.SongDto;
+import Entity.Playlist;
+import Entity.Song;
+import Entity.SongChart;
+import Repository.SongchartRepository;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+
+
 
 /**
  *
@@ -16,127 +25,155 @@ import java.util.HashMap;
  */
 public class SongService {
     
+    
+    // Repository
+    private SongchartRepository songchartRepository;
+    
     MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
     
-    public void musicSearch(String type, String keyword){
+    public SongService(){
+        this.songchartRepository = new SongchartRepository();
+    }
+    
+    
+    public ArrayList<SongDto> musicSearch(String type, String keyword){
             
-        System.out.println("--------------------------- 노래 검색 -------------------------------"); 
-            
+
         Crawler crawler ;
         crawler = musicFactory.getSearchCrawler(type);
         String SearchURL=crawler.getURL()+keyword;
-        System.out.println(crawler.getSongList(SearchURL));
+        ArrayList<SongDto> SongList = crawler.getSongList(SearchURL);
+        
+        return SongList;
     }
     
     
     public SongDto OneMusicSearch(String keyword){  // 검색 음악 하나만 선택 - 음악 이퀄라이저
                     
         Crawler crawler ;
-        crawler = musicFactory.getSearchCrawler("genie");
+        crawler = musicFactory.getSearchCrawler("bugs");
         String SearchURL=crawler.getURL()+keyword;  
+        ArrayList<SongDto> SongList = crawler.getSongList(SearchURL);
         
-        return crawler.getSongList(SearchURL).get(0);
+        if(SongList.isEmpty())
+            return null;
+
+        return SongList.get(0);
+    
     }
     
-    
-    public void EqualizeMusic(){
-        
-        
-        
-    }
-    
-    
-       
-    public void musicChart(){
+    public ArrayList<SongDto> musicChart(){
             
         ArrayList<Crawler> CrawlChart ;
         CrawlChart = musicFactory.getChartCrawler(); // 크롤링한 리스트 
 
-            
-            
-        System.out.println("--------------------------- 인기 차트 -------------------------------"); 
-        //for(int i = 0 ; i < CrawlChart.size(); i++)
-        for(int i = 0 ; i < 1; i++){
-            String Charturl = CrawlChart.get(i).getURL();
-            //System.out.println(CrawlChart.get(i).getSongList(Charturl)); // 전체 리스트 출력
-            //System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0).getTitle()); // 음악사 별 1등 노래 출력
-   
-            String title_temp = CrawlChart.get(i).getSongList(Charturl).get(0).getTitle();  // 기존 제목 저장
-            String singer_temp = CrawlChart.get(i).getSongList(Charturl).get(0).getSinger();    // 기존 가수 저장
-            int rank_temp = CrawlChart.get(i).getSongList(Charturl).get(0).getRank();   // 기존 순위 저장
-            SongDto songdto = OneMusicSearch(title_temp + " " + singer_temp);   // 기존 제목과 가수명으로 검색
-            
-            System.out.println("기존 정보 : " + title_temp + ", " + singer_temp + ", " + rank_temp);
-            System.out.println("검색된 정보 : " + songdto.getTitle() + " - " + songdto.getSinger());
-            SongDto target = CrawlChart.get(i).getSongList(Charturl).get(0);
-            
-            CrawlChart.get(i).getSongList(Charturl).get(0).setTitle(songdto.getTitle());
-            CrawlChart.get(i).getSongList(Charturl).get(0).setSinger(songdto.getSinger());
-            
-            System.out.println(target);
-            System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0));
-            
-            target.setSinger("asdsadsad");
-            CrawlChart.get(i).getSongList(Charturl).get(0).setSinger("asdsdadasd");
-            
-            System.out.println(target);
-            System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0));
-            
-            
-//            SongDto target = CrawlChart.get(i).getSongList(Charturl).get(0);
-  //          target.setTitle(songdto.getTitle());
-    //        target.setSinger(songdto.getSinger());
-            
-//            System.out.println("Target = " + target);
-            //CrawlChart.get(i).getSongList(Charturl).get(0).setTitle(songdto.getTitle());
-            //CrawlChart.get(i).getSongList(Charturl).get(0).setSinger("시발");
-            
-            //System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0).getSinger());
-            
-            }            
-        }
+              
+        HashMap<String, SongDto> ChartMap = new HashMap<String, SongDto>();       
+
         
-    public void chartIntegrate(ArrayList<Crawler> crawlChart){
-        ArrayList<SongDto> songList = new ArrayList<>();
+        for(int i = 0 ; i < CrawlChart.size(); i++)
+        {    //멜론 -> 벅스 -> 지니
+            String Charturl = CrawlChart.get(i).getURL();
+            ArrayList<SongDto> songList = CrawlChart.get(i).getSongList(Charturl);
             
-        for(int i = 0 ; i< crawlChart.size(); i++){
-            String Charturl = crawlChart.get(i).getURL();
-            for(int j = 0 ; j < crawlChart.get(i).getSongList(Charturl).size() ; j++)
+            for(int j = 0 ; j < songList.size() ; j++)
             {
-                String title_temp = crawlChart.get(i).getSongList(Charturl).get(j).getTitle();
-                String signer_temp = crawlChart.get(i).getSongList(Charturl).get(j).getSinger();
-                //int rank;
-                System.out.println(crawlChart.get(i).getSongList(Charturl).get(j).getTitle()+crawlChart.get(i).getSongList(Charturl).get(j).getSinger());
+                
+                String title_temp = songList.get(j).getTitle();  // 기존 제목 저장
+                String singer_temp = songList.get(j).getSinger();    // 기존 가수 저장
+                double rank_temp = songList.get(j).getRank();   // 기존 순위 저장
+                String name_temp = title_temp + " " + singer_temp;
+                    
+
+                if(ChartMap.containsKey(name_temp))
+                {
+                    rank_temp = (ChartMap.get(name_temp).getRank()+rank_temp)/2; //순위
+                    ChartMap.get(name_temp).setRank(rank_temp);
+                    ChartMap.put(name_temp,ChartMap.get(name_temp));          
+                }
+                else
+                {
+                    if(i != 0)
+                    {    // 벅스가 아니라면
+                        SongDto songdto = OneMusicSearch(title_temp + " " + singer_temp);   // 기존 제목과 가수명으로 검색
+
+                        if(songdto!=null){
+                            songList.get(j).setTitle(songdto.getTitle());
+                            songList.get(j).setSinger(songdto.getSinger());
+                            name_temp = songList.get(j).getTitle()+ " " + songList.get(j).getSinger();
+                        }
+                    }
+                        
+                    if(ChartMap.containsKey(name_temp)){
+                        rank_temp = (ChartMap.get(name_temp).getRank()+rank_temp)/2; //순위
+                        ChartMap.get(name_temp).setRank(rank_temp);
+                        ChartMap.put(name_temp,ChartMap.get(name_temp));             
+                    }
+                    else if(!ChartMap.containsKey(name_temp))
+                    {
+                        ChartMap.put(name_temp,songList.get(j));    
+                    }
+                }
             }
-        }
+        }            
+        
+        // 해시맵 완성
+        ArrayList<SongDto> SongList = new ArrayList<>(ChartMap.values());  // 정렬 전 통합 리스트
+            
+        Comparator<SongDto> cp = new Comparator<SongDto>(){ // 리스트 정렬 
+            @Override
+            public int compare(SongDto data1, SongDto data2){   // 기존형이 int라 어쩔 수 없이 반환해줘야함
+                double tmp1 = data1.getRank();
+                double tmp2 = data2.getRank();
+                    
+                if(tmp1>tmp2)
+                    return 1;
+                else 
+                    return -1;
+            }
+        };
+            
+        Collections.sort(SongList, cp);    // 리스트 정렬 (정렬된 인기차트)
+        
+        return SongList;
     }
 
+    public void InsertMusicChart(ArrayList<SongDto> dtoList)
+    {
+        ArrayList<SongChart> songchart = new ArrayList<>() ;
+        for(SongDto dto : dtoList){
+            songchart.add(SongChart.toEntity(dto));
+        }
+        System.out.println(songchart);
         
-        
+//        ArrayList<SongChart> songchart = SongChart.toEntity(dtoList);
+//        songchartRepository.save(dtoList);
+    }
+    
 
-
- 
+    
+    
+    public static void main(String[] args) {
         
-        public static void main(String[] args) {
+        // 인기차트
+        SongService a = new SongService();
+        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
+        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100));
+        a.InsertMusicChart(subList);
+        
+        
+        // 검색
+//        ArrayList<SongDto> SearchList = a.musicSearch("melon","My Universe");   // 검색 리스트
+//            
+//        if(SearchList.isEmpty())
+//        System.out.println("검색된 노래 없음");
+        //a.musicSearch("genie","사건의 지평선");
+        //a.musicSearch("bugs","드라마 아이유");
+        //a.musicSearch("bugs","my universe 방탄소년단");
             
-            SongService a = new SongService();
-            //a.musicSearch("melon","My Universe");
-            //a.musicSearch("genie","abcdefu");
-            //a.OneMusicSearch("my universe");
-            //a.musicSearch("bugs","My Universe");
-            a.musicChart();
             
-            //---------------------테스트 ------------------------------
-            HashMap<String, Integer> ChartMap = new HashMap();
             
-            ChartMap.put("사과",10);
-            ChartMap.put("사과",ChartMap.get("사과")+12);
-            
-            System.out.println(ChartMap.get("사과"));
 
         }    
-    
-    
-    
-    
+
 }

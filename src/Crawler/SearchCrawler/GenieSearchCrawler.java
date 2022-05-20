@@ -5,7 +5,7 @@
 package Crawler.SearchCrawler;
 
 import Crawler.Crawler;
-import Dto.SongDto;
+import Dto.Song.SongDto;
 import java.util.ArrayList;
 import org.jsoup.nodes.Element;
 
@@ -43,7 +43,6 @@ public class GenieSearchCrawler extends Crawler{
             
             songlist.add(song);
         }
-        
         return songlist;
     }
 }

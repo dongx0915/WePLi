@@ -5,7 +5,7 @@
 package Crawler.ChartCrawler;
 
 import Crawler.Crawler;
-import Dto.SongDto;
+import Dto.Song.SongDto;
 import java.util.ArrayList;
 import org.jsoup.nodes.Element;
 
@@ -32,6 +32,7 @@ public class BugsChartCrawler extends Crawler{
             int rank = Integer.parseInt(element.select(".ranking").select("strong").text());   // 순위 크롤링
             String coverImg = element.select("img").attr("src");                 // 이미지 크롤링
             String title = element.select(".title").select("a").text();                  // 노래제목 크롤링
+            
             String singer = element.select(".artist").select("a").get(0).text();                  // 가수 크롤링
             String album = element.select(".left").text();                  // 앨범명 크롤링
             

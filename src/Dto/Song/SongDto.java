@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Dto;
+package Dto.Song;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +24,7 @@ import lombok.ToString;
 public class SongDto {
     
     private int id;
-    private int rank;
+    private double rank;
     private String coverImg;
     private String title;
     private String singer;
