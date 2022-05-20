@@ -4,8 +4,10 @@
  */
 package Service;
 
+import Dto.User.PwChangeDto;
 import Dto.User.SignUpDto;
 import Dto.User.UserDto;
+import Entity.PwChange;
 import Entity.SignUp;
 import Entity.User;
 import Repository.UserRepository;
@@ -27,10 +29,10 @@ public class UserService {
     // 로그인 성공 여부 확인
     public User login(UserDto dto){
         System.out.println(dto);
+        
         User user = User.toEntity(dto);
         
         User target = userRepository.findById(user.getId());
-        
         
         // id 가 없을 때 
         if(target == null) {
@@ -43,16 +45,19 @@ public class UserService {
         // id 가 있을 때 
         if(target != null){
             
-            System.out.println("로그인 성공");
+            // pw check
+            if(target.getPw().equals(user.getPw())){
+                 System.out.println("로그인 성공");
+            }
+            else{
+                System.out.println("로그인 실패");
+            }            
             return null;
-            // 메인 페이지로 이동
         }
         
         
         return null;
     }
-    
-    
     
     
     // 회원가입 method
@@ -81,6 +86,7 @@ public class UserService {
             }
             
         }
+        // id 중복 일 때
         else{
             System.out.println("중복된 ID가 있습니다.");
         }
@@ -88,6 +94,38 @@ public class UserService {
         return null;
     }
     
-    
+    // 비밀번호 변경 method
+    public PwChange PwChange(PwChangeDto dto){
+        
+        PwChange pwChange = PwChange.toEntity(dto);
+                
+        User target = userRepository.findById(pwChange.getId());        
+        
+        // pw check
+        if(target.getPw().equals(pwChange.getPw())){
+            
+            // new password check
+            if(pwChange.getNewPw().equals(pwChange.getCheckPw())){
+                   
+            // Update
+            System.out.println("비밀번호 성공");
+            User user = userRepository.update(User.builder()
+                    .id(pwChange.getId())
+                    .pw(pwChange.getNewPw())
+                    .build());
+                    
+            }
+            else{
+                System.out.println("비밀번호가 맞지 않습니다.");
+            }
+                
+        }
+        else{
+            System.out.println("현재 비밀번호가 틀렸습니다.");
+        }
+            
+        
+        return null;
+    }
     
 }
