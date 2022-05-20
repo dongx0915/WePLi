@@ -24,7 +24,7 @@ import lombok.ToString;
 public class SongDto {
     
     private int id;
-    private int rank;
+    private double rank;
     private String coverImg;
     private String title;
     private String singer;

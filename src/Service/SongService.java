@@ -8,10 +8,10 @@ import Crawler.Crawler;
 import Crawler.CrawlerFactory.MusicCrawlerFactory;
 import Dto.SongDto;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+
 
 
 /**
@@ -57,7 +57,8 @@ public class SongService {
         ArrayList<Crawler> CrawlChart ;
         CrawlChart = musicFactory.getChartCrawler(); // 크롤링한 리스트 
             
-        HashMap<String, Double> ChartMap = new HashMap<String, Double>();       
+        //HashMap<String, Double> ChartMap = new HashMap<String, Double>();       
+        HashMap<String, SongDto> ChartMap = new HashMap<String, SongDto>();       
         System.out.println("--------------------------- 인기 차트 -------------------------------"); 
         for(int i = 0 ; i < CrawlChart.size(); i++){    //멜론 -> 벅스 -> 지니
         //for(int i = 1 ; i < 2; i++){
@@ -72,8 +73,10 @@ public class SongService {
                     
 
                     if(ChartMap.containsKey(name_temp)){
-                          ChartMap.put(name_temp,(ChartMap.get(name_temp)+rank_temp)/2);             
-                          //System.out.println("들어가기 전 겹침 : " + name_temp + " " + ChartMap.get(name_temp));
+                            rank_temp = (ChartMap.get(name_temp).getRank()+rank_temp)/2; //순위
+                            ChartMap.get(name_temp).setRank(rank_temp);
+                            ChartMap.put(name_temp,ChartMap.get(name_temp));          
+                          //System.out.println("들어가기 전 겹침 : " + name_temp + " " + ChartMap.get(name_temp).getRank());
                     }
                     else{
                         if(i != 0){    // 벅스가 아니라면
@@ -87,25 +90,52 @@ public class SongService {
                         }
                         
                         if(ChartMap.containsKey(name_temp)){
-                            ChartMap.put(name_temp,(ChartMap.get(name_temp)+rank_temp)/2);             
-                            //System.out.println("들어가기 후 겹침 : " + name_temp + " " + ChartMap.get(name_temp));
+                            rank_temp = (ChartMap.get(name_temp).getRank()+rank_temp)/2; //순위
+                            ChartMap.get(name_temp).setRank(rank_temp);
+                            ChartMap.put(name_temp,ChartMap.get(name_temp));             
+                            //System.out.println("들어가기 후 겹침 : " + name_temp + " " + ChartMap.get(name_temp).getRank());
                         }
                         else if(!ChartMap.containsKey(name_temp)){
-                            ChartMap.put(name_temp,rank_temp);
-                            //System.out.println("안겹침 : " + name_temp + " " + ChartMap.get(name_temp));
+                            ChartMap.put(name_temp,songList.get(j));
+                            //System.out.println("안겹침 : " + name_temp + " " + ChartMap.get(name_temp).getRank());
                         }
                     }
                 }
             }            
             // 해시맵 완성
-            List<Map.Entry<String, Double>> entryList = new LinkedList<>(ChartMap.entrySet());
-            entryList.sort(HashMap.Entry.comparingByValue());
-            int c = 0;
-            for(Map.Entry<String, Double> entry : entryList){
-                    c++;
-                    System.out.println(entry.getValue() + "위 : "+ entry.getKey());
+                   
+            ArrayList<SongDto> valueList = new ArrayList<>(ChartMap.values());  // 정렬 전 통합 리스트
+            
+            Comparator<SongDto> cp = new Comparator<SongDto>(){ // 리스트 정렬 
+                @Override
+                public int compare(SongDto data1, SongDto data2){
+                    double a = data1.getRank();
+                    double b = data2.getRank();
+                    
+                    if(a>b){
+                        return 1;
+                    }else 
+                        return -1;
                 }
-                System.out.println(c);
+            };
+            
+            Collections.sort(valueList, cp);    // 리스트 정렬
+            
+            //System.out.println(valueList);
+
+            int c = 0;            
+            for(SongDto d : valueList){
+                c++;
+                System.out.println(c + "위 : " + d.getTitle());
+            }
+            //Collections.sort(entryList, (o1, o2) -> (ChartMap.get(o1).getRank().compareTo(ChartMap.get(o2).getRank())));
+            //entryList.sort(HashMap.Entry.comparingByValue().ge);
+//            int c = 0;
+//            for (Entry<String, SongDto> entrySet : ChartMap.entrySet()) {
+//                    c++;
+//                    System.out.println(entrySet.getValue().getRank() + "위 : "+ entrySet.getKey());
+//                }
+//                System.out.println(c);
         }
 
         
