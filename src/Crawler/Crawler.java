@@ -4,7 +4,7 @@
  */
 package Crawler;
 
-import Dto.SongDto;
+import Dto.Song.SongDto;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.jsoup.Jsoup;
