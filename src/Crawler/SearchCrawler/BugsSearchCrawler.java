@@ -23,13 +23,14 @@ public class BugsSearchCrawler extends Crawler{
     @Override
     protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody) {
         ArrayList<SongDto> songlist = new ArrayList<>();
-        
+ 
+                
         //select(img) 태그를 가져온다.
         // .이 붙으면 클래스를 찾는다
         //attr 속성 정보 값을 가져온다.
         for(Element element : chartBody){
             String coverImg = element.select("img").attr("src");                 // 이미지 크롤링
-            String title = element.select(".title").text();    
+            String title = element.select(".title").select("a").text();    
             String singer ;// 노래제목 크롤링
             try {
                 singer = element.select(".artist").select("a").get(0).text();                 // 가수 크롤링
@@ -49,7 +50,7 @@ public class BugsSearchCrawler extends Crawler{
             
             songlist.add(song);
         }
-        
+
         return songlist;
     }
 }

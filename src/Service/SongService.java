@@ -9,6 +9,10 @@ import Crawler.CrawlerFactory.MusicCrawlerFactory;
 import Dto.SongDto;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  *
@@ -48,73 +52,62 @@ public class SongService {
     
     }
     
-    public void EqualizeMusic(){
-       
-        
-        
-    }
-    
-    
-       
     public void musicChart(){
             
         ArrayList<Crawler> CrawlChart ;
         CrawlChart = musicFactory.getChartCrawler(); // 크롤링한 리스트 
             
-        //chartIntegrate(CrawlChart); //음악 순위 합치기 구현중
-            
-            
+        HashMap<String, Double> ChartMap = new HashMap<String, Double>();       
         System.out.println("--------------------------- 인기 차트 -------------------------------"); 
-        for(int i = 0 ; i < CrawlChart.size(); i++){
-        //for(int i = 0 ; i < 1; i++){
+        for(int i = 0 ; i < CrawlChart.size(); i++){    //멜론 -> 벅스 -> 지니
+        //for(int i = 1 ; i < 2; i++){
             String Charturl = CrawlChart.get(i).getURL();
             ArrayList<SongDto> songList = CrawlChart.get(i).getSongList(Charturl);
-            //System.out.println(CrawlChart.get(i).getSongList(Charturl)); // 전체 리스트 출력
-            //System.out.println(CrawlChart.get(i).getSongList(Charturl).get(0).getTitle()); // 음악사 별 1등 노래 출력
-                
+            
             for(int j = 0 ; j < songList.size() ; j++){
-         //   int j=47;
-                String title_temp = songList.get(j).getTitle();  // 기존 제목 저장
-                String singer_temp = songList.get(j).getSinger();    // 기존 가수 저장
-                //int rank_temp = songList.get(j).getRank();   // 기존 순위 저장
-//                System.out.println(title_temp);
-//                System.out.println(singer_temp);
-                SongDto songdto = OneMusicSearch(title_temp + " " + singer_temp);   // 기존 제목과 가수명으로 검색
-                //System.out.println(songdto);
-       //          System.out.println("기존 정보 : " + title_temp + ", " + singer_temp + ", " + rank_temp);
-         //        System.out.println("검색된 정보 : " + songdto.getTitle() + " - " + songdto.getSinger());
-                     
-                if(songdto!=null){
-                    songList.get(j).setTitle(songdto.getTitle());
-                    songList.get(j).setSinger(songdto.getSinger());
-                }
-         
-                System.out.println(songList.get(j).getRank() +"\t" + songList.get(j).getTitle()+ "\t" + songList.get(j).getSinger());
+                    String title_temp = songList.get(j).getTitle();  // 기존 제목 저장
+                    String singer_temp = songList.get(j).getSinger();    // 기존 가수 저장
+                    double rank_temp = songList.get(j).getRank();   // 기존 순위 저장
+                    String name_temp = title_temp + " " + singer_temp;
+                    
 
+                    if(ChartMap.containsKey(name_temp)){
+                          ChartMap.put(name_temp,(ChartMap.get(name_temp)+rank_temp)/2);             
+                          //System.out.println("들어가기 전 겹침 : " + name_temp + " " + ChartMap.get(name_temp));
+                    }
+                    else{
+                        if(i != 0){    // 벅스가 아니라면
+                            SongDto songdto = OneMusicSearch(title_temp + " " + singer_temp);   // 기존 제목과 가수명으로 검색
+
+                            if(songdto!=null){
+                                songList.get(j).setTitle(songdto.getTitle());
+                                songList.get(j).setSinger(songdto.getSinger());
+                                name_temp = songList.get(j).getTitle()+ " " + songList.get(j).getSinger();
+                            }
+                        }
+                        
+                        if(ChartMap.containsKey(name_temp)){
+                            ChartMap.put(name_temp,(ChartMap.get(name_temp)+rank_temp)/2);             
+                            //System.out.println("들어가기 후 겹침 : " + name_temp + " " + ChartMap.get(name_temp));
+                        }
+                        else if(!ChartMap.containsKey(name_temp)){
+                            ChartMap.put(name_temp,rank_temp);
+                            //System.out.println("안겹침 : " + name_temp + " " + ChartMap.get(name_temp));
+                        }
+                    }
                 }
             }            
+            // 해시맵 완성
+            List<Map.Entry<String, Double>> entryList = new LinkedList<>(ChartMap.entrySet());
+            entryList.sort(HashMap.Entry.comparingByValue());
+            int c = 0;
+            for(Map.Entry<String, Double> entry : entryList){
+                    c++;
+                    System.out.println(entry.getValue() + "위 : "+ entry.getKey());
+                }
+                System.out.println(c);
         }
-        
-    public void chartIntegrate(ArrayList<Crawler> crawlChart){
-        ArrayList<SongDto> songList = new ArrayList<>();
-            
-        for(int i = 0 ; i< crawlChart.size(); i++){
-            String Charturl = crawlChart.get(i).getURL();
-            for(int j = 0 ; j < crawlChart.get(i).getSongList(Charturl).size() ; j++)
-            {
-                String title_temp = crawlChart.get(i).getSongList(Charturl).get(j).getTitle();
-                String signer_temp = crawlChart.get(i).getSongList(Charturl).get(j).getSinger();
-                //int rank;
-                System.out.println(crawlChart.get(i).getSongList(Charturl).get(j).getTitle()+crawlChart.get(i).getSongList(Charturl).get(j).getSinger());
-            }
-        }
-    }
 
-        
-        
-
-
- 
         
         public static void main(String[] args) {
             
@@ -127,15 +120,7 @@ public class SongService {
             a.musicChart();
             
             //---------------------테스트 ------------------------------
-            HashMap<String, Integer> ChartMap = new HashMap();
-            ChartMap.put("사과",10);
-            ChartMap.put("사과",ChartMap.get("사과")+12);
-            
-            System.out.println(ChartMap.get("사과"));
 
         }    
-    
-    
-    
-    
+
 }

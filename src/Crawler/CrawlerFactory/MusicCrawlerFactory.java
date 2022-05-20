@@ -36,8 +36,8 @@ public class MusicCrawlerFactory {
     public ArrayList<Crawler> getChartCrawler(){
         ArrayList<Crawler> crawlChart = new ArrayList<>();
 
-        crawlChart.add(MelonChartCrawler.getCrawler());
         crawlChart.add(BugsChartCrawler.getCrawler());
+        crawlChart.add(MelonChartCrawler.getCrawler());
         crawlChart.add(GenieChartCrawler.getCrawler());
      
         return crawlChart;

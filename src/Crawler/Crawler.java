@@ -19,7 +19,9 @@ import org.jsoup.nodes.Element;
 public abstract class Crawler {
     protected String URL;
     
+ 
     public ArrayList<Element> getChartBody(String url){
+        
         
         ArrayList<Element> crawl_Result = new ArrayList<>();  
         Document doc = null;
@@ -65,4 +67,8 @@ public abstract class Crawler {
     public String getURL(){ return this.URL; }
     
     abstract protected ArrayList<SongDto> parseSongChart(ArrayList<Element> chartBody);
+
+    public void set(int i, ArrayList<SongDto> songList) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
