@@ -8,7 +8,7 @@ import Dto.User.PwChangeDto;
 import Entity.PwChange;
 import Service.UserService;
 import WePLi.MainFrame;
-import WePLi.PwChangeJFrame;
+import WePLi.UserFrame.PwChangeJFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

@@ -74,6 +74,27 @@ public class Repository<T, ID> {
         finally{ db.close(); }
     }
     
+        public ArrayList<T> saveAll(ArrayList<T> entityList) {
+        try {
+            con = db.connect();
+
+            for (T entity : entityList) {
+                String sql = insertQuery();
+                pstmt = con.prepareStatement(sql);
+                
+                for (int i = 0; i < fieldList.length; i++) 
+                    pstmt.setObject(i + 1, fieldList[i].get(entity));
+                
+                pstmt.executeUpdate();
+            }
+            
+            // 성공 시 entity 리턴
+            return entityList;
+        } 
+        catch (Exception e) { return null; }                                    // Insert 오류 발생 시 null 리턴 
+        finally{ db.close(); }
+    }
+        
     public T findById(ID id) {
         try{
             con = db.connect();

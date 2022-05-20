@@ -18,8 +18,8 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpDto {
+public class UserSignUpDto {
     private String id;
-    private String pw;
-    private String pw2;
+    private String newPw;
+    private String checkPw;
 }
