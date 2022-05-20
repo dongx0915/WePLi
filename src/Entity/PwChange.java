@@ -4,18 +4,16 @@
  */
 package Entity;
 
+
 import Dto.User.PwChangeDto;
-import Dto.User.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-
 /**
  *
- * @author Donghyeon <20183188>
+ * @author kimkyeonghyun
  */
 
 @ToString
@@ -23,15 +21,19 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
+public class PwChange {
     private String id;
     private String pw;
- 
-    public static User toEntity(UserDto dto){
-        return User.builder()
+    private String newPw;
+    private String checkPw;
+    
+    public static PwChange toEntity(PwChangeDto dto){
+        return PwChange.builder()
                 .id(dto.getId())
                 .pw(dto.getPw())
+                .newPw(dto.getNewPw())
+                .checkPw(dto.getCheckPw())
                 .build();
     }
+    
 }
