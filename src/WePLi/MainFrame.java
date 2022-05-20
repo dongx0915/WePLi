@@ -308,7 +308,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         chartTable.setMinimumSize(new java.awt.Dimension(10, 400));
         chartTable.setRowHeight(80);
-        chartTable.setSelectionBackground(new java.awt.Color(200, 230, 255));
+        chartTable.setSelectionBackground(new java.awt.Color(169, 230, 255));
         chartTable.getTableHeader().setResizingAllowed(false);
         chartTable.getTableHeader().setReorderingAllowed(false);
         chartScrollPanel.setViewportView(chartTable);
