@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws InterruptedException, InvocationTargetException {
         //UserRepository ur = new UserRepository();
-        
+
 //        LoginJFrame lj = new LoginJFrame();
 //        UserController uc = new UserController(lj);
         
@@ -28,6 +28,6 @@ public class Main {
           
 //        MainFrame mj = new MainFrame();
         
-
+        
     }
 }
