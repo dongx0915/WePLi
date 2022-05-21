@@ -111,21 +111,8 @@ public class SongService {
         
         // 해시맵 완성
         ArrayList<SongDto> SongList = new ArrayList<>(ChartMap.values());  // 정렬 전 통합 리스트
-            
-        Comparator<SongDto> cp = new Comparator<SongDto>(){ // 리스트 정렬 
-            @Override
-            public int compare(SongDto data1, SongDto data2){   // 기존형이 int라 어쩔 수 없이 반환해줘야함
-                double tmp1 = data1.getRank();
-                double tmp2 = data2.getRank();
-                    
-                if(tmp1>tmp2)
-                    return 1;
-                else 
-                    return -1;
-            }
-        };
-            
-        Collections.sort(SongList, cp);    // 리스트 정렬 (정렬된 인기차트)
+        
+        Collections.sort(SongList);    // 리스트 정렬 (정렬된 인기차트)
         
         return SongList;
     }
@@ -137,7 +124,7 @@ public class SongService {
             songchart.add(SongChart.toEntity(dto));
         }
         songchartRepository.saveAll(songchart);
-
+        
     }
     
 
@@ -147,13 +134,17 @@ public class SongService {
         
         // 인기차트 컨트롤러에 있어야함
         SongService a = new SongService();
-//        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
-//        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
+        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
+        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
+        
+        for (SongDto songDto : subList) {
+            System.out.println(songDto);
+        }
 //        a.InsertMusicChart(subList);    // DB 올리기
         
         
         // 검색
-           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
+//           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
            
 //           if(SearchList.isEmpty())
 //                System.out.println("검색된 노래 없음");

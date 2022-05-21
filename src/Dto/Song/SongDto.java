@@ -22,11 +22,21 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SongDto {
+public class SongDto implements Comparable<SongDto> {
+
     private int id;
     private double rank;
     private String coverImg; // 커버 이미지 없을 경우 대체 이미지
     private String title;
     private String singer;
     private String album;
+
+    @Override
+    public int compareTo(SongDto dto) {
+        double rank = this.getRank();
+        double dtoRank = dto.getRank();
+        
+        return rank > dtoRank ? 1 : -1;
+    }
+    
 }

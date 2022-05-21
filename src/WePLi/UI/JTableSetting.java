@@ -79,7 +79,7 @@ public class JTableSetting {
         tbh.setForeground(new Color(150, 150, 150));            // 테이블 헤더의 글자색 설정
 
         /* 테이블 헤더 테두리 설정 */
-        MatteBorder border = new MatteBorder(2, 0, 2, 0, new Color(250, 250, 250));
+        MatteBorder border = new MatteBorder(2, 0, 2, 0, new Color(248, 248, 248));
         tbh.setBorder(border);
     }
 
