@@ -127,7 +127,7 @@ public class SongService {
         
     }
     
-    public ArrayList<SongChart> ShowMusicChart(){
+    public ArrayList<SongChart> ShowMusicChart(){   //DB에서 가져오기
         
         ArrayList<SongChart> songChart;
         songChart = songchartRepository.findAll();
@@ -142,21 +142,22 @@ public class SongService {
         
         // 인기차트 컨트롤러에 있어야함
         SongService a = new SongService();
-        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
-        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
+        //ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
+        //ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
+        //a.InsertMusicChart(subList);    // DB 올리기
 //        
 
 //        
 //        for (SongDto songDto : subList) {
 //            System.out.println(songDto);
 //        }
-        a.InsertMusicChart(subList);    // DB 올리기
+//a.InsertMusicChart(subList);    // DB 올리기
         
 
 
 
-//        ArrayList<SongChart> Chart = a.ShowMusicChart();
-//        System.out.println(Chart);
+        ArrayList<SongChart> Chart = a.ShowMusicChart();
+        System.out.println(Chart);
 
 
 
