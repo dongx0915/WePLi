@@ -7,17 +7,12 @@ package Service;
 import Crawler.Crawler;
 import Crawler.CrawlerFactory.MusicCrawlerFactory;
 import Dto.Song.SongDto;
-import Entity.Playlist;
-import Entity.Song;
 import Entity.SongChart;
 import Repository.SongchartRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
-
-
 
 /**
  *
@@ -25,20 +20,20 @@ import java.util.List;
  */
 public class SongService {
     
-    
+
     // Repository
     private SongchartRepository songchartRepository;
     
     MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
     
-    public SongService(){
+    public SongService()
+    {
         this.songchartRepository = new SongchartRepository();
     }
     
     
-    public ArrayList<SongDto> musicSearch(String type, String keyword){
-            
-
+    public ArrayList<SongDto> musicSearch(String type, String keyword)
+    {
         Crawler crawler ;
         crawler = musicFactory.getSearchCrawler(type);
         String SearchURL=crawler.getURL()+keyword;
@@ -48,8 +43,8 @@ public class SongService {
     }
     
     
-    public SongDto OneMusicSearch(String keyword){  // 검색 음악 하나만 선택 - 음악 이퀄라이저
-                    
+    public SongDto OneMusicSearch(String keyword) // 검색 시 나오는 첫 음악만 선택
+    {  
         Crawler crawler ;
         crawler = musicFactory.getSearchCrawler("bugs");
         String SearchURL=crawler.getURL()+keyword;  
@@ -59,18 +54,15 @@ public class SongService {
             return null;
 
         return SongList.get(0);
-    
     }
     
-    public ArrayList<SongDto> musicChart(){
-            
+    public ArrayList<SongDto> musicChart()
+    {            
         ArrayList<Crawler> CrawlChart ;
         CrawlChart = musicFactory.getChartCrawler(); // 크롤링한 리스트 
-
-              
+   
         HashMap<String, SongDto> ChartMap = new HashMap<String, SongDto>();       
 
-        
         for(int i = 0 ; i < CrawlChart.size(); i++)
         {    //멜론 -> 벅스 -> 지니
             String Charturl = CrawlChart.get(i).getURL();
@@ -138,16 +130,14 @@ public class SongService {
         return SongList;
     }
 
-    public void InsertMusicChart(ArrayList<SongDto> dtoList)
+    public void InsertMusicChart(ArrayList<SongDto> dtoList)    //DB 올리기
     {
         ArrayList<SongChart> songchart = new ArrayList<>() ;
         for(SongDto dto : dtoList){
             songchart.add(SongChart.toEntity(dto));
         }
-        System.out.println(songchart);
-        
-//        ArrayList<SongChart> songchart = SongChart.toEntity(dtoList);
-//        songchartRepository.save(dtoList);
+        songchartRepository.saveAll(songchart);
+
     }
     
 
@@ -155,18 +145,22 @@ public class SongService {
     
     public static void main(String[] args) {
         
-        // 인기차트
+        // 인기차트 컨트롤러에 있어야함
         SongService a = new SongService();
-        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
-        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100));
-        a.InsertMusicChart(subList);
+//        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
+//        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
+//        a.InsertMusicChart(subList);    // DB 올리기
         
         
         // 검색
-//        ArrayList<SongDto> SearchList = a.musicSearch("melon","My Universe");   // 검색 리스트
-//            
-//        if(SearchList.isEmpty())
-//        System.out.println("검색된 노래 없음");
+//           ArrayList<SongDto> SearchList = a.musicSearch("bugs","123xzl,ncmxnjkA@");   // 검색 리스트
+//           
+//           if(SearchList.isEmpty())
+//                System.out.println("검색된 노래 없음");
+//           else{
+//               System.out.println(SearchList);
+//           }
+                 
         //a.musicSearch("genie","사건의 지평선");
         //a.musicSearch("bugs","드라마 아이유");
         //a.musicSearch("bugs","my universe 방탄소년단");
