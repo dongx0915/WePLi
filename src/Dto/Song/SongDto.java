@@ -26,7 +26,7 @@ public class SongDto {
     
     private int id;
     private double rank;
-    private String coverImg;
+    private String coverImg = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/ITunes_logo.svg/438px-ITunes_logo.svg.png"; // 커버 이미지 없을 경우 대체 이미지
     private String title;
     private String singer;
     private String album;
