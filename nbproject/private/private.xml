@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/Dto/Playlist/PlaylBsideTrackDto.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>28</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="Java 연습 문제">
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Controller/UserController.java</file>
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Dto/UserDto.java</file>
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/WePLi/MainFrame.java</file>
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Entity/User.java</file>
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Repository/UserRepository.java</file>
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/WePLi/LoginJFrame.java</file>
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Repository/Repository.java</file>
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Database/Database.java</file>
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Entity/Song.java</file>
-        </group>
         <group>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UI/JPanelSetting.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/SongController.java</file>
@@ -69,6 +67,13 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/nbproject/private/private.xml</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/layout/button/hover/id_field_focus.png</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/nbproject/build-impl.xml</file>
+        </group>
+        <group name="Java 연습 문제">
+            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Repository/UserRepository.java</file>
+            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Repository/SongchartRepository.java</file>
+            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Repository/SongRepository.java</file>
+            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Service/SongService.java</file>
+            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Repository/Repository.java</file>
         </group>
     </open-files>
 </project-private>
