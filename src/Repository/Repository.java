@@ -23,7 +23,7 @@ public class Repository {
     public Repository() { db = Database.getDbInstance(); }
     
     // 반환 값이 없는 쿼리 실행 메소드
-    public boolean executeUpdate(String sql) {
+    protected boolean executeUpdate(String sql) {
         try {
             con = db.connect();
             pstmt = con.prepareStatement(sql);
@@ -38,7 +38,7 @@ public class Repository {
     }
     
     // 반환 값이 있는 쿼리 실행 메소드
-    public ResultSet executeQuery(String sql){
+    protected ResultSet executeQuery(String sql){
         try {
             con = db.connect();
             pstmt = con.prepareStatement(sql);

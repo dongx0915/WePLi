@@ -5,15 +5,38 @@
 package Repository;
 
 import Entity.SongChart;
+import java.sql.SQLException;
+import java.sql.Date;
 
 /**
  *
  * @author joon
  */
 public class SongchartRepository extends EntityRepository<SongChart, String>{
+    
+    
+    
     public SongchartRepository() { super.setEntity(new SongChart()); }
     
+    public Date getDate(){
     
+        
+        Date dbdate = null;
+        
+        rs = executeQuery("select * from chartUpdatedDate;");
+        try{
+            rs.next();
+            dbdate = rs.getDate("date");
+            return dbdate;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        } finally{
+            db.close();
+        }
+         
+    }
     
     
 }
