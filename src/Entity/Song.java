@@ -26,6 +26,6 @@ public class Song {
     public String title;
     public String singer;
     public String album;
-    public String coverImg;
+    public String image;
     
 }

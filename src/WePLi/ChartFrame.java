@@ -58,7 +58,7 @@ class PanelRenderer extends DefaultTableCellRenderer {
     }
 }
 
-public class MainFrame extends javax.swing.JFrame {
+public class ChartFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form MainFrame
@@ -66,7 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
 //    private static MainFrame mainFrame;
     private ArrayList<JPanel> panelList = new ArrayList<>();
 
-    public MainFrame() {
+    public ChartFrame() {
         JFrameSetting.layoutInit();
 
         initComponents();
@@ -106,10 +106,7 @@ public class MainFrame extends javax.swing.JFrame {
         /* 테이블에 값 추가*/
         JTableSetting.insertTableRow((DefaultTableModel) chartTable.getModel(), values);
         
-        Object[][] value = {{"P0000001", ComponentSetting.imageToIcon(url1, 100,100), convertPlaylistToHtml("플레이리스트 제목", "작성자 닉네임", "플레이리스트 설명입니다. 이거는 이러이러한 플레이리스트"), ""},
-                            {"P0000001", ComponentSetting.imageToIcon(url1, 100,100), convertPlaylistToHtml("플레이리스트 제목", "작성자 닉네임", "플레이리스트 설명입니다. 이거는 이러이러한 플레이리스트"), ""}};
-        
-        JTableSetting.insertTableRow((DefaultTableModel) playlistTable.getModel(), value);
+
         
     }
     
@@ -532,13 +529,14 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChartFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new MainFrame().setVisible(true);
+            new ChartFrame().setVisible(true);
         });
     }
 

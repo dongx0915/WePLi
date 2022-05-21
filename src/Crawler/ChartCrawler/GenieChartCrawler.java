@@ -46,7 +46,7 @@ public class GenieChartCrawler extends Crawler{
             
             SongDto song = SongDto.builder()
                     .rank(rank)
-                    .coverImg(coverImg)
+                    .image(coverImg)
                     .title(title)
                     .singer(singer)
                     .album(album)

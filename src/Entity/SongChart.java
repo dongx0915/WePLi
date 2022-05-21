@@ -27,14 +27,14 @@ public class SongChart {
     public String title;
     public String singer;
     public String album;
-    public String coverImg;
+    public String image;
     
      public static SongChart toEntity(SongDto dto){
         return SongChart.builder()
                 .title(dto.getTitle())
                 .singer(dto.getSinger())
                 .album(dto.getAlbum())
-                .coverImg(dto.getCoverImg())
+                .image(dto.getImage())
                 .build();
     }
     

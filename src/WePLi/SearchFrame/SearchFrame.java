@@ -218,7 +218,7 @@ public class SearchFrame extends javax.swing.JFrame {
         for (int i = 0; i < songArray.size(); i++) {
             SongDto song = songArray.get(i);
             
-            values[i] = new Object[] {i + 1, ComponentSetting.imageToIcon(song.getCoverImg(), 60, 60) ,song.getTitle(),song.getSinger(),song.getAlbum()};
+            values[i] = new Object[] {i + 1, ComponentSetting.imageToIcon(song.getImage(), 60, 60) ,song.getTitle(),song.getSinger(),song.getAlbum()};
         }
         
         return values;

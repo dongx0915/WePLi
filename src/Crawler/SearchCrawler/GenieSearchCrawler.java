@@ -34,7 +34,7 @@ public class GenieSearchCrawler extends Crawler{
             String album = element.select(".albumtitle").text();                // 앨범명 크롤링.
             
             SongDto song = SongDto.builder()
-                    .coverImg(coverImg)
+                    .image(coverImg)
                     .title(title)
                     .singer(singer)
                     .album(album)

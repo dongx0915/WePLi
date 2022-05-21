@@ -119,12 +119,20 @@ public class SongService {
 
     public void InsertMusicChart(ArrayList<SongDto> dtoList)    //DB 올리기
     {
-        ArrayList<SongChart> songchart = new ArrayList<>() ;
+        ArrayList<SongChart> songChart = new ArrayList<>() ;
         for(SongDto dto : dtoList){
-            songchart.add(SongChart.toEntity(dto));
+            songChart.add(SongChart.toEntity(dto));
         }
-        songchartRepository.saveAll(songchart);
+        songchartRepository.saveAll(songChart);
         
+    }
+    
+    public ArrayList<SongChart> ShowMusicChart(){
+        
+        ArrayList<SongChart> songChart;
+        songChart = songchartRepository.findAll();
+        
+        return songChart;
     }
     
 
@@ -136,13 +144,22 @@ public class SongService {
         SongService a = new SongService();
         ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
         ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
+//        
+
+//        
+//        for (SongDto songDto : subList) {
+//            System.out.println(songDto);
+//        }
+        a.InsertMusicChart(subList);    // DB 올리기
         
-        for (SongDto songDto : subList) {
-            System.out.println(songDto);
-        }
-//        a.InsertMusicChart(subList);    // DB 올리기
-        
-        
+
+
+
+//        ArrayList<SongChart> Chart = a.ShowMusicChart();
+//        System.out.println(Chart);
+
+
+
         // 검색
 //           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
            

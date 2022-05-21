@@ -33,7 +33,7 @@ public class MelonSearchCrawler extends Crawler{
             SongDto song = SongDto.builder()
                     .title(title)
                     .singer(singer)
-                    .coverImg(coverImg)
+                    .image(coverImg)
                     .album(album)
                     .build();
             
