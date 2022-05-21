@@ -25,7 +25,7 @@ public class MelonSearchCrawler extends Crawler{
         ArrayList<SongDto> songlist = new ArrayList<>();
 
         for(Element element : chartBody){
-            String title = element.select(".ellipsis").select(".odd_span").select("b").text();               // 노래제목 크롤링
+            String title = element.select(".ellipsis").select("a").select(".fc_gray").text();               // 노래제목 크롤링
             String singer = element.select("#artistName").select(".checkEllipsisSongdefaultList").text();                 // 가수 크롤링
             String album = element.select(".t_left").select("div[class='wrap']").text();                  // 앨범명 크롤링
             

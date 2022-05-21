@@ -153,8 +153,8 @@ public class SongService {
         
         
         // 검색
-//           ArrayList<SongDto> SearchList = a.musicSearch("bugs","123xzl,ncmxnjkA@");   // 검색 리스트
-//           
+           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
+           
 //           if(SearchList.isEmpty())
 //                System.out.println("검색된 노래 없음");
 //           else{

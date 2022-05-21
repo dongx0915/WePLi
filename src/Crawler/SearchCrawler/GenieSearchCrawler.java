@@ -26,7 +26,7 @@ public class GenieSearchCrawler extends Crawler{
 
         
         for(Element element : chartBody){
-            String coverImg = "image.genie.co.kr/" + element.select("img").attr("src");
+            String coverImg = "https://image.genie.co.kr/" + element.select("img").attr("src");
             String title = element.select(".title").text();              // 노래제목 크롤링
             title = title.replaceAll("^TITLE ","");
             title = title.replaceAll("^19금 ","");
