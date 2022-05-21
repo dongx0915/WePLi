@@ -14,13 +14,14 @@ import javax.swing.JPanel;
 public class JPanelSetting {
     
     public static void changePanel(ArrayList<JPanel> panelList, JPanel clickPanel){
-        clickPanel.setVisible(true);
-        clickPanel.setEnabled(true);
-        
         for (JPanel jPanel : panelList) {
             if(jPanel != clickPanel){
                 jPanel.setVisible(false);
                 jPanel.setEnabled(false);
+            }
+            else {
+                clickPanel.setVisible(true);
+                clickPanel.setEnabled(true);
             }
         }
     }

@@ -6,6 +6,7 @@ package WePLi;
  */
 
 import Controller.UserController;
+import Repository.UserRepository;
 import WePLi.UserFrame.LoginJFrame;
 import java.lang.reflect.InvocationTargetException;
 
@@ -17,10 +18,6 @@ import java.lang.reflect.InvocationTargetException;
 public class Main {
     public static void main(String[] args) throws InterruptedException, InvocationTargetException {
         //UserRepository ur = new UserRepository();
-
-//          PwChangeJFrame pj = new PwChangeJFrame();
-//          PwChangeController pc = new PwChangeController(pj);
-
-        UserController uc = new UserController(new LoginJFrame());
+        new MainFrame();
     }
 }

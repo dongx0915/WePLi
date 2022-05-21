@@ -10,26 +10,19 @@ import WePLi.UI.JTableSetting;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.FlowLayout;
 import java.awt.Image;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.border.MatteBorder;
-import javax.swing.plaf.basic.BasicTableHeaderUI;
-import javax.swing.plaf.basic.BasicTableUI;
+import static javax.swing.SwingConstants.CENTER;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
 /**
@@ -37,149 +30,158 @@ import javax.swing.table.TableColumnModel;
  * @author Donghyeon <20183188>
  */
 
-/* 테이블에 이미지 출력을 위한 테이블 셀 렌더러 클래스 */
-class ImageRenderer extends DefaultTableCellRenderer {
+
+class PanelRenderer extends DefaultTableCellRenderer {
+    JPanel panel = new JPanel();
     JLabel label = new JLabel();
-    
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-        boolean hasFocus, int row, int column) {
+            boolean hasFocus, int row, int column) {
         
         label.setIcon((ImageIcon) value);
         /* 이미지 라벨에 정렬을 적용해줘야 함 */
         label.setHorizontalAlignment(CENTER);
         label.setVerticalAlignment(CENTER);
-        return label;
+        
+        panel.add(label);
+        if(isSelected) panel.setBackground(new Color(216,229,255,255));
+        else panel.setBackground(new Color(255,255,255,255));
+        
+        return panel;
     }
 
     @Override
     public void setBackground(Color c) {
-        super.setBackground(c); 
+        super.setBackground(c);
     }
-    
 }
 
 public class MainFrame extends javax.swing.JFrame {
+
     /**
      * Creates new form MainFrame
      */
-    private static MainFrame mainFrame;
+//    private static MainFrame mainFrame;
     private ArrayList<JPanel> panelList = new ArrayList<>();
-    
+
     public MainFrame() {
         JFrameSetting.layoutInit();
-        
+
         initComponents();
         setVisible(true);
         setLocationRelativeTo(null);
-        
+
         panelList.add(chartPanel);
         panelList.add(playlistPanel);
         panelList.add(relaylistPanel);
         panelList.add(notifyPanel);
+
+        /* ChartTable 기본 디자인 세팅 */
+        JTableSetting.tableInit(chartScrollPanel, chartTable);
+        JTableSetting.tableHeaderInit(chartTable, chartScrollPanel.getWidth(), 40);
+        chartTableSetting();
         
-        /* 테이블 기본 디자인 세팅 */
-        tableInit(chartScrollPanel, chartTable);
-        tableHeaderInit(chartTable);
+        /* PlaylistTable 기본 디자인 세팅 */
+        JTableSetting.tableInit(playlistScrollPanel, playlistTable);
+        JTableSetting.tableHeaderInit(playlistTable, playlistPanel.getWidth(), 40);
+        playlistTableSetting();
         
         /* 테스트 값 생성 */
         String url1 = "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/662/688/82662688_1651196114166_1_600x600.JPG/dims/resize/Q_80,0";
         String url2 = "https://image.bugsm.co.kr/album/images/50/40756/4075667.jpg?version=20220515063240.0";
-        
+
         Object[][] values = {
-            {"1", imageToIcon(url1), "   회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url2), "   테스트", "테스트", "테스트"},
-            {"1", imageToIcon(url1), "   회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1), "   회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1), "   회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1), "   회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1), "   회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1), "   회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1), "   회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", imageToIcon(url2, 60,60), "", "테스트", "테스트"},
+            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
         };
 
         /* 테이블에 값 추가*/
         JTableSetting.insertTableRow((DefaultTableModel) chartTable.getModel(), values);
-
+        
+        Object[][] value = {{"P0000001", imageToIcon(url1, 100,100), convertPlaylistToHtml("플레이리스트 제목", "작성자 닉네임", "플레이리스트 설명입니다. 이거는 이러이러한 플레이리스트"), ""},
+                            {"P0000001", imageToIcon(url1, 100,100), convertPlaylistToHtml("플레이리스트 제목", "작성자 닉네임", "플레이리스트 설명입니다. 이거는 이러이러한 플레이리스트"), ""}};
+        
+        JTableSetting.insertTableRow((DefaultTableModel) playlistTable.getModel(), value);
+        
+    }
+    public String convertPlaylistToHtml(String title, String author, String inform){
+        return String.format("<html>\n" +
+                        "<head>\n" +
+                        "    <style>\n" +
+                        "        p {margin-left: 20px;}" +
+                        "        #author{\n" +
+                        "            color: #a2a2a2;\n" +
+                        "            font-size: 10px;\n" +
+                        "        }\n" +
+                        "        #inform{\n" +
+                        "            color: #5D5D5D;\n" +
+                        "            font-size: 11px;\n" +
+                        "            margin-top: 10px;\n" +
+                        "        }\n" +
+                        "    </style>\n" +
+                        "</head>\n" +
+                        "<body>\n" +
+                        "    <p id = \"title\">%s</p>\n" +
+                        "    <p id = \"author\">%s</p>\n" +
+                        "    <p id = \"inform\">%s</p>\n" +
+                        "</body>\n" +
+                        "</html>", title, author, inform);
     }
     
-    public void changePanel(JPanel clickPanel){
-        System.out.println("changePanel");
-        clickPanel.setVisible(true);
-        clickPanel.setEnabled(false);
-        
-        System.out.println("클릭 된 패널 : " + clickPanel.toString());
-        
-        for (JPanel jPanel : panelList) {
-            if(jPanel != clickPanel){
-                jPanel.setVisible(false);
-                jPanel.setEnabled(false);
-            }
-        }
+    public String convertSongToHtml(String title, String album){
+        return String.format("<html>\n" +
+                        "<head>\n" +
+                        "    <style> #album{color: #a2a2a2;} </style>" +
+                        "</head>\n" +
+                        "<body>\n" +
+                        "    <p id=\"title\">%s</p>\n" +
+                        "    <p id=\"album\">%s</p>\n" +
+                        "</body>\n" +       
+                    "</html>", title, album);
     }
     
     /* 웹 이미지 url을 ImageIcon으로 변경하는 메소드 */
-    public ImageIcon imageToIcon(String url) {
+    public ImageIcon imageToIcon(String url, int width, int height) {
         try {
             /* 웹 이미지 가져오기 */
             ImageIcon icon = new ImageIcon(new URL(url));
-            
+
             /* 이미지 사이즈 조정 */
-            return new ImageIcon(icon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH));
-        }
-        catch(MalformedURLException e){
+            return new ImageIcon(icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
+        } catch (MalformedURLException e) {
             return null;
         }
-    }   
-        
-    /* 테이블 기본 디자인 세팅 */
-    public void tableInit(JScrollPane jScrollPane, JTable jTable) {
-        /* 스크롤 패널 배경 색상 변경 */
-        jScrollPane.setBackground(new Color(255, 255, 255, 255));
-        jScrollPane.getViewport().setOpaque(false);
-        
-        /* 테이블 UI, 테이블 헤더 UI 변경 */
-        jTable.setOpaque(false);
-        jTable.setUI(new BasicTableUI());
-        
-        /* 테이블 배경 색상 변경 */
-        JTableSetting.setTableBackground(chartTable);
+    }
 
+    public void chartTableSetting() {
         /* 테이블 셀 사이즈 변경 */
-        System.out.println(jTable.getSize());
-        JTableSetting.setTableCellSize(chartTable, new String[]{"순위", "곡", "제목", "가수", "앨범"}, new int[]{70, 80, 464, 140, 140});
-        
-        /* 테이블의 2번째 컬럼은 이미지를 출력 */
-        jTable.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
-        
+        JTableSetting.setTableCellSize(this.chartTable, new int[]{70, 80, 464, 140, 140});
+//        JTableSetting.setImageCell(this.chartTable, 1);
+        chartTable.getColumnModel().getColumn(1).setCellRenderer(new PanelRenderer());
+
         /* 테이블 컬럼 중앙 정렬 */
         DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // 디폴트 테이블 셀 렌더러 생성
         dtcr.setHorizontalAlignment(SwingConstants.CENTER); // 렌더러의 가로정렬을 CENTER로
-        
-        TableColumnModel tableColumnModel = jTable.getColumnModel();
+
+        TableColumnModel tableColumnModel = this.chartTable.getColumnModel();
         tableColumnModel.getColumn(0).setCellRenderer(dtcr);
-        
         tableColumnModel.getColumn(3).setCellRenderer(dtcr);
         tableColumnModel.getColumn(4).setCellRenderer(dtcr);
     }
-    
-    /* 테이블 헤더 기본 디자인 세팅 */
-    public void tableHeaderInit(JTable jTable){
-        /* 테이블 헤더 색상, UI, 글자색 변경 */
-        JTableHeader tbh = jTable.getTableHeader();
-        
-        tbh.setUI(new BasicTableHeaderUI());
-        tbh.setOpaque(false);                             // Opaque(투명도) 를 false로 해줘야 색상 적용됨
-        tbh.setFont(new Font("AppleSDGothicNeoR00", Font.PLAIN, 14));
-        
-        tbh.setPreferredSize(new Dimension(chartScrollPanel.getWidth(), 40));
-        tbh.setBackground(new Color(255, 255, 255));      // 테이블 헤더의 배경색 설정
-        tbh.setForeground(new Color(150, 150, 150));            // 테이블 헤더의 글자색 설정
-        
-        /* 테이블 헤더 테두리 설정 */
-        MatteBorder border = new MatteBorder(2,0,2,0, new Color(250,250,250));
-        tbh.setBorder(border);    
+
+    public void playlistTableSetting(){
+        /* 테이블 셀 사이즈 변경 */
+        JTableSetting.setTableCellSize(this.playlistTable, new int[]{50, 100, 550 ,194});
+//        playlistTable.getColumnModel().getColumn(1).setCellRenderer(new PanelRenderer());
+                JTableSetting.setImageCell(playlistTable, 1);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -196,10 +198,12 @@ public class MainFrame extends javax.swing.JFrame {
         NotifyLabel = new javax.swing.JLabel();
         HeaderLabel = new javax.swing.JLabel();
         SidebarLabel = new javax.swing.JLabel();
+        playlistPanel = new javax.swing.JPanel();
+        playlistScrollPanel = new javax.swing.JScrollPane();
+        playlistTable = new javax.swing.JTable();
         chartPanel = new javax.swing.JPanel();
         chartScrollPanel = new javax.swing.JScrollPane();
         chartTable = new javax.swing.JTable();
-        playlistPanel = new javax.swing.JPanel();
         notifyPanel = new javax.swing.JPanel();
         relaylistPanel = new javax.swing.JPanel();
 
@@ -271,13 +275,72 @@ public class MainFrame extends javax.swing.JFrame {
         SidebarLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/sidebar.png"))); // NOI18N
         BackgroundPanel.add(SidebarLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 168, -1));
 
+        playlistPanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        playlistScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
+        );
+        playlistScrollPanel.setBorder(null);
+        playlistScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        playlistScrollPanel.setToolTipText("");
+        playlistScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        playlistScrollPanel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                playlistScrollPanelMouseWheelMoved(evt);
+            }
+        });
+
+        playlistTable.setBackground(new java.awt.Color(255,255,255,0));
+        playlistTable.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 14)); // NOI18N
+        playlistTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "공백", "사진", "플레이리스트                                              ", "날짜"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        playlistTable.setMinimumSize(new java.awt.Dimension(10, 400));
+        playlistTable.setOpaque(false);
+        playlistTable.setRowHeight(100);
+        playlistTable.setSelectionBackground(new java.awt.Color(216, 229, 255));
+        playlistTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        playlistTable.getTableHeader().setResizingAllowed(false);
+        playlistTable.getTableHeader().setReorderingAllowed(false);
+        playlistScrollPanel.setViewportView(playlistTable);
+
+        javax.swing.GroupLayout playlistPanelLayout = new javax.swing.GroupLayout(playlistPanel);
+        playlistPanel.setLayout(playlistPanelLayout);
+        playlistPanelLayout.setHorizontalGroup(
+            playlistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, playlistPanelLayout.createSequentialGroup()
+                .addContainerGap(8, Short.MAX_VALUE)
+                .addComponent(playlistScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 896, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        playlistPanelLayout.setVerticalGroup(
+            playlistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, playlistPanelLayout.createSequentialGroup()
+                .addContainerGap(36, Short.MAX_VALUE)
+                .addComponent(playlistScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        BackgroundPanel.add(playlistPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 910, 660));
+
         chartPanel.setBackground(new java.awt.Color(255, 255, 255));
-        chartPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         chartPanel.setOpaque(false);
 
         chartScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
         );
-        chartScrollPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        chartScrollPanel.setBorder(null);
         chartScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         chartScrollPanel.setToolTipText("");
         chartScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -288,7 +351,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         chartTable.setBackground(new java.awt.Color(255,255,255,0));
-        chartTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         chartTable.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 14)); // NOI18N
         chartTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -307,8 +369,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         chartTable.setMinimumSize(new java.awt.Dimension(10, 400));
+        chartTable.setOpaque(false);
         chartTable.setRowHeight(80);
-        chartTable.setSelectionBackground(new java.awt.Color(169, 230, 255));
+        chartTable.setSelectionBackground(new java.awt.Color(216, 229, 255));
+        chartTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
         chartTable.getTableHeader().setResizingAllowed(false);
         chartTable.getTableHeader().setReorderingAllowed(false);
         chartScrollPanel.setViewportView(chartTable);
@@ -317,37 +381,22 @@ public class MainFrame extends javax.swing.JFrame {
         chartPanel.setLayout(chartPanelLayout);
         chartPanelLayout.setHorizontalGroup(
             chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(chartPanelLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, chartPanelLayout.createSequentialGroup()
+                .addContainerGap(8, Short.MAX_VALUE)
                 .addComponent(chartScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 896, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         chartPanelLayout.setVerticalGroup(
             chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, chartPanelLayout.createSequentialGroup()
-                .addContainerGap(123, Short.MAX_VALUE)
+                .addContainerGap(125, Short.MAX_VALUE)
                 .addComponent(chartScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         BackgroundPanel.add(chartPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 910, 660));
 
-        playlistPanel.setBackground(new java.awt.Color(153, 0, 153));
-
-        javax.swing.GroupLayout playlistPanelLayout = new javax.swing.GroupLayout(playlistPanel);
-        playlistPanel.setLayout(playlistPanelLayout);
-        playlistPanelLayout.setHorizontalGroup(
-            playlistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 910, Short.MAX_VALUE)
-        );
-        playlistPanelLayout.setVerticalGroup(
-            playlistPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 660, Short.MAX_VALUE)
-        );
-
-        BackgroundPanel.add(playlistPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 910, 660));
-
-        notifyPanel.setBackground(new java.awt.Color(51, 51, 255));
+        notifyPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout notifyPanelLayout = new javax.swing.GroupLayout(notifyPanel);
         notifyPanel.setLayout(notifyPanelLayout);
@@ -362,7 +411,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         BackgroundPanel.add(notifyPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 910, 660));
 
-        relaylistPanel.setBackground(new java.awt.Color(255, 51, 51));
+        relaylistPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout relaylistPanelLayout = new javax.swing.GroupLayout(relaylistPanel);
         relaylistPanel.setLayout(relaylistPanelLayout);
@@ -442,7 +491,7 @@ public class MainFrame extends javax.swing.JFrame {
         NotifyLabel.setIcon(new ImageIcon("./src/resources/layout/menu/normal/notify.png"));
         NotifyLabel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_NotifyLabelMouseExited
-    
+
     /* 스크롤 패널 스크롤 이벤트 구현 */
     private void chartScrollPanelMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_chartScrollPanelMouseWheelMoved
         // TODO add your handling code here:
@@ -475,12 +524,15 @@ public class MainFrame extends javax.swing.JFrame {
         JPanelSetting.changePanel(this.panelList, this.notifyPanel);
     }//GEN-LAST:event_NotifyLabelMouseClicked
 
+    private void playlistScrollPanelMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_playlistScrollPanelMouseWheelMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_playlistScrollPanelMouseWheelMoved
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-                        /* Set the Nimbus look and feel */
+        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -492,27 +544,15 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-            
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            System.out.println("호출 됨");
-            MainFrame.mainFrame = new MainFrame();
-            MainFrame.mainFrame.setVisible(true);
+            new MainFrame().setVisible(true);
         });
-    }
-
-    public static MainFrame getMainFrame() {
-        return mainFrame;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -528,6 +568,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable chartTable;
     private javax.swing.JPanel notifyPanel;
     private javax.swing.JPanel playlistPanel;
+    private javax.swing.JScrollPane playlistScrollPanel;
+    private javax.swing.JTable playlistTable;
     private javax.swing.JPanel relaylistPanel;
     // End of variables declaration//GEN-END:variables
 }

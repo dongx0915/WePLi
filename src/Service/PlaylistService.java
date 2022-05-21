@@ -46,6 +46,8 @@ public class PlaylistService {
     }
     
     public boolean deletePlaylist(String id){
+        // 엮여있는 Comment 테이블과 PlaylistArticle 테이블까지 삭제해야함
+        
         return playlistRepository.deleteById(id);
     }
     
