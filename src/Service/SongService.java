@@ -145,18 +145,22 @@ public class SongService {
     
     public static void main(String[] args) {
         
-        // 인기차트
+        // 인기차트 컨트롤러에 있어야함
         SongService a = new SongService();
-        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
-        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
-        a.InsertMusicChart(subList);    // DB 올리기
+//        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
+//        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
+//        a.InsertMusicChart(subList);    // DB 올리기
         
         
         // 검색
-//        ArrayList<SongDto> SearchList = a.musicSearch("melon","My Universe");   // 검색 리스트
-//            
-//        if(SearchList.isEmpty())
-//        System.out.println("검색된 노래 없음");
+//           ArrayList<SongDto> SearchList = a.musicSearch("bugs","123xzl,ncmxnjkA@");   // 검색 리스트
+//           
+//           if(SearchList.isEmpty())
+//                System.out.println("검색된 노래 없음");
+//           else{
+//               System.out.println(SearchList);
+//           }
+                 
         //a.musicSearch("genie","사건의 지평선");
         //a.musicSearch("bugs","드라마 아이유");
         //a.musicSearch("bugs","my universe 방탄소년단");
