@@ -20,7 +20,7 @@ import java.util.HashMap;
  *
  * @author joon
  */
-public class SongService {
+public class SongService2 {
     
 
     // Repository
@@ -28,7 +28,7 @@ public class SongService {
     
     MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
     
-    public SongService()
+    public SongService2()
     {
         this.songchartRepository = new SongchartRepository();
     }
@@ -121,44 +121,38 @@ public class SongService {
 
     public void InsertMusicChart(ArrayList<SongDto> dtoList)    //DB 올리기
     {
-        ArrayList<SongChart> songChart = new ArrayList<>() ;
+        ArrayList<SongChart> songchart = new ArrayList<>() ;
         for(SongDto dto : dtoList){
-            songChart.add(SongChart.toEntity(dto));
+            songchart.add(SongChart.toEntity(dto));
         }
-        songchartRepository.saveAll(songChart);
+        songchartRepository.saveAll(songchart);
         
     }
     
-    public ArrayList<SongChart> ShowMusicChart(){
+    
+    
+    // list_id 받아와서 song 찾기
+    public Song findSongid(String playListID){
         
-        ArrayList<SongChart> songChart;
-        songChart = songchartRepository.findAll();
         
-        return songChart;
+        
+        return null;
     }
+    
     
     public static void main(String[] args) {
         
         // 인기차트 컨트롤러에 있어야함
-        SongService a = new SongService();
+        SongService2 a = new SongService2();
         ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
         ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
-//        
-
-//        
-//        for (SongDto songDto : subList) {
-//            System.out.println(songDto);
-//        }
-        a.InsertMusicChart(subList);    // DB 올리기
         
-
-
-
-//        ArrayList<SongChart> Chart = a.ShowMusicChart();
-//        System.out.println(Chart);
-
-
-
+        for (SongDto songDto : subList) {
+            System.out.println(songDto);
+        }
+//        a.InsertMusicChart(subList);    // DB 올리기
+        
+        
         // 검색
 //           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
            

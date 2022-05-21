@@ -5,6 +5,7 @@
 package Service;
 
 import Dto.Playlist.PlaylistCreateDto;
+import Dto.Playlist.PlaylistDto;
 import Dto.Playlist.PlaylistUpdateDto;
 import Entity.Playlist;
 import Repository.PlaylistRepository;
@@ -60,31 +61,17 @@ public class PlaylistService {
     }
     
     
-    // playList 내용 출력
-    public Playlist PlaylistList(String id){
+    // playlist id 리턴 해주기
+    public Playlist findListId(PlaylistDto dto){
             
-        // playBsideTrack
+        Playlist target = playlistRepository.findById(dto.getId());
         
+        if(target == null){
+            System.out.println("저장된 곡이 없습니다.");
+        }
+        // target return
         
-        // Song
-        
-        // song 만들어 놓고
-        // id로 playBsidTrack에 있는 리스트를 가져온다
-        /*
-            레파지토리에서 리스트 가져오는 코드
-        
-        */
-        
-        // 가져온 리스트로 리스트에 있는 id와 일치하는 song테이블의 값 가져오기 
-        
-        
-       
-                
-        
-        
-        
-        
-        return null;
+        return target;
     }
     
 

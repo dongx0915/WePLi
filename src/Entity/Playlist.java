@@ -30,7 +30,7 @@ public class Playlist {
     public int likes;
     public int downloads;
     public Date createTime;
-    
+
     public void patch(PlaylistUpdateDto dto){
         // Title은 비어있을 수 없음
         String title = dto.getTitle();
