@@ -28,11 +28,12 @@ public class MelonSearchCrawler extends Crawler{
             String title = element.select(".ellipsis").select("a").select(".fc_gray").text();               // 노래제목 크롤링
             String singer = element.select("#artistName").select(".checkEllipsisSongdefaultList").text();                 // 가수 크롤링
             String album = element.select(".t_left").select("div[class='wrap']").text();                  // 앨범명 크롤링
-            
+            String coverImg = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/ITunes_logo.svg/438px-ITunes_logo.svg.png";
 
             SongDto song = SongDto.builder()
                     .title(title)
                     .singer(singer)
+                    .coverImg(coverImg)
                     .album(album)
                     .build();
             
