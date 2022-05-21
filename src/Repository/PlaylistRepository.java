@@ -10,6 +10,6 @@ import Entity.Playlist;
  *
  * @author Donghyeon <20183188>
  */
-public class PlaylistRepository extends Repository<Playlist, String>{
+public class PlaylistRepository extends EntityRepository<Playlist, String>{
     public PlaylistRepository() { super.setEntity(new Playlist());}
 }
