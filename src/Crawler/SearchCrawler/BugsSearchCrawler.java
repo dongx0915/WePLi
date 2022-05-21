@@ -40,7 +40,8 @@ public class BugsSearchCrawler extends Crawler{
             String album = element.select(".left").text();                  // 앨범명 크롤링
             
             
-            SongDto song = SongDto.builder()
+            if(!title.equals("")){
+                SongDto song = SongDto.builder()
                     .coverImg(coverImg)
                     .title(title)
                     .singer(singer)
@@ -48,7 +49,8 @@ public class BugsSearchCrawler extends Crawler{
                     .build();
             
             
-            songlist.add(song);
+                songlist.add(song);
+            }
         }
 
         return songlist;
