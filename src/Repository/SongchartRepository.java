@@ -13,4 +13,7 @@ import Entity.SongChart;
 public class SongchartRepository extends EntityRepository<SongChart, String>{
     public SongchartRepository() { super.setEntity(new SongChart()); }
     
+    
+    
+    
 }

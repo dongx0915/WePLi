@@ -5,6 +5,8 @@
 package Controller;
 
 import Dto.Song.SongDto;
+import Entity.Song;
+import Entity.SongChart;
 import Service.SongService;
 import java.util.ArrayList;
 
@@ -29,6 +31,13 @@ public class SongController {
 //            System.out.println(SearchList);
     
         return SearchList;
+    }
+    
+    public ArrayList<SongChart> getSongChart(){
+        
+        ArrayList<SongChart> ChartList = songService.ShowMusicChart();
+        System.out.println(ChartList);
+        return ChartList;
     }
     
     

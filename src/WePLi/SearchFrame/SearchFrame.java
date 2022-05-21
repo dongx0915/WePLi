@@ -253,7 +253,7 @@ public class SearchFrame extends javax.swing.JFrame {
         String searchText = searchTextField.getText();
         
         ArrayList<SongDto> searchResult = songController.SongSearch(musicSite,searchText); //검색 결과 리턴
-        System.out.println(searchResult);
+        
         
         Object[][] values = songDtoToObject(searchResult);
         
