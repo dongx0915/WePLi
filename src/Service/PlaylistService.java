@@ -58,4 +58,34 @@ public class PlaylistService {
     public ArrayList<Playlist> getAllPlaylists(){
         return playlistRepository.findAll();
     }
+    
+    
+    // playList 내용 출력
+    public Playlist PlaylistList(String id){
+            
+        // playBsideTrack
+        
+        
+        // Song
+        
+        // song 만들어 놓고
+        // id로 playBsidTrack에 있는 리스트를 가져온다
+        /*
+            레파지토리에서 리스트 가져오는 코드
+        
+        */
+        
+        // 가져온 리스트로 리스트에 있는 id와 일치하는 song테이블의 값 가져오기 
+        
+        
+       
+                
+        
+        
+        
+        
+        return null;
+    }
+    
+
 }
