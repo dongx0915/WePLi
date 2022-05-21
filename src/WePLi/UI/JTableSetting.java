@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import static javax.swing.SwingConstants.CENTER;
@@ -27,6 +28,7 @@ import javax.swing.table.TableColumnModel;
  */
 /* 테이블에 이미지 출력을 위한 테이블 셀 렌더러 클래스 */
 class ImageRenderer extends DefaultTableCellRenderer {
+
     JLabel label = new JLabel();
 
     @Override
@@ -85,7 +87,7 @@ public class JTableSetting {
         /* 매개변수로 전달받은 컬럼은 이미지를 출력 */
         jTable.getColumnModel().getColumn(imageCell).setCellRenderer(new ImageRenderer());
     }
-    
+
     /* 테이블 값 추가 메소드 */
     public static void insertTableRow(DefaultTableModel tableModel, Object[][] values) {
         for (Object[] value : values) {
@@ -103,9 +105,19 @@ public class JTableSetting {
     /* 테이블 셀 크기 변경 메소드 */
     public static void setTableCellSize(JTable jTable, int[] width) {
         TableColumnModel model = jTable.getColumnModel();
-        
+
         for (int i = 0; i < model.getColumnCount(); i++) {
             model.getColumn(i).setPreferredWidth(width[i]);
+        }
+    }
+
+    public static void tableScroll(JTable jTable, JScrollPane scrollPanel, java.awt.event.MouseWheelEvent evt) {
+        int TableRowHeight = jTable.getRowHeight();
+        if (evt.getUnitsToScroll() > 0) {
+            scrollPanel.getVerticalScrollBar().setValue(scrollPanel.getVerticalScrollBar().getValue() + TableRowHeight); // 각 행의 Height 만큼씩 Scroll이 움직인다.
+            //TableRowHeight 자리에 원하는 숫자를 넣어 스크롤 속도를 조절할 수 있다.
+        } else {
+            scrollPanel.getVerticalScrollBar().setValue(scrollPanel.getVerticalScrollBar().getValue() - TableRowHeight);
         }
     }
 }

@@ -4,6 +4,7 @@
  */
 package WePLi;
 
+import WePLi.UI.ComponentSetting;
 import WePLi.UI.JFrameSetting;
 import WePLi.UI.JPanelSetting;
 import WePLi.UI.JTableSetting;
@@ -29,6 +30,7 @@ import javax.swing.table.TableColumnModel;
  *
  * @author Donghyeon <20183188>
  */
+
 
 
 class PanelRenderer extends DefaultTableCellRenderer {
@@ -91,21 +93,21 @@ public class MainFrame extends javax.swing.JFrame {
         String url2 = "https://image.bugsm.co.kr/album/images/50/40756/4075667.jpg?version=20220515063240.0";
 
         Object[][] values = {
-            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url2, 60,60), "", "테스트", "테스트"},
-            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", ComponentSetting.imageToIcon(url2, 60,60), "", "테스트", "테스트"},
+            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
         };
 
         /* 테이블에 값 추가*/
         JTableSetting.insertTableRow((DefaultTableModel) chartTable.getModel(), values);
         
-        Object[][] value = {{"P0000001", imageToIcon(url1, 100,100), convertPlaylistToHtml("플레이리스트 제목", "작성자 닉네임", "플레이리스트 설명입니다. 이거는 이러이러한 플레이리스트"), ""},
-                            {"P0000001", imageToIcon(url1, 100,100), convertPlaylistToHtml("플레이리스트 제목", "작성자 닉네임", "플레이리스트 설명입니다. 이거는 이러이러한 플레이리스트"), ""}};
+        Object[][] value = {{"P0000001", ComponentSetting.imageToIcon(url1, 100,100), convertPlaylistToHtml("플레이리스트 제목", "작성자 닉네임", "플레이리스트 설명입니다. 이거는 이러이러한 플레이리스트"), ""},
+                            {"P0000001", ComponentSetting.imageToIcon(url1, 100,100), convertPlaylistToHtml("플레이리스트 제목", "작성자 닉네임", "플레이리스트 설명입니다. 이거는 이러이러한 플레이리스트"), ""}};
         
         JTableSetting.insertTableRow((DefaultTableModel) playlistTable.getModel(), value);
         
@@ -146,18 +148,6 @@ public class MainFrame extends javax.swing.JFrame {
                     "</html>", title, album);
     }
     
-    /* 웹 이미지 url을 ImageIcon으로 변경하는 메소드 */
-    public ImageIcon imageToIcon(String url, int width, int height) {
-        try {
-            /* 웹 이미지 가져오기 */
-            ImageIcon icon = new ImageIcon(new URL(url));
-
-            /* 이미지 사이즈 조정 */
-            return new ImageIcon(icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
 
     public void chartTableSetting() {
         /* 테이블 셀 사이즈 변경 */
@@ -495,13 +485,7 @@ public class MainFrame extends javax.swing.JFrame {
     /* 스크롤 패널 스크롤 이벤트 구현 */
     private void chartScrollPanelMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_chartScrollPanelMouseWheelMoved
         // TODO add your handling code here:
-        int TableRowHeight = chartTable.getRowHeight();
-        if (evt.getUnitsToScroll() > 0) {
-            chartScrollPanel.getVerticalScrollBar().setValue(chartScrollPanel.getVerticalScrollBar().getValue() + TableRowHeight); // 각 행의 Height 만큼씩 Scroll이 움직인다.
-            //TableRowHeight 자리에 원하는 숫자를 넣어 스크롤 속도를 조절할 수 있다.
-        } else {
-            chartScrollPanel.getVerticalScrollBar().setValue(chartScrollPanel.getVerticalScrollBar().getValue() - TableRowHeight);
-        }
+        JTableSetting.tableScroll(chartTable, chartScrollPanel, evt);
     }//GEN-LAST:event_chartScrollPanelMouseWheelMoved
 
     private void HomeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HomeLabelMouseClicked
