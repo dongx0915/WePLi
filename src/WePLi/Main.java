@@ -7,6 +7,7 @@ package WePLi;
 
 import Controller.UserController;
 import Repository.UserRepository;
+import Service.SongService2;
 import WePLi.UserFrame.LoginJFrame;
 import java.lang.reflect.InvocationTargetException;
 
@@ -18,6 +19,6 @@ import java.lang.reflect.InvocationTargetException;
 public class Main {
     public static void main(String[] args) throws InterruptedException, InvocationTargetException {
         //UserRepository ur = new UserRepository();
-        new MainFrame();
+//        new MainFrame();
     }
 }
