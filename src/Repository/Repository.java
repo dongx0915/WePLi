@@ -22,6 +22,7 @@ public class Repository {
 
     public Repository() { db = Database.getDbInstance(); }
     
+    // 반환 값이 없는 쿼리 실행 메소드
     public boolean executeUpdate(String sql) {
         try {
             con = db.connect();
@@ -32,7 +33,20 @@ public class Repository {
             // 성공 시 entity 리턴
             return true;
         } 
-        catch (IllegalArgumentException | SQLException e) { return false; }                                    // Insert 오류 발생 시 null 리턴 
+        catch (IllegalArgumentException | SQLException e) { return false; }                                    // 쿼리 오류 발생 시 null 리턴 
+        finally{ db.close(); }
+    }
+    
+    // 반환 값이 있는 쿼리 실행 메소드
+    public ResultSet executeQuery(String sql){
+        try {
+            con = db.connect();
+            pstmt = con.prepareStatement(sql);
+                
+            // 성공 시 ResultSet 리턴
+            return pstmt.executeQuery();
+        } 
+        catch (IllegalArgumentException | SQLException e) { return null; }                                    // 쿼리 오류 발생 시 null 리턴 
         finally{ db.close(); }
     }
 }
