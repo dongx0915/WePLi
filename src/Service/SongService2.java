@@ -10,6 +10,7 @@ import Dto.Playlist.PlaylistDto;
 import Dto.Song.SongDto;
 import Entity.Song;
 import Entity.SongChart;
+import Repository.SongRepository;
 import Repository.SongchartRepository;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,16 +22,16 @@ import java.util.HashMap;
  * @author joon
  */
 public class SongService2 {
-    
-
     // Repository
     private SongchartRepository songchartRepository;
+    private SongRepository songRepository;
     
     MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
     
     public SongService2()
     {
         this.songchartRepository = new SongchartRepository();
+        this.songRepository = new SongRepository();
     }
     
     
@@ -126,47 +127,29 @@ public class SongService2 {
             songchart.add(SongChart.toEntity(dto));
         }
         songchartRepository.saveAll(songchart);
-        
     }
     
     
     
     // list_id 받아와서 song 찾기
     public ArrayList<SongDto> getSongList(String playlistId){
+        ArrayList<Song> songlist = songRepository.findSonglistById(playlistId);
+        ArrayList<SongDto> dtolist = new ArrayList<>();
         
+        for (Song song : songlist) 
+            dtolist.add(SongDto.createSongDto(song));
         
-        
-        return null;
+        return dtolist;
     }
     
     
     public static void main(String[] args) {
+        SongService2 s = new SongService2();
         
-        // 인기차트 컨트롤러에 있어야함
-        SongService2 a = new SongService2();
-        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
-        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
-        
-        for (SongDto songDto : subList) {
+        ArrayList<SongDto> songList = s.getSongList("P0000015");
+        for (SongDto songDto : songList) {
             System.out.println(songDto);
         }
-//        a.InsertMusicChart(subList);    // DB 올리기
-        
-        
-        // 검색
-//           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
-           
-//           if(SearchList.isEmpty())
-//                System.out.println("검색된 노래 없음");
-//           else{
-//               System.out.println(SearchList);
-//           }
-                 
-        //a.musicSearch("genie","사건의 지평선");
-        //a.musicSearch("bugs","드라마 아이유");
-        //a.musicSearch("bugs","my universe 방탄소년단");
-            
-            
             
 
         }    

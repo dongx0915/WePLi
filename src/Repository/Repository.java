@@ -47,6 +47,5 @@ public class Repository {
             return pstmt.executeQuery();
         } 
         catch (IllegalArgumentException | SQLException e) { return null; }                                    // 쿼리 오류 발생 시 null 리턴 
-        finally{ db.close(); }
     }
 }

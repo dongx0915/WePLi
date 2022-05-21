@@ -5,6 +5,7 @@
  */
 package Dto.Song;
 
+import Entity.Song;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +32,16 @@ public class SongDto implements Comparable<SongDto> {
     private String singer;
     private String album;
 
+    public static SongDto createSongDto(Song entity){
+        return SongDto.builder()
+                    .id(entity.getId())
+                    .image(entity.getImage())
+                    .title(entity.getTitle())
+                    .singer(entity.getSinger())
+                    .album(entity.getAlbum())
+                    .build();
+    }
+    
     @Override
     public int compareTo(SongDto dto) {
         double rank = this.getRank();

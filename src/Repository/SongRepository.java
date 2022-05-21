@@ -5,6 +5,7 @@
 package Repository;
 
 import Entity.Song;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -17,11 +18,14 @@ public class SongRepository extends EntityRepository<Song, String> {
     
     // playBdsideTrack 과 Song join해서 Song을 찾는 함수
     public ArrayList<Song> findSonglistById(String playlistId){
+        // execueteQuery를 사용하는 경우 db close 필수
         this.rs = executeQuery("select id, title, singer, image, album "
                                 + "FROM song "
                                 + "WHERE id IN (select songId from playBsideTrack WHERE playlistId = '" + playlistId + "');");
+        ArrayList<Song> result = resultSetToEntityList(rs);
+        if(db != null) db.close();
         
-        return this.resultSetToEntityList(rs);
+        return result;
     }
     
 }
