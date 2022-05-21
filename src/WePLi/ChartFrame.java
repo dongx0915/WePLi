@@ -4,6 +4,8 @@
  */
 package WePLi;
 
+import Controller.SongController;
+import Entity.SongChart;
 import WePLi.UI.ComponentSetting;
 import WePLi.UI.JFrameSetting;
 import WePLi.UI.JPanelSetting;
@@ -88,20 +90,26 @@ public class ChartFrame extends javax.swing.JFrame {
         JTableSetting.tableHeaderInit(playlistTable, playlistPanel.getWidth(), 40);
         playlistTableSetting();
         
-        /* 테스트 값 생성 */
-        String url1 = "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/662/688/82662688_1651196114166_1_600x600.JPG/dims/resize/Q_80,0";
-        String url2 = "https://image.bugsm.co.kr/album/images/50/40756/4075667.jpg?version=20220515063240.0";
-
-        Object[][] values = {
-            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", ComponentSetting.imageToIcon(url2, 60,60), "", "테스트", "테스트"},
-            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-        };
+        /* 인기차트 */
+        SongController songController = new SongController(); // 컨트롤러 생성
+        
+        ArrayList<SongChart> chart = songController.getSongChart();
+        Object[][] values = songChartToObject(chart);
+        
+//        String url1 = "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/662/688/82662688_1651196114166_1_600x600.JPG/dims/resize/Q_80,0";
+//        String url2 = "https://image.bugsm.co.kr/album/images/50/40756/4075667.jpg?version=20220515063240.0";
+//
+//       
+//        Object[][] values = {
+//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+//            {"1", ComponentSetting.imageToIcon(url2, 60,60), "", "테스트", "테스트"},
+//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
+//        };
 
         /* 테이블에 값 추가*/
         JTableSetting.insertTableRow((DefaultTableModel) chartTable.getModel(), values);
@@ -512,6 +520,21 @@ public class ChartFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_playlistScrollPanelMouseWheelMoved
 
+        public Object[][] songChartToObject(ArrayList<SongChart> songArray){
+       
+        
+        Object[][] values = new Object[songArray.size()][];
+        
+        for (int i = 0; i < songArray.size(); i++) {
+            SongChart song = songArray.get(i);
+            
+            values[i] = new Object[] {song.getId(), ComponentSetting.imageToIcon(song.getImage(), 60, 60) , convertSongToHtml(song.getTitle(),song.getAlbum()),song.getSinger(),"앙기모띠"};
+        }
+        
+        return values;
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
