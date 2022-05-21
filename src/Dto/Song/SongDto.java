@@ -26,7 +26,7 @@ public class SongDto implements Comparable<SongDto> {
 
     private int id;
     private double rank;
-    private String coverImg; // 커버 이미지 없을 경우 대체 이미지
+    private String image; // 커버 이미지 없을 경우 대체 이미지
     private String title;
     private String singer;
     private String album;

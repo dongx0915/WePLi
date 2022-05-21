@@ -42,7 +42,7 @@ public class BugsSearchCrawler extends Crawler{
             
             if(!title.equals("")){
                 SongDto song = SongDto.builder()
-                    .coverImg(coverImg)
+                    .image(coverImg)
                     .title(title)
                     .singer(singer)
                     .album(album)

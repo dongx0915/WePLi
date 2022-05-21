@@ -5,6 +5,7 @@
 package Service;
 
 import Dto.Playlist.PlaylistCreateDto;
+import Dto.Playlist.PlaylistDto;
 import Dto.Playlist.PlaylistUpdateDto;
 import Entity.Playlist;
 import Repository.PlaylistRepository;
@@ -58,4 +59,20 @@ public class PlaylistService {
     public ArrayList<Playlist> getAllPlaylists(){
         return playlistRepository.findAll();
     }
+    
+    
+    // playlist id 리턴 해주기
+    public Playlist findListId(PlaylistDto dto){
+            
+        Playlist target = playlistRepository.findById(dto.getId());
+        
+        if(target == null){
+            System.out.println("저장된 곡이 없습니다.");
+        }
+        // target return
+        
+        return target;
+    }
+    
+
 }

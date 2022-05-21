@@ -5,8 +5,11 @@
 package Controller;
 
 import Dto.Playlist.PlaylistCreateDto;
+import Dto.Playlist.PlaylistDto;
 import Dto.Playlist.PlaylistUpdateDto;
 import Entity.Playlist;
+import Entity.Song;
+import Service.SongService;
 import Service.PlaylistService;
 import java.awt.event.ActionEvent;
 import java.sql.Date;
@@ -18,7 +21,9 @@ import java.util.ArrayList;
  */
 public class PlaylistController{
     private PlaylistService playlistService;
+    private SongService songService;
 
+    
     public PlaylistController() { this.playlistService = new PlaylistService(); }
 
     public boolean createPlaylist(/* PlaylistCreateDto 필요 */) {
@@ -86,5 +91,21 @@ public class PlaylistController{
         
         return playlists;
     }
+    
+    // playlist id -> SongService에 반환하기
+    public Playlist findList(){
+        
+        String playListID = "ddd";
+        
+        
+//        
+//        PlaylistDto dto = PlaylistDto.builder()
+//        
+//        Song song = songService.findSongid(dto.getId());
+//        
+        
+        return null;
+    }
+    
 
 }
