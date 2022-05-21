@@ -132,7 +132,7 @@ public class SongService2 {
     
     
     // list_id 받아와서 song 찾기
-    public Song findSongid(String playListID){
+    public ArrayList<SongDto> getSongList(String playlistId){
         
         
         

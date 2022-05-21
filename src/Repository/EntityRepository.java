@@ -188,7 +188,7 @@ public class EntityRepository<T, ID> extends Repository {
     }
     
     // ResultSet을 Entity로 변환하는 메소드
-    private T resultSetToEntity(ResultSet rs) {
+    protected T resultSetToEntity(ResultSet rs) {
         try {
             Class c = Class.forName(className);                                 // Entity(T)의 객체를 얻어온다.
             if (rs.next()) {
@@ -205,7 +205,7 @@ public class EntityRepository<T, ID> extends Repository {
     }
     
     // ResultSet을 ArrayList<Entity>로 변환하는 메소드
-    private ArrayList<T> resultSetToEntityList(ResultSet rs) {
+    protected ArrayList<T> resultSetToEntityList(ResultSet rs) {
         ArrayList<T> list = new ArrayList<>();
         
         try {
