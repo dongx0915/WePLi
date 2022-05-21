@@ -5,6 +5,7 @@
 package Repository;
 
 import Entity.Song;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,10 +15,13 @@ import Entity.Song;
 public class SongRepository extends EntityRepository<Song, String> {
     public SongRepository(){ super.setEntity(new Song()); }
     
-    // playBdsideTrack 에 Song_id를 찾는 함수
-    public String findSongId(String id){
+    // playBdsideTrack 과 Song join해서 Song을 찾는 함수
+    public ArrayList<Song> findSonglistById(String playlistId){
+        this.rs = executeQuery("select id, title, singer, image, album "
+                                + "FROM song "
+                                + "WHERE id IN (select songId from playBsideTrack WHERE playlistId = '" + playlistId + "');");
         
-        return null;
+        return this.resultSetToEntityList(rs);
     }
     
 }
