@@ -128,10 +128,14 @@ public class SongService {
 
         java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());        
         java.sql.Date dbdate = songchartRepository.getDate();
+
+        if(!today.toString().equals(dbdate.toString()))
+        {
+            songchartRepository.updateDate(today);
+            System.out.println("업데이트 완료");
+        }
+        return today.toString().equals(dbdate.toString());
         
-        System.out.println(today + "  " + dbdate);
-        
-        return today==dbdate;
     }
     
 
