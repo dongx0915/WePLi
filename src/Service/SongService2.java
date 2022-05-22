@@ -8,6 +8,7 @@ import Crawler.Crawler;
 import Crawler.CrawlerFactory.MusicCrawlerFactory;
 import Dto.Playlist.PlaylistDto;
 import Dto.Song.SongDto;
+import Entity.Playlist;
 import Entity.Song;
 import Entity.SongChart;
 import Repository.SongRepository;
@@ -140,6 +141,15 @@ public class SongService2 {
             dtolist.add(SongDto.createSongDto(song));
         
         return dtolist;
+    }
+    
+        // playlistcontroller 받은 값 받아서 playlistRepository불러서 해당 레코드 삭제
+    public Playlist playBsideTrack(String playlistid, String songid){
+        
+        // PlaylistRepository 에 값 넘겨서 delete 실행
+        //playlistRepository.deleteplayBsideTrack(playlistid, songid);
+        
+        return null;
     }
     
     
