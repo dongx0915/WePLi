@@ -18,7 +18,18 @@ public class PlaylistRepository extends EntityRepository<Playlist, String>{
     public String deleteplayBsideTrack(String playlistId, String songId){
         
         
-        return null;
+        // 삭제 sql 구문
+        this.rs = executeQuery("DELETE FROM playBsideTrack "
+                + "WHERE playlistid = '" + playlistId + "' and songid = '" + songId + "');");
+        try {
+            while (rs.next()) result = resultSetToEntityList(rs);
+            
+            return result;
+        }
+        catch(Exception e){ 
+            e.printStackTrace();
+            return null;
+        }
+        finally{ db.close();}
     }
-    
 }
