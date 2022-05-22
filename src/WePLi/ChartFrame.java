@@ -19,10 +19,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import static javax.swing.SwingConstants.CENTER;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import static javax.swing.SwingConstants.CENTER;
 
 /**
  *
@@ -91,7 +91,7 @@ public class ChartFrame extends javax.swing.JFrame {
         
         ArrayList<SongChart> chart = songController.getSongChart();
         Object[][] values = songChartToObject(chart);
-        
+
 //        String url1 = "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/662/688/82662688_1651196114166_1_600x600.JPG/dims/resize/Q_80,0";
 //        String url2 = "https://image.bugsm.co.kr/album/images/50/40756/4075667.jpg?version=20220515063240.0";
 //
@@ -162,18 +162,21 @@ public class ChartFrame extends javax.swing.JFrame {
         /* 테이블 컬럼 중앙 정렬 */
         DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // 디폴트 테이블 셀 렌더러 생성
         dtcr.setHorizontalAlignment(SwingConstants.CENTER); // 렌더러의 가로정렬을 CENTER로
-
+        
+        DefaultTableCellRenderer dtcrl = new DefaultTableCellRenderer(); // 디폴트 테이블 셀 렌더러 생성
+        dtcrl.setHorizontalAlignment(SwingConstants.LEFT);
+        
         TableColumnModel tableColumnModel = this.chartTable.getColumnModel();
         tableColumnModel.getColumn(0).setCellRenderer(dtcr);
+        tableColumnModel.getColumn(2).setCellRenderer(dtcrl);
         tableColumnModel.getColumn(3).setCellRenderer(dtcr);
-        tableColumnModel.getColumn(4).setCellRenderer(dtcr);
     }
 
     public void playlistTableSetting(){
         /* 테이블 셀 사이즈 변경 */
         JTableSetting.setTableCellSize(this.playlistTable, new int[]{50, 100, 550 ,194});
-//        playlistTable.getColumnModel().getColumn(1).setCellRenderer(new PanelRenderer());
-                JTableSetting.setImageCell(playlistTable, 1);
+//      playlistTable.getColumnModel().getColumn(1).setCellRenderer(new PanelRenderer());
+        JTableSetting.setImageCell(playlistTable, 1);
     }
 
     /**
@@ -351,11 +354,11 @@ public class ChartFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "순위", "곡", "제목", "가수", "앨범"
+                "순위", "커버", "곡/앨범", "가수"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -516,7 +519,7 @@ public class ChartFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_playlistScrollPanelMouseWheelMoved
 
-        public Object[][] songChartToObject(ArrayList<SongChart> songArray){
+    public Object[][] songChartToObject(ArrayList<SongChart> songArray){
        
         
         Object[][] values = new Object[songArray.size()][];
