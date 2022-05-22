@@ -15,6 +15,10 @@ public class PlaylistRepository extends EntityRepository<Playlist, String>{
     
 
     // 플레이리스트 담은 곡 삭제문 생성
-    
+    public String deleteplayBsideTrack(String playlistId, String songId){
+        
+        
+        return null;
+    }
     
 }

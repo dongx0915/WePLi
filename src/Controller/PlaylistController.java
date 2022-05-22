@@ -95,13 +95,26 @@ public class PlaylistController{
     // playlist id -> SongService에 반환하기
     public Playlist findList(){
         
-//        String playListID = "P0000015";
-//        
-//        // SongService에게 반환
-//        songService2.findSongid(playListID);
+        String playListID = "P0000015";
+        
+        // SongService에게 반환
+        songService2.getSongList(playListID);
 
         return null;
     }
     
+    
+    // playlistid,  song id 받기
+    public Playlist playBsideTrack(String playlistid, String songid){
+        
+        String pid = playlistid;
+        String sid = songid;
+        
+        
+        // playlistService에게 반환
+        playlistService.playBsideTrack(playlistid, songid);
+        
+        return null;
+    }
 
 }
