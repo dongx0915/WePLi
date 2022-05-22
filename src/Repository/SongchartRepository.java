@@ -34,15 +34,18 @@ public class SongChartRepository extends EntityRepository<SongChart, String>{
         } finally{
             db.close();
         }
-         
     }
 
     public void updateDate(Date today){
         
         executeUpdate("update chartUpdatedDate set date = '" + today + "';");
         db.close();
-
-         
+    }    
+    
+    public void resetAutoIncrement(){
+        
+        executeUpdate("ALTER TABLE songChart AUTO_INCREMENT = 1;");
+        db.close();
     }    
     
 }

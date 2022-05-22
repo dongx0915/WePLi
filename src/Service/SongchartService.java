@@ -95,6 +95,8 @@ public class SongChartService {
 
     public void InsertMusicChart(ArrayList<SongDto> dtoList) //DB 올리기
     {
+        songchartRepository.deleteAll();
+        songchartRepository.resetAutoIncrement();
         ArrayList<SongChart> songChart = new ArrayList<>();
         for (SongDto dto : dtoList) {
             songChart.add(SongChart.toEntity(dto));
