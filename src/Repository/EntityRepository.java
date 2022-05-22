@@ -65,7 +65,10 @@ public class EntityRepository<T, ID> extends Repository {
             // 성공 시 entity 리턴
             return entity;
         } 
-        catch (IllegalAccessException | IllegalArgumentException | SQLException e) { return null; }                                    // Insert 오류 발생 시 null 리턴 
+        catch (IllegalAccessException | IllegalArgumentException | SQLException e) {
+            e.printStackTrace();
+            return null; 
+        }                                    // Insert 오류 발생 시 null 리턴 
         finally{ db.close(); }
     }
     
@@ -86,7 +89,10 @@ public class EntityRepository<T, ID> extends Repository {
             // 성공 시 entity 리턴
             return entityList;
         } 
-        catch (IllegalAccessException | IllegalArgumentException | SQLException e) { return null; }                                    // Insert 오류 발생 시 null 리턴 
+        catch (IllegalAccessException | IllegalArgumentException | SQLException e) { 
+            e.printStackTrace();
+            return null;            // Insert 오류 발생 시 null 리턴 
+        }                                    
         finally{ db.close(); }
     }
         
@@ -103,7 +109,10 @@ public class EntityRepository<T, ID> extends Repository {
             // rs를 Entity 리스트로 변환 후 반환
             return resultSetToEntity(rs);
         }
-        catch(SQLException e){ return null; }
+        catch(SQLException e){ 
+            e.printStackTrace();
+            return null; 
+        }
         finally{ db.close();}
     }
     
@@ -116,7 +125,10 @@ public class EntityRepository<T, ID> extends Repository {
             rs = pstmt.executeQuery();
             
             return resultSetToEntityList(rs);
-        }catch(SQLException e){ return null; }
+        }catch(SQLException e){
+            e.printStackTrace();
+            return null; 
+        }
         finally { db.close(); }
     }
     
@@ -143,7 +155,10 @@ public class EntityRepository<T, ID> extends Repository {
             // update 된 쿼리가 0개면 null 리턴
             return result > 0 ? entity : null;
         }
-        catch(IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException | SQLException e){  return null; }
+        catch(IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException | SQLException e){
+            e.printStackTrace();
+            return null; 
+        }
         finally { db.close(); }
     }
     
@@ -159,7 +174,28 @@ public class EntityRepository<T, ID> extends Repository {
             
             return true;
         }
-        catch(SQLException e){ return false;}
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        finally{ db.close(); }
+    }
+    
+    public boolean deleteAll(){
+        try{
+            con = db.connect();
+            
+            String sql = "DELETE FROM " + tableName;
+            
+            pstmt = con.prepareStatement(sql);
+            pstmt.executeUpdate();
+            
+            return true;
+        }
+        catch(SQLException e){ 
+            e.printStackTrace();
+            return false;
+        }
         finally{ db.close(); }
     }
     
@@ -189,19 +225,19 @@ public class EntityRepository<T, ID> extends Repository {
     
     // ResultSet을 Entity로 변환하는 메소드
     protected T resultSetToEntity(ResultSet rs) {
+        Object obj = null;                                   // c의 객체를 동적으로 생성 
         try {
             Class c = Class.forName(className);                                 // Entity(T)의 객체를 얻어온다.
-            if (rs.next()) {
-                Object obj = c.newInstance();                                   // c의 객체를 동적으로 생성 
+            while (rs.next()) {
+                obj = c.newInstance();                                   // c의 객체를 동적으로 생성 
                     
                 for (Field field : fieldList)                      // Entity 객체의 필드를 하나씩 가져온다.
                     field.set(obj, rs.getObject(field.getName()));              // rs의 값을 Object로 받아서 동적으로 생성한 obj에 할당
-
-                return (T) obj;
             }
-        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | SQLException e) { e.printStackTrace(); }
+        } 
+        catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | SQLException e) {  e.printStackTrace(); }
         
-        return null;
+        return (T) obj;
     }
     
     // ResultSet을 ArrayList<Entity>로 변환하는 메소드
