@@ -12,4 +12,9 @@ import Entity.Playlist;
  */
 public class PlaylistRepository extends EntityRepository<Playlist, String>{
     public PlaylistRepository() { super.setEntity(new Playlist());}
+    
+
+    // 플레이리스트 담은 곡 삭제문 생성
+    
+    
 }

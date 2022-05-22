@@ -24,12 +24,12 @@
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Repository/Repository.java</file>
         </group>
         <group name="Java 연습 문제">
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Controller/UserController.java</file>
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Repository/EntityRepository.java</file>
+            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Service/SongchartService.java</file>
             <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Dto/Playlist/PlaylistDto.java</file>
             <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Controller/PlaylistController.java</file>
             <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Repository/SongRepository.java</file>
-            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Service/UserService.java</file>
+            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Repository/PlaylistRepository.java</file>
+            <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Controller/SongController.java</file>
             <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Service/SongService2.java</file>
         </group>
     </open-files>
