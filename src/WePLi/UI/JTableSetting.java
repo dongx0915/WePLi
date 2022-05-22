@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import static javax.swing.SwingConstants.CENTER;
 import javax.swing.border.MatteBorder;
 import javax.swing.plaf.basic.BasicTableHeaderUI;
@@ -41,6 +42,31 @@ class ImageRenderer extends DefaultTableCellRenderer {
         label.setVerticalAlignment(CENTER);
 
         return label;
+    }
+
+    @Override
+    public void setBackground(Color c) {
+        super.setBackground(c);
+    }
+}
+
+class PanelRenderer extends DefaultTableCellRenderer {
+    JPanel panel = new JPanel();
+    JLabel label = new JLabel();
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+            boolean hasFocus, int row, int column) {
+        
+        label.setIcon((ImageIcon) value);
+        /* 이미지 라벨에 정렬을 적용해줘야 함 */
+        label.setHorizontalAlignment(CENTER);
+        label.setVerticalAlignment(CENTER);
+        
+        panel.add(label);
+        if(isSelected) panel.setBackground(new Color(216,229,255,255));
+        else panel.setBackground(new Color(255,255,255,255));
+        
+        return panel;
     }
 
     @Override
@@ -119,5 +145,26 @@ public class JTableSetting {
         } else {
             scrollPanel.getVerticalScrollBar().setValue(scrollPanel.getVerticalScrollBar().getValue() - TableRowHeight);
         }
+    }
+    
+    public static void songTableSetting(JTable jTable) {
+        /* 테이블 셀 사이즈 변경 */
+        setTableCellSize(jTable, new int[]{50, 80, 604, 160});
+
+        /* 테이블 컬럼 중앙 정렬 */
+        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // 디폴트 테이블 셀 렌더러 생성
+        dtcr.setHorizontalAlignment(SwingConstants.CENTER); // 렌더러의 가로정렬을 CENTER로
+        
+        TableColumnModel tableColumnModel = jTable.getColumnModel();
+        tableColumnModel.getColumn(0).setCellRenderer(dtcr);
+        tableColumnModel.getColumn(3).setCellRenderer(dtcr);
+        // 2번째 행은 이미지를 표시하도록 설정
+        tableColumnModel.getColumn(1).setCellRenderer(new PanelRenderer());
+    }
+    
+    public static void listTableSetting(JTable jTable){
+        /* 테이블 셀 사이즈 변경 */
+        setTableCellSize(jTable, new int[]{50, 100, 550 ,194});
+        setImageCell(jTable, 1);
     }
 }
