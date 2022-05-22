@@ -37,7 +37,7 @@ public class BugsSearchCrawler extends Crawler{
             } catch (Exception e){
                 singer = element.select(".artist").get(0).text();                 // 가수 크롤링
             }
-            String album = element.select(".left").text();                  // 앨범명 크롤링
+            String album = element.select(".album").text();                  // 앨범명 크롤링
             
             
             if(!title.equals("")){
