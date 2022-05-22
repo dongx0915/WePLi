@@ -33,29 +33,30 @@ public class SongService {
         return SongList;
     }
     
-
+}
     
 //  검색 테스트용
 //    public static void main(String[] args) {
-//
-//        // 인기차트 컨트롤러에 있어야함
+////
+////        // 인기차트 컨트롤러에 있어야함
 //        SongService a = new SongService();
-////        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
-////        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
-////        a.InsertMusicChart(subList);    // DB 올리기
-//
-////        ArrayList<SongChart> Chart = a.ShowMusicChart();
-////        System.out.println(Chart);
-//        // 검색
-////           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
-////           if(SearchList.isEmpty())
-////                System.out.println("검색된 노래 없음");
-////           else{
-////               System.out.println(SearchList);
-////           }
-//        //a.musicSearch("genie","사건의 지평선");
-//        //a.musicSearch("bugs","드라마 아이유");
-//        //a.musicSearch("bugs","my universe 방탄소년단");
+//////        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
+//////        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
+//////        a.InsertMusicChart(subList);    // DB 올리기
+////
+//////        ArrayList<SongChart> Chart = a.ShowMusicChart();
+//////        System.out.println(Chart);
+////        // 검색
+//////           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
+//////           if(SearchList.isEmpty())
+//////                System.out.println("검색된 노래 없음");
+//////           else{
+//////               System.out.println(SearchList);
+//////           }
+//            ArrayList<SongDto> SearchList = a.musicSearch("bugs","빅뱅");
+//            System.out.println(SearchList.get(0).getAlbum());        
+////        //a.musicSearch("bugs","드라마 아이유");
+////        //a.musicSearch("bugs","my universe 방탄소년단");
 //    }
-
-}
+//
+//}
