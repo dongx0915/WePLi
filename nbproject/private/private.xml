@@ -10,24 +10,16 @@
             <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Repository/Repository.java</file>
         </group>
         <group>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Playlist/PlaylistUpdateDto.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/SongController.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/PwChangeController.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Song/SongDto.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Playlist/PlaylistDto.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/SearchFrame/SearchFrame.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/Repository.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/PlaylistController.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/MainFrame.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/SongService.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/SongService2.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/SongchartService.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/SongchartRepository.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/UserRepository.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Playlist/PlaylistCreateDto.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/SongRepository.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/Main.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/EntityRepository.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/ChartFrame.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Repository/UserRepository.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Controller/PlaylistController.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Repository/EntityRepository.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/SearchFrame/SearchFrame.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Service/SongService.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Controller/SongController.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Entity/SongChart.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Repository/SongchartRepository.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Repository/Repository.java</file>
         </group>
     </open-files>
 </project-private>

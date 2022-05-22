@@ -57,12 +57,12 @@ class PanelRenderer extends DefaultTableCellRenderer {
 }
 
 public class ChartFrame extends javax.swing.JFrame {
-
     /**
      * Creates new form MainFrame
      */
 //    private static MainFrame mainFrame;
     private ArrayList<JPanel> panelList = new ArrayList<>();
+    boolean flag = false;
 
     public ChartFrame() {
         JFrameSetting.layoutInit();
@@ -89,23 +89,10 @@ public class ChartFrame extends javax.swing.JFrame {
         /* 인기차트 */
         SongController songController = new SongController(); // 컨트롤러 생성
         
+
+        songController.updateSongChart();
         ArrayList<SongChart> chart = songController.getSongChart();
         Object[][] values = songChartToObject(chart);
-
-//        String url1 = "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/662/688/82662688_1651196114166_1_600x600.JPG/dims/resize/Q_80,0";
-//        String url2 = "https://image.bugsm.co.kr/album/images/50/40756/4075667.jpg?version=20220515063240.0";
-//
-//       
-//        Object[][] values = {
-//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-//            {"1", ComponentSetting.imageToIcon(url2, 60,60), "", "테스트", "테스트"},
-//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-//            {"1", ComponentSetting.imageToIcon(url1, 60,60), convertSongToHtml("회전목마 (Feat. Zion.T, 원슈타인) (Prod. Slom)", "디핵 (D-Hack)"), "디핵 (D-Hack)", "사랑인가 봐 (사내맞선 OST 스페셜 트랙)"},
-//        };
 
         /* 테이블에 값 추가*/
         JTableSetting.insertTableRow((DefaultTableModel) chartTable.getModel(), values);

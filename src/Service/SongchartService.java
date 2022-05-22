@@ -4,10 +4,150 @@
  */
 package Service;
 
+import Crawler.Crawler;
+import Crawler.CrawlerFactory.MusicCrawlerFactory;
+import Dto.Song.SongDto;
+import Entity.SongChart;
+import Repository.SongChartRepository;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
 /**
  *
- * @author Donghyeon <20183188>
+ * @author joon
  */
-public class SongchartService {
+public class SongChartService {
+
+    // Repository
+    private SongChartRepository songchartRepository;
+
+    MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
+
+    public SongChartService() {
+        this.songchartRepository = new SongChartRepository();
+    }
+
+    public SongDto OneMusicSearch(String keyword) // 검색 시 나오는 첫 음악만 선택
+    {
+        Crawler crawler;
+        crawler = musicFactory.getSearchCrawler("bugs");
+        String SearchURL = crawler.getURL() + keyword;
+        ArrayList<SongDto> SongList = crawler.getSongList(SearchURL);
+
+        if (SongList.isEmpty()) {
+            return null;
+        }
+
+        return SongList.get(0);
+    }
+
+    public ArrayList<SongDto> musicChart() {
+        ArrayList<Crawler> CrawlChart;
+        CrawlChart = musicFactory.getChartCrawler(); // 크롤링한 리스트 
+
+        HashMap<String, SongDto> ChartMap = new HashMap<String, SongDto>();
+
+        for (int i = 0; i < CrawlChart.size(); i++) {    //멜론 -> 벅스 -> 지니
+            String Charturl = CrawlChart.get(i).getURL();
+            ArrayList<SongDto> songList = CrawlChart.get(i).getSongList(Charturl);
+
+            for (int j = 0; j < songList.size(); j++) {
+
+                String title_temp = songList.get(j).getTitle();  // 기존 제목 저장
+                String singer_temp = songList.get(j).getSinger();    // 기존 가수 저장
+                double rank_temp = songList.get(j).getRank();   // 기존 순위 저장
+                String name_temp = title_temp + " " + singer_temp;
+
+                if (ChartMap.containsKey(name_temp)) {
+                    rank_temp = (ChartMap.get(name_temp).getRank() + rank_temp) / 2; //순위
+                    ChartMap.get(name_temp).setRank(rank_temp);
+                    ChartMap.put(name_temp, ChartMap.get(name_temp));
+                } else {
+                    if (i != 0) {    // 벅스가 아니라면
+                        SongDto songdto = OneMusicSearch(title_temp + " " + singer_temp);   // 기존 제목과 가수명으로 검색
+
+                        if (songdto != null) {
+                            songList.get(j).setTitle(songdto.getTitle());
+                            songList.get(j).setSinger(songdto.getSinger());
+                            name_temp = songList.get(j).getTitle() + " " + songList.get(j).getSinger();
+                        }
+                    }
+
+                    if (ChartMap.containsKey(name_temp)) {
+                        rank_temp = (ChartMap.get(name_temp).getRank() + rank_temp) / 2; //순위
+                        ChartMap.get(name_temp).setRank(rank_temp);
+                        ChartMap.put(name_temp, ChartMap.get(name_temp));
+                    } else if (!ChartMap.containsKey(name_temp)) {
+                        ChartMap.put(name_temp, songList.get(j));
+                    }
+                }
+            }
+        }
+
+        // 해시맵 완성
+        ArrayList<SongDto> SongList = new ArrayList<>(ChartMap.values());  // 정렬 전 통합 리스트
+
+        Collections.sort(SongList);    // 리스트 정렬 (정렬된 인기차트)
+
+        return SongList;
+    }
+
+    public void InsertMusicChart(ArrayList<SongDto> dtoList) //DB 올리기
+    {
+        ArrayList<SongChart> songChart = new ArrayList<>();
+        for (SongDto dto : dtoList) {
+            songChart.add(SongChart.toEntity(dto));
+        }
+        songchartRepository.saveAll(songChart);
+
+    }
+
+    public ArrayList<SongChart> ShowMusicChart() {   //DB에서 가져오기
+
+        ArrayList<SongChart> songChart;
+        songChart = songchartRepository.findAll();
+        
+        return songChart;
+    }
+    
+    public boolean dateCheck()
+    {
+
+        java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());        
+        java.sql.Date dbdate = songchartRepository.getDate();
+
+        if(!today.toString().equals(dbdate.toString()))
+        {
+            songchartRepository.updateDate(today);
+            System.out.println("인기차트 업데이트 완료");
+        }
+        return today.toString().equals(dbdate.toString());
+        
+    }
+    
+    
+    
+    // 테스트용
+//        public static void main(String[] args) {
+//
+//        
+//        SongChartService a = new SongChartService();
+////        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
+////        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
+////        a.InsertMusicChart(subList);    // DB 올리기
+//
+//        ArrayList<SongChart> Chart = a.ShowMusicChart();
+//        System.out.println(Chart);
+//        // 검색
+////           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
+////           if(SearchList.isEmpty())
+////                System.out.println("검색된 노래 없음");
+////           else{
+////               System.out.println(SearchList);
+////           }
+//    }
+
+
     
 }

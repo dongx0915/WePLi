@@ -12,15 +12,14 @@ import java.sql.Date;
  *
  * @author joon
  */
-public class SongchartRepository extends EntityRepository<SongChart, String>{
+public class SongChartRepository extends EntityRepository<SongChart, String>{
     
     
     
-    public SongchartRepository() { super.setEntity(new SongChart()); }
+    public SongChartRepository() { super.setEntity(new SongChart()); }
     
     public Date getDate(){
-    
-        
+
         Date dbdate = null;
         
         rs = executeQuery("select * from chartUpdatedDate;");
@@ -37,6 +36,13 @@ public class SongchartRepository extends EntityRepository<SongChart, String>{
         }
          
     }
-    
+
+    public void updateDate(Date today){
+        
+        executeUpdate("update chartUpdatedDate set date = '" + today + "';");
+        db.close();
+
+         
+    }    
     
 }
