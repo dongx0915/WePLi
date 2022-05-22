@@ -74,5 +74,13 @@ public class PlaylistService {
         return target;
     }
     
-
+    
+    // playlistcontroller 받은 값 받아서 playlistRepository불러서 해당 레코드 삭제
+    public Playlist playBsideTrack(String playlistid, String songid){
+        
+        // PlaylistRepository 에 값 넘겨서 delete 실행
+        playlistRepository.deleteplayBsideTrack(playlistid, songid);
+        
+        return null;
+    }
 }

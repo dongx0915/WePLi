@@ -9,7 +9,7 @@ import Dto.Playlist.PlaylistDto;
 import Dto.Playlist.PlaylistUpdateDto;
 import Entity.Playlist;
 import Entity.Song;
-import Service.SongService;
+import Service.SongService2;
 import Service.PlaylistService;
 import java.awt.event.ActionEvent;
 import java.sql.Date;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class PlaylistController{
     private PlaylistService playlistService;
-    private SongService songService;
+    private SongService2 songService2;
 
     
     public PlaylistController() { this.playlistService = new PlaylistService(); }
@@ -95,17 +95,26 @@ public class PlaylistController{
     // playlist id -> SongService에 반환하기
     public Playlist findList(){
         
-        String playListID = "ddd";
+        String playListID = "P0000015";
         
-        
-//        
-//        PlaylistDto dto = PlaylistDto.builder()
-//        
-//        Song song = songService.findSongid(dto.getId());
-//        
-        
+        // SongService에게 반환
+        songService2.getSongList(playListID);
+
         return null;
     }
     
+    
+    // playlistid,  song id 받기
+    public Playlist playBsideTrack(String playlistid, String songid){
+        
+        String pid = playlistid;
+        String sid = songid;
+        
+        
+        // playlistService에게 반환
+        playlistService.playBsideTrack(playlistid, songid);
+        
+        return null;
+    }
 
 }
