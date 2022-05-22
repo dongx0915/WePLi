@@ -12,11 +12,11 @@ import java.sql.Date;
  *
  * @author joon
  */
-public class SongChartRepository2 extends EntityRepository<SongChart, String>{
+public class SongChartRepository extends EntityRepository<SongChart, String>{
     
     
     
-    public SongChartRepository2() { super.setEntity(new SongChart()); }
+    public SongChartRepository() { super.setEntity(new SongChart()); }
     
     public Date getDate(){
 

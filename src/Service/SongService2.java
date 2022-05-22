@@ -12,7 +12,7 @@ import Entity.Playlist;
 import Entity.Song;
 import Entity.SongChart;
 import Repository.SongRepository;
-import Repository.SongChartRepository2;
+import Repository.SongChartRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,14 +24,14 @@ import java.util.HashMap;
  */
 public class SongService2 {
     // Repository
-    private SongChartRepository2 songchartRepository;
+    private SongChartRepository songchartRepository;
     private SongRepository songRepository;
     
     MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
     
     public SongService2()
     {
-        this.songchartRepository = new SongChartRepository2();
+        this.songchartRepository = new SongChartRepository();
         this.songRepository = new SongRepository();
     }
     
