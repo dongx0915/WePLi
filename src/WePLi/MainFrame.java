@@ -111,6 +111,8 @@ public class MainFrame extends javax.swing.JFrame {
         relayInformLabel = new javax.swing.JLabel();
         relayTitleLabel = new javax.swing.JLabel();
         relayImageLabel = new javax.swing.JLabel();
+        firstSongImage = new javax.swing.JLabel();
+        firstSongInform = new javax.swing.JLabel();
         relaylistPanel = new javax.swing.JPanel();
         relaylistScrollPanel = new javax.swing.JScrollPane();
         relaylistTable = new javax.swing.JTable();
@@ -256,7 +258,7 @@ public class MainFrame extends javax.swing.JFrame {
         relayAuthorLabel.setFont(new java.awt.Font("AppleSDGothicNeoB00", 0, 14)); // NOI18N
         relayAuthorLabel.setForeground(new java.awt.Color(87, 144, 255));
         relayAuthorLabel.setText("by 랄로(Ralo)");
-        relaylistDetailPanel.add(relayAuthorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 240, 410, 30));
+        relaylistDetailPanel.add(relayAuthorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 245, 410, 30));
 
         relayDateLabel.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 14)); // NOI18N
         relayDateLabel.setText("2022-05-22");
@@ -267,7 +269,7 @@ public class MainFrame extends javax.swing.JFrame {
         relayInformLabel.setText("<html>초저녁 감성</html>");
         relayInformLabel.setForeground(new Color(187,187,187));
         relayInformLabel.setVerticalAlignment(JLabel.TOP);
-        relaylistDetailPanel.add(relayInformLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, 530, 90));
+        relaylistDetailPanel.add(relayInformLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(332, 70, 530, 90));
 
         relayTitleLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 0, 30)); // NOI18N
         relayTitleLabel.setForeground(new java.awt.Color(0, 0, 0));
@@ -275,7 +277,13 @@ public class MainFrame extends javax.swing.JFrame {
         relaylistDetailPanel.add(relayTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 5, 520, 50));
 
         relayImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/test/younha.jpg"))); // NOI18N
-        relaylistDetailPanel.add(relayImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 260));
+        relaylistDetailPanel.add(relayImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 260));
+
+        firstSongImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/test/tomboy.jpg"))); // NOI18N
+        relaylistDetailPanel.add(firstSongImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(335, 170, 70, 70));
+
+        firstSongInform.setText("<html> <head> <style>     p {margin-left: 20px;}     #author, #singer{         color: #a2a2a2;         font-size: 10px;         }     #inform{         color: #5D5D5D;         font-size: 11px;         margin-top: 10px;     }     </style>     </head>     <body>         <p id = \"title\">TOMBOY</p>         <p id = \"album\">앨범</p>         <p id = \"singer\">(여자)아이들</p>     </body> </html>");
+        relaylistDetailPanel.add(firstSongInform, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 170, 370, 70));
 
         BackgroundPanel.add(relaylistDetailPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 910, 660));
 
@@ -715,6 +723,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel chartPanel;
     private javax.swing.JScrollPane chartScrollPanel;
     private javax.swing.JTable chartTable;
+    private javax.swing.JLabel firstSongImage;
+    private javax.swing.JLabel firstSongInform;
     private javax.swing.JPanel notifyPanel;
     private javax.swing.JLabel playAuthorLabel;
     private javax.swing.JLabel playDateLabel;

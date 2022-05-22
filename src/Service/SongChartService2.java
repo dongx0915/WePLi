@@ -8,7 +8,7 @@ import Crawler.Crawler;
 import Crawler.CrawlerFactory.MusicCrawlerFactory;
 import Dto.Song.SongDto;
 import Entity.SongChart;
-import Repository.SongChartRepository;
+import Repository.SongChartRepository2;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,15 +17,15 @@ import java.util.HashMap;
  *
  * @author joon
  */
-public class SongChartService {
+public class SongChartService2 {
 
     // Repository
-    private SongChartRepository songchartRepository;
+    private SongChartRepository2 songchartRepository;
 
     MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
 
-    public SongChartService() {
-        this.songchartRepository = new SongChartRepository();
+    public SongChartService2() {
+        this.songchartRepository = new SongChartRepository2();
     }
 
     public SongDto OneMusicSearch(String keyword) // 검색 시 나오는 첫 음악만 선택
