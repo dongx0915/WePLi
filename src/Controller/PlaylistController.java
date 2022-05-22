@@ -104,11 +104,11 @@ public class PlaylistController{
     }
     
     
-    // playlistid,  song id 받기
+    // 마우스 클릭으로 playlistid,  song id 받기
     public Playlist playBsideTrack(String playlistid, String songid){
         
-        String pid = playlistid;
-        String sid = songid;
+        String pid = "P0000002";
+        String sid = "24";
         
         
         // playlistService에게 반환
