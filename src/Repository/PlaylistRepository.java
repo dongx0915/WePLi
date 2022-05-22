@@ -15,23 +15,19 @@ public class PlaylistRepository extends EntityRepository<Playlist, String>{
     
 
     // 플레이리스트 담은 곡 삭제문 생성
-    public String deleteplayBsideTrack(String playlistId, String songId){
+    public void deleteplayBsideTrack(String playlistId, String songId){
         
         
         // 삭제 sql 구문
-        this.rs = executeQuery("DELETE FROM playBsideTrack "
-                + "WHERE playlistid = '" + playlistId + "' and songid = '" + songId + "');");
-//        try {
-//            while (rs.next()) result = resultSetToEntityList(rs);
-//            
-//            return result;
-//        }
-//        catch(Exception e){ 
-//            e.printStackTrace();
-//            return null;
-//        }
-//        finally{ db.close();}
-//     
-        return null;
+        executeUpdate("DELETE FROM playBsideTrack "
+                + "WHERE playlistid = '" + playlistId + "' and songid = '" + songId + "';");
+      
+        System.out.println("DELETE FROM playBsideTrack "
+                + "WHERE playlistid = '" + playlistId + "' and songid = '" + songId + "';");
+      
+        
+        db.close();
+      
     }
+    
 }
