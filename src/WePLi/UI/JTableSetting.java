@@ -149,7 +149,7 @@ public class JTableSetting {
     
     public static void songTableSetting(JTable jTable) {
         /* 테이블 셀 사이즈 변경 */
-        setTableCellSize(jTable, new int[]{50, 80, 604, 160});
+        setTableCellSize(jTable, new int[]{50, 80, 604, 260});
 
         /* 테이블 컬럼 중앙 정렬 */
         DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // 디폴트 테이블 셀 렌더러 생성

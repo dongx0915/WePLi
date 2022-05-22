@@ -58,6 +58,7 @@ public class ComponentSetting {
                 + "    <style> #album{color: #a2a2a2;} </style>"
                 + "</head>\n"
                 + "<body>\n"
+                + "    <input type = \"text\" value = \"123\" hidden>"
                 + "    <p id=\"title\">%s</p>\n"
                 + "    <p id=\"album\">%s</p>\n"
                 + "</body>\n"
