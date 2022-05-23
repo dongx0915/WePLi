@@ -21,7 +21,11 @@ import javax.swing.JOptionPane;
  * @author kimkyeonghyun
  */
 public class UserController implements ActionListener {
-
+    private static UserController userController = new UserController();
+    private UserController() {}
+    
+    public static UserController getInstance(){ return userController; }
+    
     // Login view
     private LoginJFrame loginFrame;
 

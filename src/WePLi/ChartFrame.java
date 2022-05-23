@@ -87,7 +87,7 @@ public class ChartFrame extends javax.swing.JFrame {
         playlistTableSetting();
         
         /* 인기차트 */
-        SongController songController = new SongController(); // 컨트롤러 생성
+        SongController songController = SongController.getInstance();// 컨트롤러 생성
         
 
         songController.updateSongChart();

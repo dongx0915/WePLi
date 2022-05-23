@@ -9,20 +9,25 @@ import Entity.SongChart;
 import Service.SongChartService;
 import Service.SongService;
 import java.util.ArrayList;
+import lombok.Singular;
 
 /**
  *
  * @author joon
  */
 public class SongController {
-
+    private static SongController songController = new SongController();
+    private SongController(){
+        this.songService = new SongService();
+        this.songchartService = new SongChartService();
+    };
+    
+    // 싱글턴 패턴
+    public static SongController getInstance(){ return songController; }
+    
     private SongService songService; // 
     private SongChartService songchartService;
 
-    public SongController() {
-        this.songService = new SongService();
-        this.songchartService = new SongChartService();
-    }
 
     public ArrayList<SongDto> SongSearch(String site, String text) {
         ArrayList<SongDto> SearchList = songService.musicSearch(site, text);

@@ -268,7 +268,7 @@ public class SearchFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         // 검색 버튼 클릭 시
 
-        SongController songController = new SongController(); // 컨트롤러 생성
+        SongController songController = SongController.getInstance(); // 컨트롤러 생성
 
         String musicSite = siteRadioGroup.getSelection().getActionCommand();
         String searchText = searchTextField.getText();
