@@ -11,18 +11,24 @@ import WePLi.UI.JFrameSetting;
 import WePLi.UI.JPanelSetting;
 import WePLi.UI.JTableSetting;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  *
@@ -83,9 +89,11 @@ public class MainFrame extends javax.swing.JFrame {
         JTableSetting.insertTableRow((DefaultTableModel) playlistTable.getModel(), value);
         JTableSetting.insertTableRow((DefaultTableModel) relaylistTable.getModel(), value);
         
-    }
+        String genieUrl = "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/540/759/82540759_1645152997958_1_600x600.JPG/dims/resize/Q_80,0";
+        String bugsUrl = "https://image.bugsm.co.kr/album/images/912/40757/4075727.jpg?version=20220518025622.0";
         
-
+        relayImageLabel.setIcon(ComponentSetting.getBigBlurImage(bugsUrl));
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -104,15 +112,12 @@ public class MainFrame extends javax.swing.JFrame {
         HeaderLabel = new javax.swing.JLabel();
         SidebarLabel = new javax.swing.JLabel();
         relaylistDetailPanel = new javax.swing.JPanel();
+        firstSongTitle = new javax.swing.JLabel();
+        relaylistTitleLabel = new javax.swing.JLabel();
+        blurLabel = new javax.swing.JLabel();
         relayDetailScrollPanel = new javax.swing.JScrollPane();
         relayDetailTable = new javax.swing.JTable();
-        relayAuthorLabel = new javax.swing.JLabel();
-        relayDateLabel = new javax.swing.JLabel();
-        relayInformLabel = new javax.swing.JLabel();
-        relayTitleLabel = new javax.swing.JLabel();
         relayImageLabel = new javax.swing.JLabel();
-        firstSongImage = new javax.swing.JLabel();
-        firstSongInform = new javax.swing.JLabel();
         relaylistPanel = new javax.swing.JPanel();
         relaylistScrollPanel = new javax.swing.JScrollPane();
         relaylistTable = new javax.swing.JTable();
@@ -203,6 +208,21 @@ public class MainFrame extends javax.swing.JFrame {
         relaylistDetailPanel.setBackground(new java.awt.Color(255, 255, 255));
         relaylistDetailPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        firstSongTitle.setFont(new java.awt.Font("나눔스퀘어 Bold", 1, 16)); // NOI18N
+        firstSongTitle.setForeground(new java.awt.Color(255, 255, 255));
+        firstSongTitle.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        firstSongTitle.setText("오늘 헤어 졌어요");
+        relaylistDetailPanel.add(firstSongTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 230, 220, 30));
+
+        relaylistTitleLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 1, 36)); // NOI18N
+        relaylistTitleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        relaylistTitleLabel.setText("<html><p>도토리를 훔쳐간</p><br><p>싸이월드 BGM</p></html>");
+        relaylistDetailPanel.add(relaylistTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 390, 140));
+
+        blurLabel.setBackground(new java.awt.Color(0,0,0,0));
+        blurLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/blur.png"))); // NOI18N
+        relaylistDetailPanel.add(blurLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 912, 290));
+
         relayDetailScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
         );
         relayDetailScrollPanel.setBorder(null);
@@ -255,37 +275,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         relaylistDetailPanel.add(relayDetailScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 300, 900, 350));
 
-        relayAuthorLabel.setFont(new java.awt.Font("AppleSDGothicNeoB00", 0, 14)); // NOI18N
-        relayAuthorLabel.setForeground(new java.awt.Color(87, 144, 255));
-        relayAuthorLabel.setText("by 랄로(Ralo)");
-        relaylistDetailPanel.add(relayAuthorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 245, 410, 30));
-
-        relayDateLabel.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 14)); // NOI18N
-        relayDateLabel.setText("2022-05-22");
-        relayDateLabel.setForeground(new Color(187,187,187));
-        relaylistDetailPanel.add(relayDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(332, 45, 510, 20));
-
-        relayInformLabel.setFont(new java.awt.Font("AppleSDGothicNeoB00", 0, 14)); // NOI18N
-        relayInformLabel.setText("<html>초저녁 감성</html>");
-        relayInformLabel.setForeground(new Color(187,187,187));
-        relayInformLabel.setVerticalAlignment(JLabel.TOP);
-        relaylistDetailPanel.add(relayInformLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(332, 70, 530, 90));
-
-        relayTitleLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 0, 30)); // NOI18N
-        relayTitleLabel.setForeground(new java.awt.Color(0, 0, 0));
-        relayTitleLabel.setText("윤하 노래 모음");
-        relaylistDetailPanel.add(relayTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 5, 520, 50));
-
         relayImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/test/younha.jpg"))); // NOI18N
-        relaylistDetailPanel.add(relayImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 260));
+        relaylistDetailPanel.add(relayImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 290));
 
-        firstSongImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/test/tomboy.jpg"))); // NOI18N
-        relaylistDetailPanel.add(firstSongImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(335, 170, 70, 70));
-
-        firstSongInform.setText("<html> <head> <style>     p {margin-left: 20px;}     #author, #singer{         color: #a2a2a2;         font-size: 10px;         }     #inform{         color: #5D5D5D;         font-size: 11px;         margin-top: 10px;     }     </style>     </head>     <body>         <p id = \"title\">TOMBOY</p>         <p id = \"album\">앨범</p>         <p id = \"singer\">(여자)아이들</p>     </body> </html>");
-        relaylistDetailPanel.add(firstSongInform, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 170, 370, 70));
-
-        BackgroundPanel.add(relaylistDetailPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 910, 660));
+        BackgroundPanel.add(relaylistDetailPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 912, 660));
 
         relaylistPanel.setBackground(new java.awt.Color(255, 255, 255));
         relaylistPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -720,11 +713,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel PlaylistLabel;
     private javax.swing.JLabel RelaylistLabel;
     private javax.swing.JLabel SidebarLabel;
+    private javax.swing.JLabel blurLabel;
     private javax.swing.JPanel chartPanel;
     private javax.swing.JScrollPane chartScrollPanel;
     private javax.swing.JTable chartTable;
-    private javax.swing.JLabel firstSongImage;
-    private javax.swing.JLabel firstSongInform;
+    private javax.swing.JLabel firstSongTitle;
     private javax.swing.JPanel notifyPanel;
     private javax.swing.JLabel playAuthorLabel;
     private javax.swing.JLabel playDateLabel;
@@ -737,16 +730,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel playlistPanel;
     private javax.swing.JScrollPane playlistScrollPanel;
     private javax.swing.JTable playlistTable;
-    private javax.swing.JLabel relayAuthorLabel;
-    private javax.swing.JLabel relayDateLabel;
     private javax.swing.JScrollPane relayDetailScrollPanel;
     private javax.swing.JTable relayDetailTable;
     private javax.swing.JLabel relayImageLabel;
-    private javax.swing.JLabel relayInformLabel;
-    private javax.swing.JLabel relayTitleLabel;
     private javax.swing.JPanel relaylistDetailPanel;
     private javax.swing.JPanel relaylistPanel;
     private javax.swing.JScrollPane relaylistScrollPanel;
     private javax.swing.JTable relaylistTable;
+    private javax.swing.JLabel relaylistTitleLabel;
     // End of variables declaration//GEN-END:variables
 }
