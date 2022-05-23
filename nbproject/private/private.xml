@@ -12,6 +12,7 @@
             <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Service/SongService2.java</file>
         </group>
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Playlist/PlaylistUpdateDto.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/SongController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Song/SongDto.java</file>
@@ -38,6 +39,13 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UI/ComponentSetting.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/SongRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/Main.java</file>
+=======
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/MainFrame.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/ChartFrame.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/Main.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Repository/SongChartRepository.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/SearchFrame/SearchFrame.java</file>
+>>>>>>> 9d529b3049569c87ba6dc5092bdbc6932e59e534
         </group>
     </open-files>
 </project-private>

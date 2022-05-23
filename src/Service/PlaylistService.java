@@ -83,4 +83,14 @@ public class PlaylistService {
         
         return null;
     }
+    
+    public static void main(String[] args) {
+        
+        String pid = "P0000002";
+        String sid = "22";
+
+        
+        PlaylistRepository a = new PlaylistRepository();
+        a.deleteplayBsideTrack(pid, sid);
+    }
 }
