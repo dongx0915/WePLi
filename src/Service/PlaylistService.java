@@ -79,7 +79,7 @@ public class PlaylistService {
     public Playlist playBsideTrack(String playlistid, String songid){
         
         // PlaylistRepository 에 값 넘겨서 delete 실행
-        playlistRepository.deleteplayBsideTrack(playlistid, songid);
+        playlistRepository.deletePlayBsideTrack(playlistid, songid);
         
         return null;
     }
@@ -91,6 +91,6 @@ public class PlaylistService {
 
         
         PlaylistRepository a = new PlaylistRepository();
-        a.deleteplayBsideTrack(pid, sid);
+        a.deletePlayBsideTrack(pid, sid);
     }
 }
