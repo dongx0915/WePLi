@@ -12,7 +12,6 @@
             <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Service/SongService2.java</file>
         </group>
         <group>
-<<<<<<< HEAD
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Playlist/PlaylistUpdateDto.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/SongController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Song/SongDto.java</file>
@@ -30,22 +29,22 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UserFrame/LoginJFrame.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/GenieSearchCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/EntityRepository.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/BugsSearchCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/Crawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/PwChangeController.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/MelonSearchCrawler.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/UserService.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/PlaylistController.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/PlaylistService.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/SongService.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/PlaylistRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/SongService2.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UI/JTableSetting.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UI/ComponentSetting.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/SongRepository.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/test/63500239.jpg</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/Main.java</file>
-=======
-            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/MainFrame.java</file>
-            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/ChartFrame.java</file>
-            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/Main.java</file>
-            <file>file:/C:/Users/joon/Desktop/WePLi/src/Repository/SongChartRepository.java</file>
-            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/SearchFrame/SearchFrame.java</file>
->>>>>>> 9d529b3049569c87ba6dc5092bdbc6932e59e534
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/test/blur.jpeg</file>
         </group>
     </open-files>
 </project-private>

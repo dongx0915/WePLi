@@ -58,7 +58,7 @@ public class MainFrame extends javax.swing.JFrame {
         panelList.add(playlistDetailPanel);
         panelList.add(relaylistDetailPanel);
         
-        JPanelSetting.changePanel(panelList, relaylistDetailPanel);
+        JPanelSetting.changePanel(panelList, chartPanel);
         
         /* ChartTable 기본 디자인 세팅 (Customize Code에 있음) */
         /* PlaylistTable 기본 디자인 세팅 (Customize Code에 있음) */
@@ -92,7 +92,7 @@ public class MainFrame extends javax.swing.JFrame {
         String genieUrl = "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/540/759/82540759_1645152997958_1_600x600.JPG/dims/resize/Q_80,0";
         String bugsUrl = "https://image.bugsm.co.kr/album/images/912/40757/4075727.jpg?version=20220518025622.0";
         
-        relayImageLabel.setIcon(ComponentSetting.getBigBlurImage(bugsUrl));
+        relayImageLabel.setIcon(ComponentSetting.getBigBlurImage("https://cdnimg.melon.co.kr/cm2/album/images/109/03/868/10903868_20220330103544_500.jpg?e89c53bde5d39b21b09e8007db5b9cc0/melon/resize/912/quality/80/optimize"));
     }
 
     /**
@@ -112,8 +112,10 @@ public class MainFrame extends javax.swing.JFrame {
         HeaderLabel = new javax.swing.JLabel();
         SidebarLabel = new javax.swing.JLabel();
         relaylistDetailPanel = new javax.swing.JPanel();
-        firstSongTitle = new javax.swing.JLabel();
+        firstSongImageLabel = new javax.swing.JLabel();
+        firstSongTitleLabel = new javax.swing.JLabel();
         relaylistTitleLabel = new javax.swing.JLabel();
+        firstSongSingerLabel = new javax.swing.JLabel();
         blurLabel = new javax.swing.JLabel();
         relayDetailScrollPanel = new javax.swing.JScrollPane();
         relayDetailTable = new javax.swing.JTable();
@@ -208,16 +210,26 @@ public class MainFrame extends javax.swing.JFrame {
         relaylistDetailPanel.setBackground(new java.awt.Color(255, 255, 255));
         relaylistDetailPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        firstSongTitle.setFont(new java.awt.Font("나눔스퀘어 Bold", 1, 16)); // NOI18N
-        firstSongTitle.setForeground(new java.awt.Color(255, 255, 255));
-        firstSongTitle.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        firstSongTitle.setText("오늘 헤어 졌어요");
-        relaylistDetailPanel.add(firstSongTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 230, 220, 30));
+        firstSongImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/test/younha.jpg"))); // NOI18N
+        relaylistDetailPanel.add(firstSongImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 250, 250));
+
+        firstSongTitleLabel.setFont(new java.awt.Font("AppleSDGothicNeoSB00", 0, 18)); // NOI18N
+        firstSongTitleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        firstSongTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        firstSongTitleLabel.setText("오늘 헤어 졌어요");
+        relaylistDetailPanel.add(firstSongTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(345, 225, 540, 30));
 
         relaylistTitleLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 1, 36)); // NOI18N
         relaylistTitleLabel.setForeground(new java.awt.Color(255, 255, 255));
         relaylistTitleLabel.setText("<html><p>도토리를 훔쳐간</p><br><p>싸이월드 BGM</p></html>");
-        relaylistDetailPanel.add(relaylistTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 390, 140));
+        relaylistDetailPanel.add(relaylistTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(355, 40, 390, 140));
+
+        firstSongSingerLabel.setFont(new java.awt.Font("AppleSDGothicNeoSB00", 0, 16)); // NOI18N
+        firstSongSingerLabel.setForeground(new java.awt.Color(204, 204, 204));
+        firstSongSingerLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        firstSongSingerLabel.setText("윤하");
+        firstSongSingerLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        relaylistDetailPanel.add(firstSongSingerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(345, 255, 540, 20));
 
         blurLabel.setBackground(new java.awt.Color(0,0,0,0));
         blurLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/blur.png"))); // NOI18N
@@ -315,6 +327,11 @@ public class MainFrame extends javax.swing.JFrame {
         relaylistTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
         relaylistTable.getTableHeader().setResizingAllowed(false);
         relaylistTable.getTableHeader().setReorderingAllowed(false);
+        relaylistTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                relaylistTableMouseClicked(evt);
+            }
+        });
         relaylistScrollPanel.setViewportView(relaylistTable);
         /* PlaylistTable 기본 세팅 */
         JTableSetting.tableInit(relaylistScrollPanel, relaylistTable);
@@ -678,6 +695,11 @@ public class MainFrame extends javax.swing.JFrame {
         this.playlistTable.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_playlistTableMousePressed
 
+    private void relaylistTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relaylistTableMouseClicked
+        // TODO add your handling code here:
+        JPanelSetting.changePanel(panelList, relaylistDetailPanel);
+    }//GEN-LAST:event_relaylistTableMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -717,7 +739,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel chartPanel;
     private javax.swing.JScrollPane chartScrollPanel;
     private javax.swing.JTable chartTable;
-    private javax.swing.JLabel firstSongTitle;
+    private javax.swing.JLabel firstSongImageLabel;
+    private javax.swing.JLabel firstSongSingerLabel;
+    private javax.swing.JLabel firstSongTitleLabel;
     private javax.swing.JPanel notifyPanel;
     private javax.swing.JLabel playAuthorLabel;
     private javax.swing.JLabel playDateLabel;

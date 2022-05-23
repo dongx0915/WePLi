@@ -154,13 +154,18 @@ public class SongService2 {
     
     
     public static void main(String[] args) {
-        SongService2 s = new SongService2();
-        
-        ArrayList<SongDto> songList = s.getSongList("P0000015");
-        for (SongDto songDto : songList) {
-            System.out.println(songDto);
-        }
-            
+//        SongService2 s = new SongService2();
+//        
+//        ArrayList<SongDto> songList = s.getSongList("P0000015");
+//        for (SongDto songDto : songList) {
+//            System.out.println(songDto);
+//        }
+//          SongService s = new SongService();
+//          
+//          for (SongDto dto : s.musicSearch("melon", "윤하")) {
+//              System.out.println(dto);
+//            }
+
 
         }    
 

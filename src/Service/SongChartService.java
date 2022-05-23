@@ -31,7 +31,7 @@ public class SongChartService {
     public SongDto OneMusicSearch(String keyword) // 검색 시 나오는 첫 음악만 선택
     {
         Crawler crawler;
-        crawler = musicFactory.getSearchCrawler("bugs");
+        crawler = musicFactory.getSearchCrawler("melon");
         String SearchURL = crawler.getURL() + keyword;
         ArrayList<SongDto> SongList = crawler.getSongList(SearchURL);
 
@@ -64,7 +64,7 @@ public class SongChartService {
                     ChartMap.get(name_temp).setRank(rank_temp);
                     ChartMap.put(name_temp, ChartMap.get(name_temp));
                 } else {
-                    if (i != 0) {    // 벅스가 아니라면
+                    if (i != 0) {    // 멜론 아니라면
                         SongDto songdto = OneMusicSearch(title_temp + " " + singer_temp);   // 기존 제목과 가수명으로 검색
 
                         if (songdto != null) {
@@ -131,24 +131,27 @@ public class SongChartService {
     
     
     // 테스트용
-//        public static void main(String[] args) {
-//
-//        
-//        SongChartService a = new SongChartService();
-////        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
-////        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
-////        a.InsertMusicChart(subList);    // DB 올리기
-//
+        public static void main(String[] args) {
+
+        
+        SongChartService a = new SongChartService();
+        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
+        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
+        
+            System.out.println(subList);
+            
+//        a.InsertMusicChart(subList);    // DB 올리기
+
 //        ArrayList<SongChart> Chart = a.ShowMusicChart();
 //        System.out.println(Chart);
-//        // 검색
-////           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
-////           if(SearchList.isEmpty())
-////                System.out.println("검색된 노래 없음");
-////           else{
-////               System.out.println(SearchList);
-////           }
-//    }
+        // 검색
+//           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
+//           if(SearchList.isEmpty())
+//                System.out.println("검색된 노래 없음");
+//           else{
+//               System.out.println(SearchList);
+//           }
+    }
 
 
     
