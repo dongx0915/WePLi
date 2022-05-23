@@ -72,17 +72,17 @@ public class ComponentSetting {
                 + "</html>", title, author, inform);
     }
     
-    public static String convertSongToHtml(String title, String album) {
+    public static String convertSongToHtml(String title, String album, String image) {
         return String.format("<html>\n"
                 + "<head>\n"
                 + "    <style> #album{color: #a2a2a2;} </style>"
                 + "</head>\n"
                 + "<body>\n"
-                + "    <input type = \"text\" value = \"123\" hidden>"
                 + "    <p id=\"title\">%s</p>\n"
                 + "    <p id=\"album\">%s</p>\n"
+                + "    <input type = \"text\" value = \"%s\" hidden>"                                
                 + "</body>\n"
-                + "</html>", title, album);
+                + "</html>", title, album, image);
     }
     
     public static ImageIcon getSmallBlurImage(String url) {

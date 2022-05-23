@@ -84,11 +84,12 @@ public class JTableSetting {
         jScrollPane.getViewport().setOpaque(false);
 
         /* 테이블 UI, 테이블 헤더 UI 변경 */
-        jTable.setOpaque(false);
         jTable.setUI(new BasicTableUI());
-
+        
         /* 테이블 배경 색상 변경 */
         JTableSetting.setTableBackground(jTable, new Color(255, 255, 255, 255));
+        jTable.setOpaque(true);
+        jTable.setBorder(null);
     }
 
     /* 테이블 헤더 기본 디자인 세팅 */
@@ -147,10 +148,11 @@ public class JTableSetting {
         }
     }
     
+    // Song을 출력하는 테이블은 이 디자인을 적용
     public static void songTableSetting(JTable jTable) {
         /* 테이블 셀 사이즈 변경 */
-        setTableCellSize(jTable, new int[]{50, 80, 604, 260});
-
+        setTableCellSize(jTable, new int[]{80, 80, 574, 260});
+        
         /* 테이블 컬럼 중앙 정렬 */
         DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // 디폴트 테이블 셀 렌더러 생성
         dtcr.setHorizontalAlignment(SwingConstants.CENTER); // 렌더러의 가로정렬을 CENTER로
@@ -162,6 +164,7 @@ public class JTableSetting {
         tableColumnModel.getColumn(1).setCellRenderer(new PanelRenderer());
     }
     
+    // 리스트를 출력하는 테이블은 이 디자인을 적용
     public static void listTableSetting(JTable jTable){
         /* 테이블 셀 사이즈 변경 */
         setTableCellSize(jTable, new int[]{50, 100, 550 ,194});

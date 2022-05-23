@@ -34,7 +34,7 @@ public class GenieChartCrawler extends Crawler{
         for(Element element : chartBody){
             
             int rank = Integer.parseInt(element.select(".number").text().split(" ")[0]);
-            String coverImg = element.select("img").attr("src");                 // 이미지 크롤링 - url ???,0으로 끝남
+            String coverImg = "https:" + element.select("img").attr("src");                 // 이미지 크롤링 - url ???,0으로 끝남
             String title = element.select(".info").select(".title").text();                  // 노래제목 크롤링
             title = title.replaceAll("\\(Prod. by","\\(Prod.");
             title = title.replaceAll("^19금 ","");

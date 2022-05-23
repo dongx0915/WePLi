@@ -85,20 +85,6 @@ public class ChartFrame extends javax.swing.JFrame {
         JTableSetting.tableInit(playlistScrollPanel, playlistTable);
         JTableSetting.tableHeaderInit(playlistTable, playlistPanel.getWidth(), 40);
         playlistTableSetting();
-        
-        /* 인기차트 */
-        SongController songController = SongController.getInstance();// 컨트롤러 생성
-        
-
-        songController.updateSongChart();
-        ArrayList<SongChart> chart = songController.getSongChart();
-        Object[][] values = songChartToObject(chart);
-
-        /* 테이블에 값 추가*/
-        JTableSetting.insertTableRow((DefaultTableModel) chartTable.getModel(), values);
-        
-
-        
     }
     
     
