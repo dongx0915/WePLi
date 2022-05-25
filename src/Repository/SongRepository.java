@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author kimkyeonghyun
  */
-public class SongRepository extends EntityRepository<Song, String> {
+public class SongRepository extends CrudRepository<Song, String> {
 
     public SongRepository() { super.setEntity(new Song()); }
 

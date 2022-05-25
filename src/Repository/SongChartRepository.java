@@ -12,7 +12,7 @@ import java.sql.Date;
  *
  * @author joon
  */
-public class SongChartRepository extends EntityRepository<SongChart, String>{
+public class SongChartRepository extends CrudRepository<SongChart, String>{
     
     
     

@@ -5,10 +5,6 @@ package WePLi;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-import Controller.UserController;
-import Repository.UserRepository;
-import Service.SongService2;
-import WePLi.UserFrame.LoginJFrame;
 import java.lang.reflect.InvocationTargetException;
 
 

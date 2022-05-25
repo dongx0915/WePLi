@@ -97,6 +97,7 @@ public class MainFrame extends javax.swing.JFrame {
         createPlayTitleField = new javax.swing.JTextField();
         createPlayBtn = new javax.swing.JButton();
         addTrackBtn = new javax.swing.JButton();
+        createPlayImgLabel = new javax.swing.JLabel();
         createPlayTitleLabel = new javax.swing.JLabel();
         createPlayInformLabel = new javax.swing.JLabel();
         createPlayBGLabel = new javax.swing.JLabel();
@@ -299,6 +300,7 @@ public class MainFrame extends javax.swing.JFrame {
         addTrackBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         addTrackBtn.setOpaque(true);
         createPlayPanel.add(addTrackBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 310, 57, 22));
+        createPlayPanel.add(createPlayImgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 25, 260, 260));
 
         createPlayTitleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/field/normal/playTitle_field.png"))); // NOI18N
         createPlayPanel.add(createPlayTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, 568, 42));
@@ -920,6 +922,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable chartTable;
     private javax.swing.JLabel createPlayBGLabel;
     private javax.swing.JButton createPlayBtn;
+    private javax.swing.JLabel createPlayImgLabel;
     private javax.swing.JLabel createPlayInformLabel;
     private javax.swing.JTextArea createPlayInfromTextArea;
     private javax.swing.JPanel createPlayPanel;

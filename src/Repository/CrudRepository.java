@@ -24,7 +24,7 @@ import java.util.StringJoiner;
  * Repository 상속 받아서 사용 시 하위 Repository 생성자에서 사용할 Entity 타입을 지정 해줘야함
  */
 
-public class EntityRepository<T, ID> extends Repository {
+public class CrudRepository<T, ID> extends Repository {
     private T entity;             // Entity 
     protected String idFieldName; // id(PK)의 필드 명
     protected String tableName;   // Entity 테이블 명
