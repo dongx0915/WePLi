@@ -46,7 +46,7 @@ public class SongController {
     }
 
     public ArrayList<SongChart> getSongChart() {
-        ArrayList<SongChart> ChartList = songchartService.ShowMusicChart();
+        ArrayList<SongChart> ChartList = songchartService.getMusicChart();
         return ChartList;
     }
 

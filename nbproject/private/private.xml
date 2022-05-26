@@ -18,27 +18,32 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Database/Database.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Playlist/PlaylistDto.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/SearchFrame/SearchFrame.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/CrawlerFactory/MusicCrawlerFactory.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/Repository.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/CrudRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/MainFrame.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/SongChartService.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/ChartCrawler/MelonChartCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/SongChartRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/ChartFrame.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/UserRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/RelaylistRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Playlist/PlaylistCreateDto.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UserFrame/LoginJFrame.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/ChartCrawler/BugsChartCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/GenieSearchCrawler.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/EntityRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/BugsSearchCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/Crawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/PwChangeController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/MelonSearchCrawler.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/UserController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/UserService.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/PlaylistController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/PlaylistService.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/SongService.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/PlaylistRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/SongService2.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/ChartCrawler/GenieChartCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UI/JTableSetting.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UI/ComponentSetting.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/SongRepository.java</file>

@@ -77,7 +77,7 @@ public class SongService2 {
                 
                 String title_temp = songList.get(j).getTitle();  // 기존 제목 저장
                 String singer_temp = songList.get(j).getSinger();    // 기존 가수 저장
-                double rank_temp = songList.get(j).getRank();   // 기존 순위 저장
+                int rank_temp = songList.get(j).getRank();   // 기존 순위 저장
                 String name_temp = title_temp + " " + singer_temp;
                     
 

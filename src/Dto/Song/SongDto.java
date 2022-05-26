@@ -26,7 +26,7 @@ import lombok.ToString;
 public class SongDto implements Comparable<SongDto> {
 
     private int id;
-    private double rank;
+    private int rank;
     private String image; // 커버 이미지 없을 경우 대체 이미지
     private String title;
     private String singer;
@@ -44,10 +44,7 @@ public class SongDto implements Comparable<SongDto> {
     
     @Override
     public int compareTo(SongDto dto) {
-        double rank = this.getRank();
-        double dtoRank = dto.getRank();
-        
-        return rank > dtoRank ? 1 : -1;
+        return this.getRank() >= dto.getRank() ? -1 : 1;
     }
     
 }
