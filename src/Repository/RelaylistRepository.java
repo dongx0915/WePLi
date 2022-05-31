@@ -10,6 +10,6 @@ import Entity.Relaylist;
  *
  * @author Donghyeon <20183188>
  */
-public class RelaylistRepository extends EntityRepository<Relaylist, String>{
+public class RelaylistRepository extends CrudRepository<Relaylist, String>{
     public RelaylistRepository() { super.setEntity(new Relaylist());}
 }

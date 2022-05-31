@@ -12,6 +12,6 @@ import java.sql.ResultSet;
  *
  * @author Donghyeon <20183188>
  */
-public class UserRepository extends EntityRepository<User, String>{
+public class UserRepository extends CrudRepository<User, String>{
     public UserRepository() { super.setEntity(new User()); }
 }

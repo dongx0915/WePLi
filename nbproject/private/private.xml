@@ -14,6 +14,7 @@
         <group>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/SearchCrawler/BugsSearchCrawler.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/ChartFrame.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/Crawler.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Controller/UserController.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Repository/SongChartRepository.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Service/SongService.java</file>
@@ -24,6 +25,7 @@
             <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/Main.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/Controller/PlaylistController.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/SearchFrame/SearchFrame.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Database/Database.java</file>
             <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/UI/JTableSetting.java</file>
         </group>
     </open-files>

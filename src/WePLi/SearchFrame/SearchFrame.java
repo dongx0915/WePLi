@@ -7,6 +7,7 @@ package WePLi.SearchFrame;
 import Controller.SongController;
 import Dto.Song.SongDto;
 import WePLi.UI.ComponentSetting;
+import static WePLi.UI.ComponentSetting.convertSongToHtml;
 import WePLi.UI.JFrameSetting;
 import WePLi.UI.JTableSetting;
 import java.awt.Color;
@@ -24,6 +25,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 /**
  *
@@ -81,10 +85,6 @@ public class SearchFrame extends javax.swing.JFrame {
         initComponents();
         setVisible(true);
         setLocationRelativeTo(null);
-
-        JTableSetting.tableInit(searchScrollPanel, searchTable);
-        JTableSetting.tableHeaderInit(searchTable, searchScrollPanel.getWidth(), 40);
-        searchTableSetting();
     }
 
     /**
@@ -145,11 +145,11 @@ public class SearchFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "번호", "곡", "제목", "가수", "앨범", "이미지"
+                "번호", "커버", "곡/앨범", "가수"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -158,20 +158,19 @@ public class SearchFrame extends javax.swing.JFrame {
         });
         searchTable.setMinimumSize(new java.awt.Dimension(10, 400));
         searchTable.setRowHeight(80);
-        searchTable.setSelectionBackground(new java.awt.Color(169, 230, 255));
+        searchTable.setSelectionBackground(new java.awt.Color(216, 229, 255));
         searchTable.setSelectionForeground(new java.awt.Color(51, 51, 51));
         searchTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         searchTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         searchTable.getTableHeader().setResizingAllowed(false);
         searchTable.getTableHeader().setReorderingAllowed(false);
         searchScrollPanel.setViewportView(searchTable);
-        if (searchTable.getColumnModel().getColumnCount() > 0) {
-            searchTable.getColumnModel().getColumn(5).setMinWidth(0);
-            searchTable.getColumnModel().getColumn(5).setPreferredWidth(0);
-            searchTable.getColumnModel().getColumn(5).setMaxWidth(0);
-        }
+        /* SearchTable 기본 세팅 */
+        JTableSetting.tableInit(searchScrollPanel, searchTable);
+        JTableSetting.tableHeaderInit(searchTable, searchScrollPanel.getWidth(), 40);
+        JTableSetting.songTableSetting(searchTable);
 
-        getContentPane().add(searchScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 145, 896, 560));
+        getContentPane().add(searchScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 145, 896, 500));
 
         backgroundPanel.setBackground(new java.awt.Color(255, 255, 255));
         backgroundPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -211,7 +210,7 @@ public class SearchFrame extends javax.swing.JFrame {
                 searchButtonMouseExited(evt);
             }
         });
-        backgroundPanel.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 90, -1, -1));
+        backgroundPanel.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 88, 94, 35));
 
         bugsRadio.addItemListener(new MyItemListener());
         siteRadioGroup.add(bugsRadio);
@@ -244,15 +243,23 @@ public class SearchFrame extends javax.swing.JFrame {
         });
         backgroundPanel.add(melonRadio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 30, 30));
 
-        searchButton.setBackground(new Color(255,255,255,0));
-        submitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/component/normal/search_btn.png"))); // NOI18N
+        submitButton.setBackground(new java.awt.Color(255,255,255,0));
+        submitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/component/normal/add_btn.png"))); // NOI18N
+        submitButton.setOpaque(false);
+        submitButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         submitButton.setPreferredSize(new java.awt.Dimension(75, 28));
         submitButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 submitButtonMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                submitButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                submitButtonMouseExited(evt);
+            }
         });
-        backgroundPanel.add(submitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 90, -1, -1));
+        backgroundPanel.add(submitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 660, 94, 35));
 
         getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 710));
 
@@ -263,18 +270,23 @@ public class SearchFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         JTableSetting.tableScroll(searchTable, searchScrollPanel, evt);
     }//GEN-LAST:event_searchScrollPanelMouseWheelMoved
-
+    
+    
+    /* 검색 버튼 클릭 이벤트 */
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
         // TODO add your handling code here:
         // 검색 버튼 클릭 시
 
-        SongController songController = new SongController(); // 컨트롤러 생성
+        SongController songController = SongController.getInstance(); // 컨트롤러 생성
 
         String musicSite = siteRadioGroup.getSelection().getActionCommand();
         String searchText = searchTextField.getText();
 
         ArrayList<SongDto> searchResult = songController.SongSearch(musicSite, searchText); //검색 결과 리턴
-
+        
+        for (SongDto songDto : searchResult) {
+            System.out.println(songDto);
+        }
         Object[][] values = songDtoToObject(searchResult);
 
         DefaultTableModel model = (DefaultTableModel) searchTable.getModel();
@@ -320,29 +332,52 @@ public class SearchFrame extends javax.swing.JFrame {
         bugsRadio.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_bugsRadioMouseEntered
 
+    /* 곡 추가 버튼 마우스 이벤트 */
     private void submitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseClicked
         // TODO add your handling code here:
-
+        // 플레이리스트, 릴레이리스트의 테이블의 인스턴스를 가져와서 바로 넣어줘야함
         int[] rows = this.searchTable.getSelectedRows();
+        int column = this.searchTable.getSelectedColumn();
         TableModel model = this.searchTable.getModel();
-
+        
+        //선택 된 노래(행) 개수 만큼 생성
+        Object[][] obj = new Object[rows.length][];
+        
         for (int i = 0; i < rows.length; i++) {
-            
-            System.out.println("선택된 커버이미지 : " + model.getValueAt(rows[i], 5).toString() + ", 제목 :" + model.getValueAt(rows[i], 2) + ", 가수 :" + model.getValueAt(rows[i], 3) + ", 제목 :" + model.getValueAt(rows[i], 4));
+            obj[i] = new Object[]{
+                                    model.getValueAt(i, 0),  
+                                    model.getValueAt(i, 1),
+                                    model.getValueAt(i, 2),
+                                    model.getValueAt(i, 3),
+                                };
+            System.out.println(obj[i][2]);
         }
-
+            
+        // 플레이, 릴레이리스트의 테이블에 바로 오브젝트 넣어주면 됨
     }//GEN-LAST:event_submitButtonMouseClicked
+
+    private void submitButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseEntered
+        // TODO add your handling code here:
+        this.submitButton.setIcon(new ImageIcon("./src/resources/layout/component/focus/add_btn_focus.png"));
+        this.submitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_submitButtonMouseEntered
+
+    private void submitButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseExited
+        // TODO add your handling code here:
+        this.submitButton.setIcon(new ImageIcon("./src/resources/layout/component/normal/add_btn.png"));
+    }//GEN-LAST:event_submitButtonMouseExited
 
     
     public Object[][] songDtoToObject(ArrayList<SongDto> songArray) {
-        System.out.println(songArray.size());
-
         Object[][] values = new Object[songArray.size()][];
-
+        
         for (int i = 0; i < songArray.size(); i++) {
             SongDto song = songArray.get(i);
 
-            values[i] = new Object[]{i + 1, ComponentSetting.imageToIcon(song.getImage(), 60, 60), song.getTitle(), song.getSinger(), song.getAlbum(),song.getImage()};
+            values[i] = new Object[]{i + 1, 
+                                    ComponentSetting.imageToIcon(song.getImage(), 60, 60), 
+                                    convertSongToHtml(song.getTitle(), song.getAlbum(), song.getImage()),
+                                    song.getSinger() };
         }
 
         return values;

@@ -20,12 +20,15 @@ import java.util.ArrayList;
  * @author Donghyeon <20183188>
  */
 public class PlaylistController{
+    private static PlaylistController playlistController = new PlaylistController();
+    
     private PlaylistService playlistService;
     private SongService2 songService2;
 
+    private PlaylistController() { this.playlistService = new PlaylistService(); }
     
-    public PlaylistController() { this.playlistService = new PlaylistService(); }
-
+    public static PlaylistController getInstance(){ return playlistController; }
+    
     public boolean createPlaylist(/* PlaylistCreateDto 필요 */) {
         PlaylistCreateDto dto = PlaylistCreateDto.builder()
                                                     .title("테스트 플레이리스트임")

@@ -77,7 +77,7 @@ public class SongService2 {
                 
                 String title_temp = songList.get(j).getTitle();  // 기존 제목 저장
                 String singer_temp = songList.get(j).getSinger();    // 기존 가수 저장
-                double rank_temp = songList.get(j).getRank();   // 기존 순위 저장
+                int rank_temp = songList.get(j).getRank();   // 기존 순위 저장
                 String name_temp = title_temp + " " + singer_temp;
                     
 
@@ -154,13 +154,18 @@ public class SongService2 {
     
     
     public static void main(String[] args) {
-        SongService2 s = new SongService2();
-        
-        ArrayList<SongDto> songList = s.getSongList("P0000015");
-        for (SongDto songDto : songList) {
-            System.out.println(songDto);
-        }
-            
+//        SongService2 s = new SongService2();
+//        
+//        ArrayList<SongDto> songList = s.getSongList("P0000015");
+//        for (SongDto songDto : songList) {
+//            System.out.println(songDto);
+//        }
+//          SongService s = new SongService();
+//          
+//          for (SongDto dto : s.musicSearch("melon", "윤하")) {
+//              System.out.println(dto);
+//            }
+
 
         }    
 
