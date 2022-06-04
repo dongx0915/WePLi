@@ -61,8 +61,10 @@ class PanelRenderer extends DefaultTableCellRenderer {
 }
 
 public class SearchFrame extends javax.swing.JFrame {
-    private JTable playBsideTable;
+    private JTable bSideTable;
     private JLabel createPlayImgLabel;
+    private boolean isRelayList = false;
+    
     private SongController songController = SongController.getInstance(); // 컨트롤러 생성
     // Item 리스너 작성
     class MyItemListener implements ItemListener {
@@ -296,6 +298,7 @@ public class SearchFrame extends javax.swing.JFrame {
 
         ArrayList<SongDto> searchResult = songController.SongSearch(musicSite, searchText); //검색 결과 리턴
         
+        // 검색 결과를 테이블 형식으로 변경
         Object[][] values = DataParser.songDtoToObject(searchResult);
 
         DefaultTableModel model = (DefaultTableModel) searchTable.getModel();
@@ -351,8 +354,9 @@ public class SearchFrame extends javax.swing.JFrame {
         //선택 된 노래(행) 개수 만큼 생성
         Object[][] obj = new Object[rows.length][];
         
+        // 검색 데이터를 플레이리스트 테이블로 옮기기 위해 Object로 변환
         for (int i = 0; i < rows.length; i++) {
-            int rowCnt = playBsideTable.getRowCount();
+            int rowCnt = bSideTable.getRowCount();
             
             obj[i] = new Object[]{
                                     rowCnt + (i + 1),  
@@ -360,12 +364,19 @@ public class SearchFrame extends javax.swing.JFrame {
                                     model.getValueAt(rows[i], 2),
                                     model.getValueAt(rows[i], 3),
                                 };
-                        
-            if(rowCnt == 0) setFirstImage(obj[i][2]);
-//            System.out.println(obj[i][2]);
         }
         
-        JTableSetting.insertTableRow((DefaultTableModel) playBsideTable.getModel(), obj);                    
+        DefaultTableModel tableModel = (DefaultTableModel) bSideTable.getModel();
+        
+        // 릴레이리스트인 경우
+        if(isRelayList){ 
+            tableModel.setRowCount(0);                          // 매번 초기화
+            obj[0][0] = 1;                                      // 번호 초기화
+            JTableSetting.insertTableRow(tableModel, obj[0]);   // 처음 선택한 1 곡만 들어감
+        }
+        else JTableSetting.insertTableRow(tableModel, obj);   // 테이블에 값 삽입
+        
+        setFirstImage(bSideTable.getValueAt(0, 2));  // 첫 번째 곡의 이미지를 플레이리스트 썸네일로 지정
     }//GEN-LAST:event_submitButtonMouseClicked
     
     private void submitButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseEntered
@@ -414,8 +425,9 @@ public class SearchFrame extends javax.swing.JFrame {
             }
         });
     }
-        
-    public void setPlayBsideTable(JTable playlistTable) { this.playBsideTable = playlistTable; }
+
+    public void setIsRelayList(boolean isRelayList) { this.isRelayList = isRelayList; }
+    public void setBsideTable(JTable playlistTable) { this.bSideTable = playlistTable; }
     public void setCreatePlayImgLabel(JLabel createPlayImgLabel) { this.createPlayImgLabel = createPlayImgLabel; }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

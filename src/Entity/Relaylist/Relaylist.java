@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Entity.Relaylist;
+import Dto.Relaylist.RelaylistCreateDto;
 import Entity.Playlist.Playlist;
 import java.sql.Date;
 import lombok.AllArgsConstructor;
@@ -33,8 +34,17 @@ public class Relaylist {
     public String firstSongImage;
     public String firstSongAlbum;
     
-    public static Playlist toEntity(/* RelaylistDto 필요 */){
-        /* RelaylistDto 선언 후 구현 */
-        return null;
+    public static Relaylist toEntity(RelaylistCreateDto dto){
+        return Relaylist.builder()
+                        .title(dto.getTitle())
+                        .author(dto.getAuthor())
+                        .inform(dto.getInform())
+                        .likes(0)
+                        .createTime(dto.getCreateTime())
+                        .firstSongTitle(dto.getFirstSongTitle())
+                        .firstSongSinger(dto.getFirstSongSinger())
+                        .firstSongImage(dto.getFirstSongImage())
+                        .firstSongAlbum(dto.getFirstSongAlbum())
+                        .build();
     }
 }

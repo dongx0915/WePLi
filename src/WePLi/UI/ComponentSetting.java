@@ -49,7 +49,7 @@ public class ComponentSetting {
     }
     
 
-    public static String convertPlaylistToHtml(String listId, String title, String author, String inform) {
+    public static String convertListToHtml(String listId, String title, String author, String inform) {
         return String.format("<html>\n"
                 + "<head>\n"
                 + "    <style>\n"

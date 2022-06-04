@@ -121,6 +121,11 @@ public class JTableSetting {
             tableModel.insertRow(tableModel.getRowCount(), value);
         }
     }
+    
+    /* 테이블 값 추가 메소드 */
+    public static void insertTableRow(DefaultTableModel tableModel, Object[] value) {
+        tableModel.insertRow(tableModel.getRowCount(), value);
+    }
 
     /* 테이블 배경 색상 변경 메소드 */
     public static void setTableBackground(JTable jTable, Color color) {

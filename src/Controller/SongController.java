@@ -33,8 +33,9 @@ public class SongController {
         return songService.addSongList(songlist);
     }
     
-    public ArrayList<SongDto> getBsideTrack(String listId){
-        ArrayList<SongDto> sideTrack = songService.getBsideTrack(listId);
+    // 수록곡 가져오는 메소드 (BsideTrack의 테이블 이름으로 플레이리스트, 릴레이리스트를 구분함)
+    public ArrayList<SongDto> getBsideTrack(String bSideTable, String listId){
+        ArrayList<SongDto> sideTrack = songService.getBsideTrack(bSideTable, listId);
         
         return sideTrack;
     }

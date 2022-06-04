@@ -30,6 +30,7 @@ public class PlaylistController{
     
     public static PlaylistController getInstance(){ return playlistController; }
     
+    // 플레이리스트 등록 메소드
     public PlaylistDto createPlaylist(PlaylistCreateDto playlistDto) {
         PlaylistDto result = playlistService.createPlaylist(playlistDto);
         
@@ -54,17 +55,12 @@ public class PlaylistController{
         return result;
     }
     
-    public void deletePlaylist(String id){
-        boolean result =  playlistService.deletePlaylist(id);
-        
-        if(result){
-            System.out.println("삭제 성공");
-        }
-        else{
-            System.out.println("삭제 실패");
-        }
+    // 플레이리스트 삭제
+    public boolean deletePlaylist(String listId){
+        return playlistService.deletePlaylist(listId);
     }
     
+    // PlaylistId로 플레이리스트 가져오는 메소드
     public PlaylistDto getPlaylist(String id){
         PlaylistDto playlist = playlistService.getPlaylist(id);
         
@@ -78,31 +74,6 @@ public class PlaylistController{
     
     public ArrayList<PlaylistDto> getAllPlaylists(){
         return playlistService.getAllPlaylists();
-    }
-    
-    // playlist id -> SongService에 반환하기
-    public Playlist findList(){
-        
-        String playListID = "P0000015";
-        
-        // SongService에게 반환
-        songService2.getSongList(playListID);
-
-        return null;
-    }
-    
-    
-    // 마우스 클릭으로 playlistid,  song id 받기
-    public Playlist playBsideTrack(String playlistid, String songid){
-        
-        String pid = "P0000002";
-        String sid = "24";
-        
-        
-        // playlistService에게 반환
-        playlistService.playBsideTrack(playlistid, songid);
-        
-        return null;
     }
 
 }

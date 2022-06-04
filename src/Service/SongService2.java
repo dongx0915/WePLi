@@ -132,16 +132,16 @@ public class SongService2 {
     
     
     
-    // list_id 받아와서 song 찾기
-    public ArrayList<SongDto> getSongList(String playlistId){
-        ArrayList<Song> songlist = songRepository.findSonglistById(playlistId);
-        ArrayList<SongDto> dtolist = new ArrayList<>();
-        
-        for (Song song : songlist) 
-            dtolist.add(SongDto.createSongDto(song));
-        
-        return dtolist;
-    }
+//    // list_id 받아와서 song 찾기
+//    public ArrayList<SongDto> getSongList(String playlistId){
+//        ArrayList<Song> songlist = songRepository.findSonglistById(playlistId);
+//        ArrayList<SongDto> dtolist = new ArrayList<>();
+//        
+//        for (Song song : songlist) 
+//            dtolist.add(SongDto.createSongDto(song));
+//        
+//        return dtolist;
+//    }
     
         // playlistcontroller 받은 값 받아서 playlistRepository불러서 해당 레코드 삭제
     public Playlist playBsideTrack(String playlistid, String songid){

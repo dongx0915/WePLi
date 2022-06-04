@@ -56,9 +56,9 @@ public class SongService {
         return bSideTrack;
     }
     
-    // 수록곡 가져오는 메소드
-    public ArrayList<SongDto> getBsideTrack(String listId){
-        ArrayList<Song> sideTrack = songRepository.getBsideTrack(listId);
+    // 수록곡 가져오는 메소드 (BsideTrack의 테이블 이름으로 플레이리스트, 릴레이리스트를 구분함)
+    public ArrayList<SongDto> getBsideTrack(String bSideTable, String listId){
+        ArrayList<Song> sideTrack = songRepository.getBsideTrack(bSideTable, listId);
 
         return (ArrayList) sideTrack.stream().map(song -> SongDto.createSongDto(song))
                                     .collect(Collectors.toList());        
