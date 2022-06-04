@@ -137,7 +137,8 @@ public class JTableSetting {
             model.getColumn(i).setPreferredWidth(width[i]);
         }
     }
-
+    
+    // 테이블 스크롤 이벤트
     public static void tableScroll(JTable jTable, JScrollPane scrollPanel, java.awt.event.MouseWheelEvent evt) {
         int TableRowHeight = jTable.getRowHeight();
         if (evt.getUnitsToScroll() > 0) {
@@ -161,7 +162,8 @@ public class JTableSetting {
         tableColumnModel.getColumn(0).setCellRenderer(dtcr);
         tableColumnModel.getColumn(3).setCellRenderer(dtcr);
         // 2번째 행은 이미지를 표시하도록 설정
-        tableColumnModel.getColumn(1).setCellRenderer(new PanelRenderer());
+        setImageCell(jTable, 1);
+        //tableColumnModel.getColumn(1).setCellRenderer(new PanelRenderer());
     }
     
     // 리스트를 출력하는 테이블은 이 디자인을 적용
@@ -169,5 +171,13 @@ public class JTableSetting {
         /* 테이블 셀 사이즈 변경 */
         setTableCellSize(jTable, new int[]{50, 100, 550 ,194});
         setImageCell(jTable, 1);
+        
+        /* 테이블 컬럼 중앙 정렬 */
+        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // 디폴트 테이블 셀 렌더러 생성
+        dtcr.setHorizontalAlignment(SwingConstants.CENTER); // 렌더러의 가로정렬을 CENTER로
+        
+        TableColumnModel tableColumnModel = jTable.getColumnModel();
+        tableColumnModel.getColumn(0).setCellRenderer(dtcr);
+        tableColumnModel.getColumn(3).setCellRenderer(dtcr);
     }
 }

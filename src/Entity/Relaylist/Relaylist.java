@@ -2,7 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entity;
+package Entity.Relaylist;
+import Entity.Playlist.Playlist;
 import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,9 +28,10 @@ public class Relaylist {
     public String inform;
     public int likes;
     public Date createTime;
-    public String firstSongTitle ;
+    public String firstSongTitle;
     public String firstSongSinger;
     public String firstSongImage;
+    public String firstSongAlbum;
     
     public static Playlist toEntity(/* RelaylistDto 필요 */){
         /* RelaylistDto 선언 후 구현 */

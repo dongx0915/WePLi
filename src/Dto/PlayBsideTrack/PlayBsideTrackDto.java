@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Dto.Playlist;
+package Dto.PlayBsideTrack;
 
-import java.sql.Date;
+import Entity.PlayBsideTrack.PlayBsideTrack;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,10 +23,14 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlaylistCreateDto {
-    public String title;
-    public String author;   // FK >- User.Id
-    public String inform;
-    public String image;
-    public Date createTime;
+public class PlayBsideTrackDto {
+    private String playlistId;
+    private int songId;
+    
+    public static PlayBsideTrackDto createPlayBsideTrackDto(PlayBsideTrack entity){
+        return PlayBsideTrackDto.builder()
+                                .playlistId(entity.getPlaylistId())
+                                .songId(entity.getSongId())
+                                .build();
+    }
 }

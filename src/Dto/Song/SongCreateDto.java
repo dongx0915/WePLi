@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Dto.Playlist;
+package Dto.Song;
 
-import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,15 +17,14 @@ import lombok.ToString;
  */
 
 @ToString
+@Builder
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlaylistCreateDto {
-    public String title;
-    public String author;   // FK >- User.Id
-    public String inform;
-    public String image;
-    public Date createTime;
+public class SongCreateDto {
+    private String image; // 커버 이미지 없을 경우 대체 이미지
+    private String title;
+    private String singer;
+    private String album;
 }

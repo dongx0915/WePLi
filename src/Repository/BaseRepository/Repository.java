@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Repository;
+package Repository.BaseRepository;
 
 import Database.Database;
 import java.sql.Connection;
@@ -46,6 +46,9 @@ public class Repository {
             // 성공 시 ResultSet 리턴
             return pstmt.executeQuery();
         } 
-        catch (IllegalArgumentException | SQLException e) { return null; }                                    // 쿼리 오류 발생 시 null 리턴 
+        catch (IllegalArgumentException | SQLException e) {
+            e.printStackTrace();
+            return null; 
+        }                                    // 쿼리 오류 발생 시 null 리턴 
     }
 }

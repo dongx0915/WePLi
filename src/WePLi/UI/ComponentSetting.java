@@ -4,6 +4,7 @@
  */
 package WePLi.UI;
 
+import Dto.Song.SongDto;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -48,7 +49,7 @@ public class ComponentSetting {
     }
     
 
-    public static String convertPlaylistToHtml(String title, String author, String inform) {
+    public static String convertPlaylistToHtml(String listId, String title, String author, String inform) {
         return String.format("<html>\n"
                 + "<head>\n"
                 + "    <style>\n"
@@ -65,24 +66,26 @@ public class ComponentSetting {
                 + "    </style>\n"
                 + "</head>\n"
                 + "<body>\n"
+                + "    <input id = \"listId\"type=\"text\" value = \"%s\" hidden>\n"
                 + "    <p id = \"title\">%s</p>\n"
                 + "    <p id = \"author\">%s</p>\n"
                 + "    <p id = \"inform\">%s</p>\n"
                 + "</body>\n"
-                + "</html>", title, author, inform);
+                + "</html>", listId, title, author, inform);
     }
     
-    public static String convertSongToHtml(String title, String album, String image) {
+    public static String convertSongToHtml(String title, String album, String image, String singer) {
         return String.format("<html>\n"
                 + "<head>\n"
-                + "    <style> #album{color: #a2a2a2;} </style>"
+                + "    <style> #album{color: #a2a2a2;} </style>\n"
                 + "</head>\n"
                 + "<body>\n"
                 + "    <p id=\"title\">%s</p>\n"
                 + "    <p id=\"album\">%s</p>\n"
-                + "    <input type = \"text\" value = \"%s\" hidden>"                                
+                + "    <input id = \"image\" type = \"text\" value = \"%s\" hidden>\n"                                
+                + "    <input id = \"singer\" type = \"text\" value = \"%s\" hidden>\n"         
                 + "</body>\n"
-                + "</html>", title, album, image);
+                + "</html>", title, album, image, singer);
     }
     
     public static ImageIcon getSmallBlurImage(String url) {

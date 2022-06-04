@@ -8,6 +8,7 @@ import Controller.SongController;
 import Dto.Song.SongDto;
 import WePLi.UI.ComponentSetting;
 import static WePLi.UI.ComponentSetting.convertSongToHtml;
+import WePLi.UI.DataParser;
 import WePLi.UI.JFrameSetting;
 import WePLi.UI.JTableSetting;
 import java.awt.Color;
@@ -28,6 +29,7 @@ import javax.swing.table.TableModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  *
@@ -59,7 +61,9 @@ class PanelRenderer extends DefaultTableCellRenderer {
 }
 
 public class SearchFrame extends javax.swing.JFrame {
-
+    private JTable playBsideTable;
+    private JLabel createPlayImgLabel;
+    private SongController songController = SongController.getInstance(); // 컨트롤러 생성
     // Item 리스너 작성
     class MyItemListener implements ItemListener {
 
@@ -105,6 +109,16 @@ public class SearchFrame extends javax.swing.JFrame {
         tableColumnModel.getColumn(4).setCellRenderer(dtcr);
     }
 
+    private void setFirstImage(Object obj){
+        Document doc = Jsoup.parse(obj.toString());
+        Element element = doc.selectFirst("input");
+        String imageUrl = element.attr("value");
+
+        imageUrl = imageUrl.replace("resize/144", "resize/1000").replace("images/50", "images/1000");
+        
+        createPlayImgLabel.setIcon(ComponentSetting.imageToIcon(imageUrl, 260, 260));
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -276,18 +290,13 @@ public class SearchFrame extends javax.swing.JFrame {
     private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
         // TODO add your handling code here:
         // 검색 버튼 클릭 시
-
-        SongController songController = SongController.getInstance(); // 컨트롤러 생성
-
+        
         String musicSite = siteRadioGroup.getSelection().getActionCommand();
         String searchText = searchTextField.getText();
 
         ArrayList<SongDto> searchResult = songController.SongSearch(musicSite, searchText); //검색 결과 리턴
         
-        for (SongDto songDto : searchResult) {
-            System.out.println(songDto);
-        }
-        Object[][] values = songDtoToObject(searchResult);
+        Object[][] values = DataParser.songDtoToObject(searchResult);
 
         DefaultTableModel model = (DefaultTableModel) searchTable.getModel();
         model.setRowCount(0);
@@ -337,25 +346,28 @@ public class SearchFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         // 플레이리스트, 릴레이리스트의 테이블의 인스턴스를 가져와서 바로 넣어줘야함
         int[] rows = this.searchTable.getSelectedRows();
-        int column = this.searchTable.getSelectedColumn();
         TableModel model = this.searchTable.getModel();
         
         //선택 된 노래(행) 개수 만큼 생성
         Object[][] obj = new Object[rows.length][];
         
         for (int i = 0; i < rows.length; i++) {
-            obj[i] = new Object[]{
-                                    model.getValueAt(i, 0),  
-                                    model.getValueAt(i, 1),
-                                    model.getValueAt(i, 2),
-                                    model.getValueAt(i, 3),
-                                };
-            System.out.println(obj[i][2]);
-        }
+            int rowCnt = playBsideTable.getRowCount();
             
-        // 플레이, 릴레이리스트의 테이블에 바로 오브젝트 넣어주면 됨
+            obj[i] = new Object[]{
+                                    rowCnt + (i + 1),  
+                                    model.getValueAt(rows[i], 1),
+                                    model.getValueAt(rows[i], 2),
+                                    model.getValueAt(rows[i], 3),
+                                };
+                        
+            if(rowCnt == 0) setFirstImage(obj[i][2]);
+//            System.out.println(obj[i][2]);
+        }
+        
+        JTableSetting.insertTableRow((DefaultTableModel) playBsideTable.getModel(), obj);                    
     }//GEN-LAST:event_submitButtonMouseClicked
-
+    
     private void submitButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseEntered
         // TODO add your handling code here:
         this.submitButton.setIcon(new ImageIcon("./src/resources/layout/component/focus/add_btn_focus.png"));
@@ -368,21 +380,6 @@ public class SearchFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_submitButtonMouseExited
 
     
-    public Object[][] songDtoToObject(ArrayList<SongDto> songArray) {
-        Object[][] values = new Object[songArray.size()][];
-        
-        for (int i = 0; i < songArray.size(); i++) {
-            SongDto song = songArray.get(i);
-
-            values[i] = new Object[]{i + 1, 
-                                    ComponentSetting.imageToIcon(song.getImage(), 60, 60), 
-                                    convertSongToHtml(song.getTitle(), song.getAlbum(), song.getImage()),
-                                    song.getSinger() };
-        }
-
-        return values;
-    }
-
     /**
      * @param args the command line arguments
      */
@@ -417,6 +414,9 @@ public class SearchFrame extends javax.swing.JFrame {
             }
         });
     }
+        
+    public void setPlayBsideTable(JTable playlistTable) { this.playBsideTable = playlistTable; }
+    public void setCreatePlayImgLabel(JLabel createPlayImgLabel) { this.createPlayImgLabel = createPlayImgLabel; }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel backgroundPanel;

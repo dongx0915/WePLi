@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entity;
+package Entity.Playlist;
 import Dto.Playlist.PlaylistCreateDto;
 import Dto.Playlist.PlaylistUpdateDto;
 import java.sql.Date;
@@ -30,6 +30,7 @@ public class Playlist {
     public int likes;
     public int downloads;
     public Date createTime;
+    public String image;
 
     public void patch(PlaylistUpdateDto dto){
         // Title은 비어있을 수 없음
@@ -52,6 +53,7 @@ public class Playlist {
                 .createTime(dto.getCreateTime())
                 .likes(0)
                 .downloads(0)
+                .image(dto.getImage())
                 .build();
     }
 }

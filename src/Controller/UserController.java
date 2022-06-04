@@ -6,8 +6,8 @@ package Controller;
 
 import Dto.User.UserSignUpDto;
 import Dto.User.UserDto;
-import Entity.User;
-import Service.UserService;
+import Entity.User.User;
+import Service.User.UserService;
 import WePLi.UserFrame.LoginJFrame;
 import WePLi.MainFrame;
 import WePLi.UI.JPanelSetting;

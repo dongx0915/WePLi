@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Service;
+package Service.User;
 
 import Dto.User.PwChangeDto;
 import Dto.User.UserSignUpDto;
 import Dto.User.UserDto;
 import Entity.PwChange;
-import Entity.User;
-import Repository.UserRepository;
+import Entity.User.User;
+import Repository.User.UserRepository;
 
 /**
  *

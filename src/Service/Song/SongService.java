@@ -2,28 +2,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Service;
+package Service.Song;
 
 import Crawler.Crawler;
 import Crawler.CrawlerFactory.MusicCrawlerFactory;
-import Dto.Playlist.PlaylistDto;
+import Dto.Song.SongCreateDto;
 import Dto.Song.SongDto;
-import Entity.Song;
-import Entity.SongChart;
+import Entity.Song.Song;
+import Repository.Song.SongRepository;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author joon
  */
 public class SongService {
-
+    
     // Repository
-    MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
+    private SongRepository songRepository;
+    private MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
 
+    public SongService() {
+        this.songRepository = new SongRepository();
+    }
+    
     public ArrayList<SongDto> musicSearch(String type, String keyword) {
         Crawler crawler;
         crawler = musicFactory.getSearchCrawler(type);
@@ -33,6 +37,32 @@ public class SongService {
         return SongList;
     }
     
+    // 수록곡을 Song 테이블에 저장하는 메소드
+    public ArrayList<SongDto> addSongList(ArrayList<SongCreateDto> songlist){
+        ArrayList<SongDto> bSideTrack = new ArrayList<>();
+        
+        for (SongCreateDto songCreateDto : songlist) {
+            Song song = Song.toEntity(songCreateDto);
+            // 제목과 가수로 Song 검색
+            Song result = songRepository.findSongByTitleAlbum(song.getTitle(), song.getAlbum());
+            
+            // 저장된 노래가 없다면 Save
+            if(Objects.isNull(result)) result = songRepository.save(song);
+            
+            // 수록곡 리스트에 추가
+            bSideTrack.add(SongDto.createSongDto(result));
+        }
+        
+        return bSideTrack;
+    }
+    
+    // 수록곡 가져오는 메소드
+    public ArrayList<SongDto> getBsideTrack(String listId){
+        ArrayList<Song> sideTrack = songRepository.getBsideTrack(listId);
+
+        return (ArrayList) sideTrack.stream().map(song -> SongDto.createSongDto(song))
+                                    .collect(Collectors.toList());        
+    }
 }
     
 //  검색 테스트용

@@ -5,7 +5,7 @@
  */
 package Dto.Song;
 
-import Entity.Song;
+import Entity.Song.Song;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

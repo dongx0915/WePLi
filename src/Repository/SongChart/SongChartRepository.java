@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Repository;
+package Repository.SongChart;
 
-import Entity.SongChart;
+import Repository.BaseRepository.CrudRepository;
+import Entity.SongChart.SongChart;
 import java.sql.SQLException;
 import java.sql.Date;
 

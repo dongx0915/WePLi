@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import Entity.Playlist.Playlist;
 import java.sql.Date;
 
 /**
@@ -108,6 +109,7 @@ public class Relaylist2 {
         this.createTime = relaylistBuilder2.createTime;
         this.firstSongTitle = relaylistBuilder2.firstSongTitle;
         this.firstSongSinger = relaylistBuilder2.firstSongSinger;
+        this.firstSongImage = relaylistBuilder2.firstSongImage;
     }
 
     @Override

@@ -2,14 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Service;
+package Service.Playlist;
 
 import Dto.Playlist.PlaylistCreateDto;
 import Dto.Playlist.PlaylistDto;
 import Dto.Playlist.PlaylistUpdateDto;
-import Entity.Playlist;
-import Repository.PlaylistRepository;
+import Entity.Playlist.Playlist;
+import Repository.Playlist.PlaylistRepository;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -20,17 +22,17 @@ public class PlaylistService {
 
     public PlaylistService() { this.playlistRepository = new PlaylistRepository(); }
     
-    public boolean createPlaylist(PlaylistCreateDto dto){
+    // 플레이리스트 생성
+    public PlaylistDto createPlaylist(PlaylistCreateDto dto){
         // Dto를 Entity로 변환
         Playlist playlist = Playlist.toEntity(dto);
         
-        Playlist result = playlistRepository.save(playlist);
+        Playlist result = playlistRepository.sharePlaylist(playlist);
         
-        if(result != null) return true;
-        
-        return false;
+        return Objects.isNull(result) ? null : PlaylistDto.createDto(result);
     }
     
+    // 플레이리스트 수정
     public Playlist updatePlaylist(PlaylistUpdateDto dto){
         // 업데이트할 플레이리스트를 가져옴
         Playlist target = playlistRepository.findById(dto.getId());
@@ -46,18 +48,28 @@ public class PlaylistService {
         return result;
     }
     
+    // 플레이리스트 삭제
     public boolean deletePlaylist(String id){
         // 엮여있는 Comment 테이블과 PlaylistArticle 테이블까지 삭제해야함
         
         return playlistRepository.deleteById(id);
     }
     
-    public Playlist getPlaylist(String id){
-        return playlistRepository.findById(id);
+    // 플레이리스트 아이디로 플레이리스트를 가져옴
+    public PlaylistDto getPlaylist(String id){
+        Playlist playlist = playlistRepository.findById(id);
+        
+        return Objects.isNull(playlist) 
+                ? null 
+                : PlaylistDto.createDto(playlist);
     }
     
-    public ArrayList<Playlist> getAllPlaylists(){
-        return playlistRepository.findAll();
+    // 게시글에 등록된 플레이리스트 조회
+    public ArrayList<PlaylistDto> getAllPlaylists(){
+       // Dto 리스트로 변환 후 리턴
+       return (ArrayList) playlistRepository.findAll()
+                                            .stream().map(playlist -> PlaylistDto.createDto(playlist))
+                                            .collect(Collectors.toList());
     }
     
     

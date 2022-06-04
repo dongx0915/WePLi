@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Service;
+package Service.SongChart;
 
 import Crawler.Crawler;
 import Crawler.CrawlerFactory.MusicCrawlerFactory;
 import Dto.Song.SongDto;
-import Entity.SongChart;
-import Repository.SongChartRepository;
+import Entity.SongChart.SongChart;
+import Repository.SongChart.SongChartRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
