@@ -4,12 +4,12 @@
  */
 package Controller;
 
+import Dto.Song.SongCreateDto;
 import Dto.Song.SongDto;
-import Entity.SongChart;
-import Service.SongChartService;
-import Service.SongService;
+import Entity.SongChart.SongChart;
+import Service.SongChart.SongChartService;
+import Service.Song.SongService;
 import java.util.ArrayList;
-import lombok.Singular;
 
 /**
  *
@@ -28,7 +28,17 @@ public class SongController {
     private SongService songService; // 
     private SongChartService songchartService;
 
-
+    // 노래 리스트 저장(플레이리스트에서 선택 된 노래)
+    public ArrayList<SongDto> addSongList(ArrayList<SongCreateDto> songlist){
+        return songService.addSongList(songlist);
+    }
+    
+    public ArrayList<SongDto> getBsideTrack(String listId){
+        ArrayList<SongDto> sideTrack = songService.getBsideTrack(listId);
+        
+        return sideTrack;
+    }
+    
     public ArrayList<SongDto> SongSearch(String site, String text) {
         ArrayList<SongDto> SearchList = songService.musicSearch(site, text);
 
