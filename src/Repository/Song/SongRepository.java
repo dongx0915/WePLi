@@ -45,6 +45,7 @@ public class SongRepository extends CrudRepository<Song, String> {
         
         // playBsideTrack과 song 테이블을 조인하여 수록곡을 가져옴
         String sql = String.format("SELECT * FROM song WHERE id IN (SELECT songId FROM %s WHERE %s = \"%s\");", bSideTrack, listIdField, listId);
+        
         this.rs = this.executeQuery(sql);
         
         ArrayList<Song> sideTrack = new ArrayList<>();

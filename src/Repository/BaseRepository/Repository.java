@@ -42,7 +42,7 @@ public class Repository {
         try {
             con = db.connect();
             pstmt = con.prepareStatement(sql);
-                
+               
             // 성공 시 ResultSet 리턴
             return pstmt.executeQuery();
         } 

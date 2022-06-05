@@ -4,6 +4,7 @@
  */
 package Dto.RelayBsideTrack;
 
+import Entity.RelayBsideTrack.RelayBsideTrack;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,4 +27,21 @@ public class RelayBsideTrackDto {
     private String relaylistId;
     private int songId;
     private int likes;
+    
+    public static RelayBsideTrackDto createDto(RelayBsideTrack entity){        
+        return RelayBsideTrackDto.builder()
+                                 .relaylistId(entity.getRelaylistId())
+                                 .songId(entity.getSongId())
+                                 .likes(entity.getLikes())
+                                 .build();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        RelayBsideTrackDto target = (RelayBsideTrackDto) obj;
+        
+        return (this.relaylistId.equals(target.relaylistId) && this.songId == target.songId);
+    }
+    
+    
 }

@@ -7,7 +7,7 @@ package Controller;
 import Dto.Song.SongCreateDto;
 import Dto.Song.SongDto;
 import Entity.SongChart.SongChart;
-import Service.SongChart.SongChartService;
+import Service.Song.SongChartService;
 import Service.Song.SongService;
 import java.util.ArrayList;
 

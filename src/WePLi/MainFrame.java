@@ -6,11 +6,15 @@ package WePLi;
 
 import Controller.PlayBsideTrackController;
 import Controller.PlaylistController;
+import Controller.RelayBsideTrackController;
+import Controller.RelayUserController;
 import Controller.RelaylistController;
 import Controller.SongController;
 import Dto.PlayBsideTrack.PlayBsideTrackDto;
 import Dto.Playlist.PlaylistCreateDto;
 import Dto.Playlist.PlaylistDto;
+import Dto.RelayBsideTrack.RelayBsideTrackDto;
+import Dto.RelayUser.RelayUserDto;
 import Dto.Relaylist.RelaylistCreateDto;
 import Dto.Relaylist.RelaylistDto;
 import Dto.Song.SongCreateDto;
@@ -18,7 +22,6 @@ import Dto.Song.SongDto;
 import Entity.SongChart.SongChart;
 import WePLi.SearchFrame.SearchFrame;
 import WePLi.UI.ComponentSetting;
-import static WePLi.UI.ComponentSetting.convertSongToHtml;
 import WePLi.UI.DataParser;
 import WePLi.UI.JFrameSetting;
 import WePLi.UI.JPanelSetting;
@@ -36,7 +39,6 @@ import javax.swing.table.TableModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import static WePLi.UI.ComponentSetting.convertListToHtml;
 
 /**
  *
@@ -46,37 +48,157 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
+
     
+    private int mouseX, mouseY;
+    private int voteIndex = 0;
+    private ArrayList<SongDto> recommendList;
+    private ArrayList<RelayBsideTrackDto> votedList;
     private ArrayList<JPanel> panelList = new ArrayList<>();
     
     private SongController songController = SongController.getInstance();// 컨트롤러 생성
     private PlaylistController playlistController = PlaylistController.getInstance();
     private PlayBsideTrackController playBsideTrackController = PlayBsideTrackController.getInstance();
+    private RelayBsideTrackController relayBsideTrackController = RelayBsideTrackController.getInstance();
     private RelaylistController relaylistController = RelaylistController.getInstance();
+    private RelayUserController relayUserController = RelayUserController.getInstance();
     
     public MainFrame() {
         JFrameSetting.layoutInit();
+        
+        setResizable(false); // 크기 변경 불가능하도록 함
+        setUndecorated(true); // 프레임의 타이틀바를 없앰
 
         initComponents();
+        
         setVisible(true);
         setLocationRelativeTo(null);
 
-        JPanelSetting.changePanel(panelList, createPlayPanel);
-
-        /* ChartTable 기본 디자인 세팅 (Customize Code에 있음) */
-        /* PlaylistTable 기본 디자인 세팅 (Customize Code에 있음) */
+        JPanelSetting.changePanel(panelList, relayVotePanel);
         
-        /* 테스트 값 생성 */
-        String url1 = "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/662/688/82662688_1651196114166_1_600x600.JPG/dims/resize/Q_80,0";
-        String url2 = "https://image.bugsm.co.kr/album/images/50/40756/4075667.jpg?version=20220515063240.0";
-
-
-        String genieUrl = "https://image.genie.co.kr/Y/IMAGE/IMG_ALBUM/082/540/759/82540759_1645152997958_1_600x600.JPG/dims/resize/Q_80,0";
-        String bugsUrl = "https://image.bugsm.co.kr/album/images/912/40757/4075727.jpg?version=20220518025622.0";
-
-        relayImageLabel.setIcon(ComponentSetting.getBigBlurImage("https://cdnimg.melon.co.kr/cm2/album/images/109/03/868/10903868_20220330103544_500.jpg?e89c53bde5d39b21b09e8007db5b9cc0/melon/resize/912/quality/80/optimize"));
+        relayVoteBGLabel.setIcon(
+                ComponentSetting.getBigBlurImage(
+                            "https://cdnimg.melon.co.kr/cm2/album/images/109/03/868/10903868_20220330103544_500.jpg?e89c53bde5d39b21b09e8007db5b9cc0/melon/resize/912/quality/80/optimize",
+                            912,912
+                            )
+                        );
+        relayVoteImageLabel.setIcon(ComponentSetting.imageToIcon("https://cdnimg.melon.co.kr/cm2/album/images/109/03/868/10903868_20220330103544_500.jpg?e89c53bde5d39b21b09e8007db5b9cc0/melon/resize/912/quality/80/optimize",
+                                                                    350, 350));
     }
     
+    /*------------------------------- 플레이리스트 관련 메소드 --------------------------------*/
+    private void createPlaylist(){
+                
+        // 플레이리스트 제목, 설명, 이미지, 작성자, 수록곡 필요
+        TableModel tm = playBsideTable.getModel();
+        int row = tm.getRowCount();
+        
+        if(row == 0) return;    // 한 곡도 선택하지 않은 경우
+        
+        // 제목, 가수, 이미지, 앨범 필요
+        // 선택한 곡을 Songlist로 변환
+        ArrayList<SongCreateDto> songlist = new ArrayList<>();        
+        for (int i = 0; i < row; i++) songlist.add(DataParser.parseHtmlToSongCreateDto(tm.getValueAt(i, 2)));
+        
+        // 1. 선택한 곡 Song 테이블에 저장
+        ArrayList<SongDto> songDtolist = songController.addSongList(songlist);
+        
+        // 2. 플레이리스트 저장
+        PlaylistCreateDto playlistCreateDto = PlaylistCreateDto.builder()
+                                    .title(createPlayTitleField.getText())
+                                    .inform(createPlayInformTextArea.getText())
+                                    .author(LoginUserLabel.getText())
+                                    .image(songlist.get(0).getImage())
+                                    .createTime(new java.sql.Date(new java.util.Date().getTime()))
+                                    .build();
+        
+        PlaylistDto playlistDto = playlistController.createPlaylist(playlistCreateDto);
+        
+        // 3. 수록곡 저장
+        ArrayList<PlayBsideTrackDto> bSideTrackDto = new ArrayList<>();
+        
+        for (SongDto songDto : songDtolist) {
+            bSideTrackDto.add(PlayBsideTrackDto.builder()
+                                               .playlistId(playlistDto.getId())
+                                               .songId(songDto.getId())
+                                               .build());
+        }
+        
+        playBsideTrackController.addPlayBsideTrack(bSideTrackDto);
+        
+        JOptionPane.showMessageDialog(null, "플레이리스트 생성이 완료 되었습니다.");
+        
+        JPanelSetting.changePanel(panelList, playlistPanel);
+        initPlaylistPanel();
+    }
+        
+    private Object[][] getPlaylist(TableModel model, int row){
+        // 플레이리스트 아이디 가져오기
+        Document doc = Jsoup.parse(model.getValueAt(row, 2).toString());
+        
+        Element element = doc.selectFirst("body");
+        String listId = element.select("#listId").attr("value");
+        
+        //1. 플레이리스트 아이디로 플레이리스트 가져오기
+        PlaylistDto playlist = playlistController.getPlaylist(listId);
+        
+        //2. 플레이리스트 조회 화면 설정
+        playImageLabel.setIcon(ComponentSetting.imageToIcon(playlist.getImage(), 260, 260)); // 썸네일 지정
+        playTitleLabel.setText(playlist.getTitle());                                         // 제목 지정
+        playDateLabel.setText(playlist.getCreateTime().toString());                          // 생성 날짜 지정
+        playInformLabel.setText(playlist.getInform());                                       // 설명 지정
+        playAuthorLabel.setText(playlist.getAuthor());                                       // 작성자 지정
+        playIdLabel.setText(playlist.getId());                                               // 플레이리스트 아이디 지정
+        
+        //3. 수록곡 가져오기
+        ArrayList<SongDto> sideTrack = songController.getBsideTrack("playBsideTrack", listId);
+        
+        //4. 수록곡 테이블에 노래 삽입
+        Object[][] value = DataParser.songDtoToObject(sideTrack, 0);
+        
+        return value;
+    }
+      
+    private Object[][] getAllPlaylists(DefaultTableModel model){
+        // 플레이리스트를 전부 가져옴
+        ArrayList<PlaylistDto> playlist = playlistController.getAllPlaylists();
+
+        Object[][] data = new Object[playlist.size()][];
+        
+        for (int i = 0; i < playlist.size(); i++) {
+            // 플레이리스트 정보 추출
+            String playlistId = playlist.get(i).getId();
+            String title = playlist.get(i).getTitle();
+            String author = playlist.get(i).getAuthor();
+            String inform = playlist.get(i).getInform();
+            String imageUrl = playlist.get(i).getImage();
+            ImageIcon image = ComponentSetting.imageToIcon(imageUrl, 100, 100);
+            java.sql.Date createTime = playlist.get(i).getCreateTime();
+            
+            data[i] = new Object[]{
+                model.getRowCount() + (i + 1),
+                image,
+                DataParser.convertListToHtml(playlistId, title, author, inform),
+                createTime
+            };
+        }
+        
+        return data;
+    }
+    
+    private void initPlaylistPanel(){
+        // 테이블 초기화
+        DefaultTableModel model = (DefaultTableModel) playlistTable.getModel();
+        model.setRowCount(0);
+        
+        // 플레이리스트 목록을 가져옴
+        Object[][] data = getAllPlaylists(model);
+        
+        // 테이블에 플레이리스트 삽입
+        JTableSetting.insertTableRow((DefaultTableModel) playlistTable.getModel(), data);
+    }
+    /*----------------------------  플레이리스트 관련 메소드 끝 -------------------------------*/
+        
     /*------------------------------- 릴레이리스트 관련 메소드 --------------------------------*/
     // 릴레이리스트 생성 메소드
     private void createRelaylist(){
@@ -88,7 +210,7 @@ public class MainFrame extends javax.swing.JFrame {
         // 제목, 가수, 이미지, 앨범 필요
         // 선택한 곡을 Songlist로 변환
         ArrayList<SongCreateDto> songlist = new ArrayList<>();        
-        SongCreateDto firstSong = DataParser.parseHtmlToSong(tm.getValueAt(0, 2));  
+        SongCreateDto firstSong = DataParser.parseHtmlToSongCreateDto(tm.getValueAt(0, 2));  
         songlist.add(firstSong); // 리스트 타입으로 전달 (addSongList 형식 맞추기 위해서)
         
         // 1. 선택한 곡 Song 테이블에 저장
@@ -114,13 +236,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     // 릴레이리스트 목록 출력(조회) 메소드
-    private void getAllRelaylists(){
-        JPanelSetting.changePanel(this.panelList, this.relaylistPanel);        
-
-        // 릴레이리스트 테이블 초기화
-        DefaultTableModel model = (DefaultTableModel) relaylistTable.getModel();
-        model.setRowCount(0);
-        
+    private Object[][] getAllRelaylists(DefaultTableModel model){
         // 1. 모든 릴레이리스트 가져오기
         ArrayList<RelaylistDto> relaylists = relaylistController.getRelaylists();
         Object[][] data = new Object[relaylists.size()][];
@@ -138,16 +254,28 @@ public class MainFrame extends javax.swing.JFrame {
             data[i] = new Object[]{
                 model.getRowCount() + (i + 1),
                 image,
-                convertListToHtml(relaylistId, title, author, inform),
+                DataParser.convertListToHtml(relaylistId, title, author, inform),          // 릴레이리스트 정보를 Html 형식으로 변환
                 createTime
             };
         }
                 
-        // 테이블에 릴레이리스트 삽입
-        JTableSetting.insertTableRow((DefaultTableModel) relaylistTable.getModel(), data);
+        return data;
     }
     /*----------------------------- 릴레이리스트 관련 메소드 끝 --------------------------------*/
+       
+    /*----------------------------- 곡 투표 관련 메소드 - --------------------------------*/
+    
+    private RelayBsideTrackDto getCurrentVoteSong(){
+        int songId = Integer.parseInt(relayVoteSongIdLabel.getText());
+        String listId = relayVoteListIdLabel.getText();
         
+        return RelayBsideTrackDto.builder()
+                                 .relaylistId(listId)
+                                 .songId(songId)
+                                 .build();
+    }
+    
+    /*----------------------------- 곡 투표 관련 메소드 끝 --------------------------------*/
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -158,6 +286,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         BackgroundPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        ExitLabel = new javax.swing.JLabel();
+        FrameDragBar = new javax.swing.JLabel();
+        emptyLabel = new javax.swing.JLabel();
         LoginUserLabel = new javax.swing.JLabel();
         HomeLabel = new javax.swing.JLabel();
         PlaylistLabel = new javax.swing.JLabel();
@@ -165,6 +297,18 @@ public class MainFrame extends javax.swing.JFrame {
         NotifyLabel = new javax.swing.JLabel();
         HeaderLabel = new javax.swing.JLabel();
         SidebarLabel = new javax.swing.JLabel();
+        relayVotePanel = new javax.swing.JPanel();
+        relayVoteImageLabel = new javax.swing.JLabel();
+        relayVoteSingerLabel = new javax.swing.JLabel();
+        relayVoteTitleLabel = new javax.swing.JLabel();
+        relayVoteSongIdLabel = new javax.swing.JLabel();
+        relayVoteListIdLabel = new javax.swing.JLabel();
+        relayVoteBackBtn = new javax.swing.JButton();
+        relayVoteForwardBtn = new javax.swing.JButton();
+        relayVoteNotPickBtn = new javax.swing.JButton();
+        relayVotePickBtn = new javax.swing.JButton();
+        relayVoteBlurLabel = new javax.swing.JLabel();
+        relayVoteBGLabel = new javax.swing.JLabel();
         relaylistPanel = new javax.swing.JPanel();
         addRelaylistBtn = new javax.swing.JButton();
         relaylistScrollPanel = new javax.swing.JScrollPane();
@@ -205,6 +349,9 @@ public class MainFrame extends javax.swing.JFrame {
         firstSongSingerLabel = new javax.swing.JLabel();
         blurLabel = new javax.swing.JLabel();
         relayImageLabel = new javax.swing.JLabel();
+        voteLabel = new javax.swing.JLabel();
+        recommendLabel = new javax.swing.JLabel();
+        relaylistIdLabel = new javax.swing.JLabel();
         relayDetailScrollPanel = new javax.swing.JScrollPane();
         relayDetailTable = new javax.swing.JTable();
         playlistDetailPanel = new javax.swing.JPanel();
@@ -233,9 +380,41 @@ public class MainFrame extends javax.swing.JFrame {
         BackgroundPanel.setBackground(new java.awt.Color(255, 255, 255));
         BackgroundPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        LoginUserLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 0, 18)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/profile.png"))); // NOI18N
+        BackgroundPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 680, 24, 23));
+
+        ExitLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/exit_btn.png"))); // NOI18N
+        ExitLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ExitLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ExitLabelMouseEntered(evt);
+            }
+        });
+        BackgroundPanel.add(ExitLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 0, 50, 60));
+
+        FrameDragBar.setBackground(new java.awt.Color(255,255,255,0));
+        FrameDragBar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                FrameDragBarMouseDragged(evt);
+            }
+        });
+        FrameDragBar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                FrameDragBarMousePressed(evt);
+            }
+        });
+        BackgroundPanel.add(FrameDragBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1080, 60));
+
+        emptyLabel.setBackground(new java.awt.Color(255, 255, 255));
+        emptyLabel.setOpaque(true);
+        BackgroundPanel.add(emptyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 200, 60));
+
+        LoginUserLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 1, 16)); // NOI18N
+        LoginUserLabel.setForeground(new java.awt.Color(187,187,187));
         LoginUserLabel.setText("admin");
-        BackgroundPanel.add(LoginUserLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 670, 70, 40));
+        BackgroundPanel.add(LoginUserLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 673, 110, 40));
 
         HomeLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/menu/normal/home.png"))); // NOI18N
         HomeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -300,6 +479,92 @@ public class MainFrame extends javax.swing.JFrame {
         SidebarLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/sidebar.png"))); // NOI18N
         BackgroundPanel.add(SidebarLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 168, -1));
 
+        relayVotePanel.setBackground(new java.awt.Color(255, 255, 255));
+        relayVotePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        relayVoteImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/test/10903868_20220330103544_500.jpg"))); // NOI18N
+        relayVotePanel.add(relayVoteImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(281, 50, 350, 350));
+
+        relayVoteSingerLabel.setFont(new java.awt.Font("나눔스퀘어", 0, 18)); // NOI18N
+        relayVoteSingerLabel.setForeground(new java.awt.Color(255,255,255,170));
+        relayVoteSingerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        relayVoteSingerLabel.setText("윤하(YUNHA)");
+        relayVotePanel.add(relayVoteSingerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 810, 40));
+
+        relayVoteTitleLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 0, 28)); // NOI18N
+        relayVoteTitleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        relayVoteTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        relayVoteTitleLabel.setText("사건의 지평선");
+        relayVotePanel.add(relayVoteTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 430, 810, 40));
+
+        relayVoteSongIdLabel.setForeground(new java.awt.Color(255,255,255,0));
+        relayVotePanel.add(relayVoteSongIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 580, 150, 30));
+
+        relayVoteListIdLabel.setForeground(new java.awt.Color(255,255,255,0));
+        relayVotePanel.add(relayVoteListIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 617, 150, 30));
+
+        relayVoteBackBtn.setBackground(new java.awt.Color(255,255,255,0));
+        relayVoteBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/vote_back_btn.png"))); // NOI18N
+        relayVoteBackBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                relayVoteBackBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                relayVoteBackBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                relayVoteBackBtnMouseExited(evt);
+            }
+        });
+        relayVotePanel.add(relayVoteBackBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, 33, 64));
+
+        relayVoteForwardBtn.setBackground(new java.awt.Color(255,255,255,0));
+        relayVoteForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/vote_forward_btn.png"))); // NOI18N
+        relayVoteForwardBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                relayVoteForwardBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                relayVoteForwardBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                relayVoteForwardBtnMouseExited(evt);
+            }
+        });
+        relayVotePanel.add(relayVoteForwardBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 200, 33, 64));
+
+        relayVoteNotPickBtn.setBackground(new java.awt.Color(255,255,255,0));
+        relayVoteNotPickBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/pick_btn.png"))); // NOI18N
+        relayVoteNotPickBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                relayVoteNotPickBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                relayVoteNotPickBtnMouseEntered(evt);
+            }
+        });
+        relayVotePanel.add(relayVoteNotPickBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(436, 530, 40, 40));
+
+        relayVotePickBtn.setBackground(new java.awt.Color(255,255,255,0));
+        relayVotePickBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/hover/pick_btn_clicked.png"))); // NOI18N
+        relayVotePickBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                relayVotePickBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                relayVotePickBtnMouseEntered(evt);
+            }
+        });
+        relayVotePanel.add(relayVotePickBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 529, 40, 40));
+        this.relayVotePickBtn.setVisible(false);
+
+        relayVoteBlurLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/blur912.png"))); // NOI18N
+        relayVotePanel.add(relayVoteBlurLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 912, 660));
+        relayVotePanel.add(relayVoteBGLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 912, 660));
+
+        BackgroundPanel.add(relayVotePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 912, 660));
+        panelList.add(relayVotePanel);
+
         relaylistPanel.setBackground(new java.awt.Color(255, 255, 255));
         relaylistPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -351,6 +616,11 @@ public class MainFrame extends javax.swing.JFrame {
         relaylistTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
         relaylistTable.getTableHeader().setResizingAllowed(false);
         relaylistTable.getTableHeader().setReorderingAllowed(false);
+        relaylistTable.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                relaylistTableMouseWheelMoved(evt);
+            }
+        });
         relaylistTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 relaylistTableMouseClicked(evt);
@@ -362,7 +632,7 @@ public class MainFrame extends javax.swing.JFrame {
         JTableSetting.tableHeaderInit(relaylistTable, relaylistPanel.getWidth(), 40);
         JTableSetting.listTableSetting(relaylistTable);
 
-        relaylistPanel.add(relaylistScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 148, 896, 510));
+        relaylistPanel.add(relaylistScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 148, 896, 510));
 
         BackgroundPanel.add(relaylistPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 910, 660));
         panelList.add(relaylistPanel);
@@ -418,6 +688,11 @@ public class MainFrame extends javax.swing.JFrame {
         playlistTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
         playlistTable.getTableHeader().setResizingAllowed(false);
         playlistTable.getTableHeader().setReorderingAllowed(false);
+        playlistTable.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                playlistTableMouseWheelMoved(evt);
+            }
+        });
         playlistTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 playlistTableMouseClicked(evt);
@@ -432,7 +707,7 @@ public class MainFrame extends javax.swing.JFrame {
         JTableSetting.tableHeaderInit(playlistTable, playlistPanel.getWidth(), 40);
         JTableSetting.listTableSetting(playlistTable);
 
-        playlistPanel.add(playlistScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 154, 896, 500));
+        playlistPanel.add(playlistScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 154, 896, 500));
 
         BackgroundPanel.add(playlistPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 910, 660));
         panelList.add(playlistPanel);
@@ -741,6 +1016,43 @@ public class MainFrame extends javax.swing.JFrame {
         relayImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/test/younha.jpg"))); // NOI18N
         relaylistDetailPanel.add(relayImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 290));
 
+        voteLabel.setFont(new java.awt.Font("AppleSDGothicNeoSB00", 0, 16)); // NOI18N
+        voteLabel.setForeground(new java.awt.Color(187,187,187));
+        voteLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/vote_btn.png"))); // NOI18N
+        voteLabel.setText("  곡 투표하기");
+        voteLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                voteLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                voteLabelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                voteLabelMouseExited(evt);
+            }
+        });
+        relaylistDetailPanel.add(voteLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 610, 120, 40));
+
+        recommendLabel.setFont(new java.awt.Font("AppleSDGothicNeoSB00", 0, 16)); // NOI18N
+        recommendLabel.setForeground(new java.awt.Color(187,187,187));
+        recommendLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/recommend_btn.png"))); // NOI18N
+        recommendLabel.setText("  곡 추천하기");
+        recommendLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                recommendLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                recommendLabelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                recommendLabelMouseExited(evt);
+            }
+        });
+        relaylistDetailPanel.add(recommendLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 610, 120, 40));
+
+        relaylistIdLabel.setForeground(new java.awt.Color(255, 255, 255));
+        relaylistDetailPanel.add(relaylistIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 620, 190, 20));
+
         relayDetailScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
         );
         relayDetailScrollPanel.setBorder(null);
@@ -780,6 +1092,11 @@ public class MainFrame extends javax.swing.JFrame {
         relayDetailTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
         relayDetailTable.getTableHeader().setResizingAllowed(false);
         relayDetailTable.getTableHeader().setReorderingAllowed(false);
+        relayDetailTable.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                relayDetailTableMouseWheelMoved(evt);
+            }
+        });
         relayDetailTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 relayDetailTableMouseClicked(evt);
@@ -791,7 +1108,7 @@ public class MainFrame extends javax.swing.JFrame {
         JTableSetting.tableHeaderInit(relayDetailTable, relaylistScrollPanel.getWidth(), 40);
         JTableSetting.songTableSetting(relayDetailTable);
 
-        relaylistDetailPanel.add(relayDetailScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 300, 900, 350));
+        relaylistDetailPanel.add(relayDetailScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 300, 900, 310));
 
         BackgroundPanel.add(relaylistDetailPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 912, 660));
         panelList.add(relaylistDetailPanel);
@@ -1068,45 +1385,31 @@ public class MainFrame extends javax.swing.JFrame {
 
     // 릴레이리스트 목록 조회 이벤트
     private void RelaylistLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RelaylistLabelMouseClicked
-        getAllRelaylists(); // 릴레이리스트 목록 조회 메소드
+        JPanelSetting.changePanel(this.panelList, this.relaylistPanel);        
+
+        // 릴레이리스트 테이블 초기화
+        DefaultTableModel model = (DefaultTableModel) relaylistTable.getModel();
+        model.setRowCount(0);
+        
+        Object[][] data = getAllRelaylists(model); // 릴레이리스트 목록 조회 메소드
+        
+        // 테이블에 릴레이리스트 삽입
+        JTableSetting.insertTableRow((DefaultTableModel) relaylistTable.getModel(), data);
     }//GEN-LAST:event_RelaylistLabelMouseClicked
 
     // 플레이리스트 조회 이벤트
     private void PlaylistLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PlaylistLabelMouseClicked
         // TODO add your handling code here:
+        // 화면 변경
         JPanelSetting.changePanel(this.panelList, this.playlistPanel);
         
-        DefaultTableModel model = (DefaultTableModel) playlistTable.getModel();
-        model.setRowCount(0);
-        
-        // 플레이리스트를 전부 가져옴
-        ArrayList<PlaylistDto> playlist = playlistController.getAllPlaylists();
-
-        Object[][] data = new Object[playlist.size()][];
-        
-        for (int i = 0; i < playlist.size(); i++) {
-            // 플레이리스트 정보 추출
-            String playlistId = playlist.get(i).getId();
-            String title = playlist.get(i).getTitle();
-            String author = playlist.get(i).getAuthor();
-            String inform = playlist.get(i).getInform();
-            String imageUrl = playlist.get(i).getImage();
-            ImageIcon image = ComponentSetting.imageToIcon(imageUrl, 100, 100);
-            java.sql.Date createTime = playlist.get(i).getCreateTime();
-            
-            data[i] = new Object[]{
-                model.getRowCount() + (i + 1),
-                image,
-                convertListToHtml(playlistId, title, author, inform),
-                createTime
-            };
-        }
-        
-        // 테이블에 플레이리스트 삽입
-        JTableSetting.insertTableRow((DefaultTableModel) playlistTable.getModel(), data);
-        
+        // 플레이리스트 목록 초기화(갱신)
+        initPlaylistPanel();
     }//GEN-LAST:event_PlaylistLabelMouseClicked
+    
 
+
+    
     private void NotifyLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NotifyLabelMouseClicked
         // TODO add your handling code here:
         JPanelSetting.changePanel(this.panelList, this.notifyPanel);
@@ -1124,20 +1427,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void playDetailTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playDetailTableMouseClicked
         // TODO add your handling code here:
-        int row = this.playDetailTable.getSelectedRow();
-        int column = this.playDetailTable.getSelectedColumn();
-        TableModel model = this.playDetailTable.getModel();
-
-        Document doc = Jsoup.parse(model.getValueAt(row, 2).toString());
-
-        Element element = doc.select("body").get(0);
-
-        System.out.println("엘리먼트 " + element);
-        System.out.println("아이디 : " + element.select("input").attr("value"));
-        System.out.println("제목 : " + element.select("#title").text());
-        System.out.println("앨범 : " + element.select("#album").text());
-
-        System.out.println(row + "행, " + column + "열 : " + model.getValueAt(row, 2) + " 선택했음");
     }//GEN-LAST:event_playDetailTableMouseClicked
 
     // 플레이리스트 상세 조회
@@ -1154,32 +1443,14 @@ public class MainFrame extends javax.swing.JFrame {
         
         TableModel model = this.playlistTable.getModel();
         
-        // 플레이리스트 아이디 가져오기
-        Document doc = Jsoup.parse(model.getValueAt(row, 2).toString());
-        
-        Element element = doc.selectFirst("body");
-        String listId = element.select("#listId").attr("value");
-        
-        //1. 플레이리스트 아이디로 플레이리스트 가져오기
-        PlaylistDto playlist = playlistController.getPlaylist(listId);
-        
-        //2. 수록곡 가져오기
-        ArrayList<SongDto> sideTrack = songController.getBsideTrack("playBsideTrack", listId);
-        
-        //3. 플레이리스트 조회 화면 설정
-        playImageLabel.setIcon(ComponentSetting.imageToIcon(playlist.getImage(), 260, 260)); // 썸네일 지정
-        playTitleLabel.setText(playlist.getTitle());                                         // 제목 지정
-        playDateLabel.setText(playlist.getCreateTime().toString());                          // 생성 날짜 지정
-        playInformLabel.setText(playlist.getInform());                                       // 설명 지정
-        playAuthorLabel.setText(playlist.getAuthor());                                       // 작성자 지정
-        playIdLabel.setText(playlist.getId());                                               // 플레이리스트 아이디 지정
-        
-        //4. 수록곡 테이블에 노래 삽입
-        Object[][] value = DataParser.songDtoToObject(sideTrack);
+        Object[][] value = getPlaylist(model, row);
+
         JTableSetting.insertTableRow((DefaultTableModel) playDetailTable.getModel(), value);
         
         JPanelSetting.changePanel(panelList, playlistDetailPanel);
     }//GEN-LAST:event_playlistTableMouseClicked
+    
+  
     
     private void relayDetailTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayDetailTableMouseClicked
         // TODO add your handling code here:
@@ -1215,18 +1486,20 @@ public class MainFrame extends javax.swing.JFrame {
         RelaylistDto relaylist = relaylistController.getRelaylist(listId);
         
         // 2. 릴레이리스트 조회 화면 세팅
+        relaylistIdLabel.setText(listId);                                                                       // 릴레이리스트 아이디 지정
         firstSongImageLabel.setIcon(ComponentSetting.imageToIcon(relaylist.getFirstSongImage(), 260, 260));     // 썸네일 지정
-        relayImageLabel.setIcon(ComponentSetting.getBigBlurImage(relaylist.getFirstSongImage()));               // 배경 지정
+        relayImageLabel.setIcon(ComponentSetting.getBigBlurImage(relaylist.getFirstSongImage(), 912, 912));     // 배경 지정
         relaylistTitleLabel.setText("<html><p>" + relaylist.getTitle().replace("\n", "<br>")+ "</p></html>");   // 제목 지정
-        relaylistInformLabel.setText(relaylist.getInform());
+        relaylistInformLabel.setText(relaylist.getInform());                                                    // 설명 지정
         firstSongTitleLabel.setText(relaylist.getFirstSongTitle());                                             // 첫 곡 제목 지정
         firstSongSingerLabel.setText(relaylist.getFirstSongSinger());                                           // 첫 곡 가수 지정
         
-        //4. 수록곡 테이블에 노래 삽입
+        // 3. 수록곡 테이블에 노래 삽입
         ArrayList<SongDto> sideTrack = songController.getBsideTrack("relayBsideTrack", listId);
-        Object[][] value = DataParser.songDtoToObject(sideTrack);
         
-        JTableSetting.insertTableRow((DefaultTableModel) relayFirstTable.getModel(), value);
+        Object[][] value = DataParser.songDtoToObject(sideTrack, 0);
+        
+        JTableSetting.insertTableRow((DefaultTableModel) relayDetailTable.getModel(), value);
         
         JPanelSetting.changePanel(panelList, relaylistDetailPanel);
         
@@ -1239,7 +1512,7 @@ public class MainFrame extends javax.swing.JFrame {
         /* 인기차트 */
         songController.updateSongChart();
         ArrayList<SongChart> chart = songController.getSongChart();
-        Object[][] values = songChartToObject(chart);
+        Object[][] values = DataParser.songChartToObject(chart);
 
         /* 테이블에 값 추가*/
         JTableSetting.insertTableRow((DefaultTableModel) chartTable.getModel(), values);
@@ -1336,51 +1609,14 @@ public class MainFrame extends javax.swing.JFrame {
         
         search.setBsideTable(this.playBsideTable);
         search.setCreatePlayImgLabel(this.createPlayImgLabel);
-        search.setIsRelayList(false);
+        search.setListType(ListType.PLAYLIST);
     }//GEN-LAST:event_addTrackBtnMouseClicked
 
     /* 플레이리스트 생성 완료 버튼 */
     private void createPlayBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createPlayBtnMouseClicked
-        
-        // 플레이리스트 제목, 설명, 이미지, 작성자, 수록곡 필요
-        TableModel tm = playBsideTable.getModel();
-        int row = tm.getRowCount();
-        
-        if(row == 0) return;    // 한 곡도 선택하지 않은 경우
-        
-        // 제목, 가수, 이미지, 앨범 필요
-        // 선택한 곡을 Songlist로 변환
-        ArrayList<SongCreateDto> songlist = new ArrayList<>();        
-        for (int i = 0; i < row; i++) songlist.add(DataParser.parseHtmlToSong(tm.getValueAt(i, 2)));
-        
-        // 1. 선택한 곡 Song 테이블에 저장
-        ArrayList<SongDto> songDtolist = songController.addSongList(songlist);
-        
-        // 2. 플레이리스트 저장
-        PlaylistCreateDto playlistCreateDto = PlaylistCreateDto.builder()
-                                    .title(createPlayTitleField.getText())
-                                    .inform(createPlayInformTextArea.getText())
-                                    .author(LoginUserLabel.getText())
-                                    .image(songlist.get(0).getImage())
-                                    .createTime(new java.sql.Date(new java.util.Date().getTime()))
-                                    .build();
-        
-        PlaylistDto playlistDto = playlistController.createPlaylist(playlistCreateDto);
-        
-        // 3. 수록곡 저장
-        ArrayList<PlayBsideTrackDto> bSideTrackDto = new ArrayList<>();
-        
-        for (SongDto songDto : songDtolist) {
-            bSideTrackDto.add(PlayBsideTrackDto.builder()
-                                               .playlistId(playlistDto.getId())
-                                               .songId(songDto.getId())
-                                               .build());
-        }
-        
-        playBsideTrackController.addPlayBsideTrack(bSideTrackDto);
-        
-        JOptionPane.showMessageDialog(null, "플레이리스트 생성이 완료 되었습니다.");
+        createPlaylist();
     }//GEN-LAST:event_createPlayBtnMouseClicked
+    
 
     private void playDeleteBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playDeleteBtnMouseEntered
         // TODO add your handling code here:
@@ -1446,7 +1682,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         search.setBsideTable(this.relayFirstTable);
         search.setCreatePlayImgLabel(this.createRelayImgLabel);
-        search.setIsRelayList(true);
+        search.setListType(ListType.RELAYLIST);
     }//GEN-LAST:event_addSongBtnMouseClicked
 
     private void addSongBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addSongBtnMouseEntered
@@ -1496,6 +1732,273 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.addRelaylistBtn.setIcon(new ImageIcon("./src/resources/layout/button/normal/addTrack_btn.png"));
     }//GEN-LAST:event_addRelaylistBtnMouseExited
+
+    private void FrameDragBarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragBarMousePressed
+        // TODO add your handling code here:
+        mouseX = evt.getX();
+        mouseY = evt.getY();
+        
+    }//GEN-LAST:event_FrameDragBarMousePressed
+
+    private void FrameDragBarMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragBarMouseDragged
+        // TODO add your handling code here:
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        
+        this.setLocation(x - mouseX, y - mouseY);
+    }//GEN-LAST:event_FrameDragBarMouseDragged
+
+    private void ExitLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitLabelMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_ExitLabelMouseClicked
+
+    private void ExitLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitLabelMouseEntered
+        // TODO add your handling code here:
+        this.ExitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_ExitLabelMouseEntered
+
+    private void relayDetailTableMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_relayDetailTableMouseWheelMoved
+        // TODO add your handling code here:
+        JTableSetting.tableScroll(relayDetailTable, relayDetailScrollPanel, evt);
+    }//GEN-LAST:event_relayDetailTableMouseWheelMoved
+
+    private void relaylistTableMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_relaylistTableMouseWheelMoved
+        // TODO add your handling code here:
+        JTableSetting.tableScroll(relaylistTable, relaylistScrollPanel, evt);
+    }//GEN-LAST:event_relaylistTableMouseWheelMoved
+
+    private void voteLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voteLabelMouseEntered
+        // TODO add your handling code here:
+        this.voteLabel.setForeground(new java.awt.Color(87,144,255));
+        this.voteLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_voteLabelMouseEntered
+
+    private void voteLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voteLabelMouseExited
+        // TODO add your handling code here:
+        this.voteLabel.setForeground(new java.awt.Color(187,187,187));
+    }//GEN-LAST:event_voteLabelMouseExited
+
+    private void recommendLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recommendLabelMouseEntered
+        // TODO add your handling code here:
+        this.recommendLabel.setForeground(new java.awt.Color(87,144,255));
+        this.recommendLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_recommendLabelMouseEntered
+
+    private void recommendLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recommendLabelMouseExited
+        // TODO add your handling code here:
+        this.recommendLabel.setForeground(new java.awt.Color(187,187,187));
+    }//GEN-LAST:event_recommendLabelMouseExited
+
+    /* 곡 추천 버튼 클릭 */
+    private void recommendLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recommendLabelMouseClicked
+        // TODO add your handling code here:
+        SearchFrame search = new SearchFrame();
+        
+        search.setBsideTable(this.relayDetailTable);
+        search.setListType(ListType.VOTE);                  
+        search.setRelaylistId(relaylistIdLabel.getText());
+    }//GEN-LAST:event_recommendLabelMouseClicked
+
+    private void relayVoteForwardBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVoteForwardBtnMouseEntered
+        // TODO add your handling code here:
+        this.relayVoteForwardBtn.setIcon(new ImageIcon("./src/resources/layout/button/hover/vote_forward_btn_hover.png"));
+        this.relayVoteForwardBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_relayVoteForwardBtnMouseEntered
+
+    private void relayVoteForwardBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVoteForwardBtnMouseExited
+        // TODO add your handling code here:
+        this.relayVoteForwardBtn.setIcon(new ImageIcon("./src/resources/layout/button/normal/vote_forward_btn.png"));
+    }//GEN-LAST:event_relayVoteForwardBtnMouseExited
+
+    private void relayVoteBackBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVoteBackBtnMouseEntered
+        // TODO add your handling code here:
+        this.relayVoteBackBtn.setIcon(new ImageIcon("./src/resources/layout/button/hover/vote_back_btn_hover.png"));
+        this.relayVoteBackBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_relayVoteBackBtnMouseEntered
+
+    private void relayVoteBackBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVoteBackBtnMouseExited
+        // TODO add your handling code here:
+        this.relayVoteBackBtn.setIcon(new ImageIcon("./src/resources/layout/button/normal/vote_back_btn.png"));
+    }//GEN-LAST:event_relayVoteBackBtnMouseExited
+
+    private void relayVoteNotPickBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVoteNotPickBtnMouseClicked
+        // TODO add your handling code here:
+        this.relayVoteNotPickBtn.setVisible(false);
+        this.relayVotePickBtn.setVisible(true);
+        
+        RelayBsideTrackDto votedSong = getCurrentVoteSong();
+        
+        // 투표한 곡을 저장
+        votedList.add(votedSong);
+        
+        for (RelayBsideTrackDto song : votedList) {
+            System.out.println(song);
+        }
+    }//GEN-LAST:event_relayVoteNotPickBtnMouseClicked
+
+    
+    /* 곡 투표 버튼 이벤트 */
+    private void relayVotePickBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVotePickBtnMouseClicked
+        // TODO add your handling code here:
+        this.relayVoteNotPickBtn.setVisible(true);
+        this.relayVotePickBtn.setVisible(false);
+        
+        int songId = Integer.parseInt(relayVoteSongIdLabel.getText());
+        String listId = relayVoteListIdLabel.getText();
+        
+        RelayBsideTrackDto votedSong = RelayBsideTrackDto.builder()
+                                                         .relaylistId(listId)
+                                                         .songId(songId)
+                                                         .build();
+        
+        // 투표 취소한 곡을 리스트에서 제거
+        votedList.remove(votedSong);
+        
+        for (RelayBsideTrackDto song : votedList) {
+            System.out.println(song);
+        }
+    }//GEN-LAST:event_relayVotePickBtnMouseClicked
+
+    private void relayVoteNotPickBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVoteNotPickBtnMouseEntered
+        // TODO add your handling code here:
+        this.relayVoteNotPickBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_relayVoteNotPickBtnMouseEntered
+
+    private void relayVotePickBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVotePickBtnMouseEntered
+        // TODO add your handling code here:
+        this.relayVotePickBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_relayVotePickBtnMouseEntered
+
+    /* 곡 투표 버튼 클릭 이벤트 */
+    private void voteLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voteLabelMouseClicked
+        // TODO add your handling code here:
+        String listId = relaylistIdLabel.getText();
+        String userId = LoginUserLabel.getText();
+        
+        DefaultTableModel model = (DefaultTableModel) relayDetailTable.getModel();
+        int row = model.getRowCount();
+        
+        // 1. 사용자의 voteCnt를 가져옴
+        RelayUserDto relayUser = relayUserController.getRelayUser(listId, userId);
+        
+        // 2. 테이블의 row와 개수 비교
+        // 2.1 row보다 크거나 같으면 투표 할 수 없음 (이미 모든 곡을 투표 한 경우)
+        if(relayUser.getVoteCnt() >= row) {
+            JOptionPane.showMessageDialog(null, "이미 모든 곡을 투표 하셨습니다.");
+            return;
+        }
+        
+        // 2-2. row보다 작으면 voteCnt 이후의 노래부터 투표 시작
+        // 릴레이리스트의 수록곡을 SongDto로 전부 변환
+        ArrayList<SongDto> songlist = new ArrayList<>();
+        
+        for (int i = relayUser.getVoteCnt(); i < row; i++) {
+            songlist.add(DataParser.parseHtmlToSongDto(model.getValueAt(i, 2)));
+        }
+        
+        // 변환한 수록곡 리스트를 저장
+        this.recommendList = songlist;
+        
+        // 투표 화면 세팅
+        SongDto song = recommendList.get(0);
+        
+        setRelayVotePage(song, listId);
+        
+        // 투표 인덱스, 투표 기록 초기화
+        voteIndex = 0; 
+        votedList = new ArrayList<>();
+        JPanelSetting.changePanel(panelList, relayVotePanel);
+    }//GEN-LAST:event_voteLabelMouseClicked
+
+
+    
+    private void relayVoteForwardBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVoteForwardBtnMouseClicked
+        // TODO add your handling code here:
+        
+        String listId = relayVoteListIdLabel.getText();
+        
+        // 마지막 곡인지 체크
+        if(voteIndex + 1 >= recommendList.size()){
+            
+            boolean voteResult = relayBsideTrackController.updateVoteCnt(votedList);
+            
+            RelayUserDto relayUser = RelayUserDto.builder()
+                                                 .relaylistId(listId)
+                                                 .userId(LoginUserLabel.getText())
+                                                 .voteCnt(recommendList.size())
+                                                 .build();
+            System.out.println(relayUser);
+            
+            boolean userResult = relayUserController.addRelayUser(relayUser);
+            
+            boolean result = (voteResult) && (userResult);
+            
+            if(result) JOptionPane.showMessageDialog(null, "투표가 완료 되었습니다.");
+            else JOptionPane.showMessageDialog(null, "투표에 실패 했습니다.");
+            
+            JPanelSetting.changePanel(panelList, relaylistDetailPanel);
+            return;
+        }
+        
+        // 다음 곡을 화면에 설정
+        SongDto song = recommendList.get(++voteIndex);
+        
+        
+        setRelayVotePage(song, listId);
+        initVoteBtn();
+    }//GEN-LAST:event_relayVoteForwardBtnMouseClicked
+
+    private void relayVoteBackBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVoteBackBtnMouseClicked
+        // TODO add your handling code here:
+        // 마지막 곡인지 체크
+        if(voteIndex - 1 < 0){
+            JOptionPane.showMessageDialog(null, "첫 곡입니다.");
+            return;
+        }
+        
+        SongDto song = recommendList.get(--voteIndex);
+        String listId = relayVoteListIdLabel.getText();
+        
+        setRelayVotePage(song, listId);
+        initVoteBtn();
+    }//GEN-LAST:event_relayVoteBackBtnMouseClicked
+
+    private void playlistTableMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_playlistTableMouseWheelMoved
+        // TODO add your handling code here:
+        JTableSetting.tableScroll(playlistTable, playlistScrollPanel, evt);
+    }//GEN-LAST:event_playlistTableMouseWheelMoved
+    
+    // 투표 버튼(하트) 상태 설정 메소드
+    private void initVoteBtn(){
+        RelayBsideTrackDto currentSong = getCurrentVoteSong();
+        
+        // 현재 곡이 votedList에 존재하면 선택 표시
+        if(votedList.contains(currentSong)) {
+            this.relayVoteNotPickBtn.setVisible(false);
+            this.relayVotePickBtn.setVisible(true);
+        }
+        else {
+            this.relayVoteNotPickBtn.setVisible(true);
+            this.relayVotePickBtn.setVisible(false);
+        }
+    }
+    
+    // 릴레이리스트 투표 화면 세팅
+    private void setRelayVotePage(SongDto song, String listId){
+        this.relayVotePickBtn.setVisible(false);
+        this.relayVoteNotPickBtn.setVisible(true);
+        
+        String blurImage = song.getImage().replace("resize/1000", "resize/912").replace("images/1000", "images/912");   // 배경에 맞게 사이즈 조절
+        String thumbImage = song.getImage().replace("resize/1000", "resize/350").replace("images/1000", "images/350");  // 썸네일에 맞게 사이즈 조절
+        
+        relayVoteSongIdLabel.setText(String.valueOf(song.getId()));                                                     // 투표할 곡의 아이디 지정
+        relayVoteListIdLabel.setText(listId);                                                                           // 릴레이리스트 아이디 지정
+        relayVoteBGLabel.setIcon(ComponentSetting.getBigBlurImage(blurImage, 912, 912));                                // 배경 지정
+        relayVoteImageLabel.setIcon(ComponentSetting.imageToIcon(thumbImage, 350, 350));                                // 썸네일 지정
+        relayVoteTitleLabel.setText(song.getTitle());                                                                   // 제목 지정
+        relayVoteSingerLabel.setText(song.getSinger());                                                                 // 가수 지정
+    }
     
     // 플레이리스트 상세 조회 페이지 초기화
     private void initPlayDetialPanel(){
@@ -1518,25 +2021,12 @@ public class MainFrame extends javax.swing.JFrame {
         firstSongTitleLabel.setText("");
         firstSongSingerLabel.setText("");
         
-        DefaultTableModel tm = (DefaultTableModel) relayFirstTable.getModel();
+        DefaultTableModel tm = (DefaultTableModel) relayDetailTable.getModel();
         tm.setRowCount(0);
     }
 
     
-    public Object[][] songChartToObject(ArrayList<SongChart> songArray) {
-        Object[][] values = new Object[songArray.size()][];
 
-        for (int i = 0; i < songArray.size(); i++) {
-            SongChart song = songArray.get(i);
-
-            values[i] = new Object[]{song.getId(), 
-                                    ComponentSetting.imageToIcon(song.getImage(), 60, 60), 
-                                    convertSongToHtml(song.getTitle(), song.getAlbum(), song.getImage(), song.getSinger()),
-                                    song.getSinger() };
-        }
-
-        return values;
-    }
 
     /**
      * @param args the command line arguments
@@ -1567,6 +2057,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BackgroundPanel;
+    private javax.swing.JLabel ExitLabel;
+    private javax.swing.JLabel FrameDragBar;
     private javax.swing.JLabel HeaderLabel;
     private javax.swing.JLabel HomeLabel;
     private javax.swing.JLabel LoginUserLabel;
@@ -1598,9 +2090,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel createRelayPanel;
     private javax.swing.JTextField createRelayTitleField;
     private javax.swing.JLabel createRelayTitleLabel;
+    private javax.swing.JLabel emptyLabel;
     private javax.swing.JLabel firstSongImageLabel;
     private javax.swing.JLabel firstSongSingerLabel;
     private javax.swing.JLabel firstSongTitleLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel notifyPanel;
     private javax.swing.JLabel playAuthorLabel;
     private javax.swing.JScrollPane playBsideScrollPanel;
@@ -1619,17 +2113,32 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel playlistPanel;
     private javax.swing.JScrollPane playlistScrollPanel;
     private javax.swing.JTable playlistTable;
+    private javax.swing.JLabel recommendLabel;
     private javax.swing.JScrollPane relayDetailScrollPanel;
     private javax.swing.JTable relayDetailTable;
     private javax.swing.JScrollPane relayFirstScrollPanel;
     private javax.swing.JTable relayFirstTable;
     private javax.swing.JLabel relayImageLabel;
     private javax.swing.JScrollPane relayInformScrollPanel;
+    private javax.swing.JLabel relayVoteBGLabel;
+    private javax.swing.JButton relayVoteBackBtn;
+    private javax.swing.JLabel relayVoteBlurLabel;
+    private javax.swing.JButton relayVoteForwardBtn;
+    private javax.swing.JLabel relayVoteImageLabel;
+    private javax.swing.JLabel relayVoteListIdLabel;
+    private javax.swing.JButton relayVoteNotPickBtn;
+    private javax.swing.JPanel relayVotePanel;
+    private javax.swing.JButton relayVotePickBtn;
+    private javax.swing.JLabel relayVoteSingerLabel;
+    private javax.swing.JLabel relayVoteSongIdLabel;
+    private javax.swing.JLabel relayVoteTitleLabel;
     private javax.swing.JPanel relaylistDetailPanel;
+    private javax.swing.JLabel relaylistIdLabel;
     private javax.swing.JLabel relaylistInformLabel;
     private javax.swing.JPanel relaylistPanel;
     private javax.swing.JScrollPane relaylistScrollPanel;
     private javax.swing.JTable relaylistTable;
     private javax.swing.JLabel relaylistTitleLabel;
+    private javax.swing.JLabel voteLabel;
     // End of variables declaration//GEN-END:variables
 }

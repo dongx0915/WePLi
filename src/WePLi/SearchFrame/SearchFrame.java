@@ -4,10 +4,13 @@
  */
 package WePLi.SearchFrame;
 
+import Controller.RelayBsideTrackController;
 import Controller.SongController;
+import Dto.RelayBsideTrack.RelayBsideTrackDto;
+import Dto.Song.SongCreateDto;
 import Dto.Song.SongDto;
+import WePLi.ListType;
 import WePLi.UI.ComponentSetting;
-import static WePLi.UI.ComponentSetting.convertSongToHtml;
 import WePLi.UI.DataParser;
 import WePLi.UI.JFrameSetting;
 import WePLi.UI.JTableSetting;
@@ -17,8 +20,10 @@ import java.awt.Cursor;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -29,7 +34,6 @@ import javax.swing.table.TableModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  *
@@ -61,11 +65,17 @@ class PanelRenderer extends DefaultTableCellRenderer {
 }
 
 public class SearchFrame extends javax.swing.JFrame {
+    private SongController songController = SongController.getInstance(); 
+    private RelayBsideTrackController relayBsideTrackController = RelayBsideTrackController.getInstance();
+    
     private JTable bSideTable;
     private JLabel createPlayImgLabel;
-    private boolean isRelayList = false;
+    private ListType listType;
+    private String relaylistId;
+
+    private int mouseX, mouseY;
     
-    private SongController songController = SongController.getInstance(); // 컨트롤러 생성
+    
     // Item 리스너 작성
     class MyItemListener implements ItemListener {
 
@@ -87,7 +97,9 @@ public class SearchFrame extends javax.swing.JFrame {
      */
     public SearchFrame() {
         JFrameSetting.layoutInit();
-
+        setResizable(false); // 크기 변경 불가능하도록 함
+        setUndecorated(true); // 프레임의 타이틀바를 없앰
+        
         initComponents();
         setVisible(true);
         setLocationRelativeTo(null);
@@ -113,12 +125,92 @@ public class SearchFrame extends javax.swing.JFrame {
 
     private void setFirstImage(Object obj){
         Document doc = Jsoup.parse(obj.toString());
-        Element element = doc.selectFirst("input");
+        System.out.println(doc);
+        Element element = doc.selectFirst("#image");
         String imageUrl = element.attr("value");
 
         imageUrl = imageUrl.replace("resize/144", "resize/1000").replace("images/50", "images/1000");
         
         createPlayImgLabel.setIcon(ComponentSetting.imageToIcon(imageUrl, 260, 260));
+    }
+    
+    /* 선택한 노래를 플레이, 릴레이리스트 테이블에 추가하는 메소드 (리스트를 생성할 때 사용) */
+    private void createListTrack(){
+        // 플레이리스트, 릴레이리스트의 테이블의 인스턴스를 가져와서 바로 넣어줘야함
+        int[] rows = this.searchTable.getSelectedRows();
+        TableModel model = this.searchTable.getModel();
+        
+        //선택 된 노래(행) 개수 만큼 생성
+        Object[][] obj = new Object[rows.length][];
+        
+        // 검색 데이터를 플레이리스트 테이블로 옮기기 위해 Object로 변환
+        for (int i = 0; i < rows.length; i++) {
+            int rowCnt = bSideTable.getRowCount();
+            
+            obj[i] = new Object[]{
+                                    rowCnt + (i + 1),  
+                                    model.getValueAt(rows[i], 1),
+                                    model.getValueAt(rows[i], 2),
+                                    model.getValueAt(rows[i], 3),
+                                };
+        }
+        
+        DefaultTableModel tableModel = (DefaultTableModel) bSideTable.getModel();
+        
+        // 릴레이리스트인 경우
+        if(listType == ListType.RELAYLIST){ 
+            tableModel.setRowCount(0);                          // 매번 초기화
+            obj[0][0] = 1;                                      // 번호 초기화
+            JTableSetting.insertTableRow(tableModel, obj[0]);   // 처음 선택한 1 곡만 들어감
+        }
+        else JTableSetting.insertTableRow(tableModel, obj);   // 테이블에 값 삽입
+        
+        setFirstImage(bSideTable.getValueAt(0, 2));  // 첫 번째 곡의 이미지를 플레이리스트 썸네일로 지정
+        
+        JOptionPane.showMessageDialog(null, "선택한 곡이 추가 되었습니다.");
+    }
+    
+    /* 추천곡 추가 메소드 */
+    private void addRecommendSong(){
+        int[] rows = this.searchTable.getSelectedRows();
+        TableModel model = this.searchTable.getModel();
+        
+        // 1. 선택 된 노래 가져오기
+        // 선택한 곡을 SongCreateDto 리스트로 변환
+        ArrayList<SongCreateDto> songlist = new ArrayList<>();
+        
+        for (int i = 0; i < rows.length; i++) {
+            Object data = model.getValueAt(rows[i], 2);
+            songlist.add(DataParser.parseHtmlToSongCreateDto(data));
+        }
+        
+        // 3. 먼저 선택 된 노래 들을 Song 테이블에 저장 후 정보 받아오기 (songId 값을 받아오기 위해서)
+        ArrayList<SongDto> songDtolist = songController.addSongList(songlist);
+        
+        // 4 RelayBsideTrackDto 타입으로 변환
+        ArrayList<RelayBsideTrackDto> bSideTrack = new ArrayList<>();
+        
+        for (SongDto song : songDtolist) {
+            bSideTrack.add(RelayBsideTrackDto.builder()
+                                             .relaylistId(relaylistId)
+                                             .songId(song.getId())
+                                             .likes(0)
+                                             .build()
+            );
+        }
+        
+        // 5. 저장된 노래들을 relayBsideTrack에 삽입                
+        ArrayList<RelayBsideTrackDto> result = relayBsideTrackController.addRelayBsideTrack(bSideTrack);
+        
+        if(!Objects.isNull(result)){
+            // 위의 작업들이 다 성공하면 릴레이리스트 테이블에 추천 곡 삽입
+            DefaultTableModel tableModel = (DefaultTableModel) bSideTable.getModel();
+            
+            JTableSetting.insertTableRow(tableModel, DataParser.songDtoToObject(songDtolist, tableModel.getRowCount()));
+            
+            JOptionPane.showMessageDialog(null, "추쳔 곡이 추가 되었습니다.");
+        }
+        else JOptionPane.showMessageDialog(null, "추천 곡 추가에 실패했습니다.");
     }
     
     @SuppressWarnings("unchecked")
@@ -129,6 +221,8 @@ public class SearchFrame extends javax.swing.JFrame {
         searchScrollPanel = new javax.swing.JScrollPane();
         searchTable = new javax.swing.JTable();
         backgroundPanel = new javax.swing.JPanel();
+        ExitLabel = new javax.swing.JLabel();
+        FrameDragBar = new javax.swing.JLabel();
         searchTextField = new javax.swing.JTextField();
         searchNavbarLabel = new javax.swing.JLabel();
         searchFieldLabel = new javax.swing.JLabel();
@@ -190,6 +284,30 @@ public class SearchFrame extends javax.swing.JFrame {
 
         backgroundPanel.setBackground(new java.awt.Color(255, 255, 255));
         backgroundPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        ExitLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/exit_btn.png"))); // NOI18N
+        ExitLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ExitLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ExitLabelMouseEntered(evt);
+            }
+        });
+        backgroundPanel.add(ExitLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 0, 50, 50));
+
+        FrameDragBar.setBackground(new java.awt.Color(255,255,255,0));
+        FrameDragBar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                FrameDragBarMouseDragged(evt);
+            }
+        });
+        FrameDragBar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                FrameDragBarMousePressed(evt);
+            }
+        });
+        backgroundPanel.add(FrameDragBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 50));
 
         searchTextField.setBackground(new Color(255,255,255,0));
         searchTextField.setToolTipText("");
@@ -277,7 +395,7 @@ public class SearchFrame extends javax.swing.JFrame {
         });
         backgroundPanel.add(submitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 660, 94, 35));
 
-        getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 710));
+        getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 720));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -299,7 +417,7 @@ public class SearchFrame extends javax.swing.JFrame {
         ArrayList<SongDto> searchResult = songController.SongSearch(musicSite, searchText); //검색 결과 리턴
         
         // 검색 결과를 테이블 형식으로 변경
-        Object[][] values = DataParser.songDtoToObject(searchResult);
+        Object[][] values = DataParser.songDtoToObject(searchResult, 0);
 
         DefaultTableModel model = (DefaultTableModel) searchTable.getModel();
         model.setRowCount(0);
@@ -347,36 +465,8 @@ public class SearchFrame extends javax.swing.JFrame {
     /* 곡 추가 버튼 마우스 이벤트 */
     private void submitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseClicked
         // TODO add your handling code here:
-        // 플레이리스트, 릴레이리스트의 테이블의 인스턴스를 가져와서 바로 넣어줘야함
-        int[] rows = this.searchTable.getSelectedRows();
-        TableModel model = this.searchTable.getModel();
-        
-        //선택 된 노래(행) 개수 만큼 생성
-        Object[][] obj = new Object[rows.length][];
-        
-        // 검색 데이터를 플레이리스트 테이블로 옮기기 위해 Object로 변환
-        for (int i = 0; i < rows.length; i++) {
-            int rowCnt = bSideTable.getRowCount();
-            
-            obj[i] = new Object[]{
-                                    rowCnt + (i + 1),  
-                                    model.getValueAt(rows[i], 1),
-                                    model.getValueAt(rows[i], 2),
-                                    model.getValueAt(rows[i], 3),
-                                };
-        }
-        
-        DefaultTableModel tableModel = (DefaultTableModel) bSideTable.getModel();
-        
-        // 릴레이리스트인 경우
-        if(isRelayList){ 
-            tableModel.setRowCount(0);                          // 매번 초기화
-            obj[0][0] = 1;                                      // 번호 초기화
-            JTableSetting.insertTableRow(tableModel, obj[0]);   // 처음 선택한 1 곡만 들어감
-        }
-        else JTableSetting.insertTableRow(tableModel, obj);   // 테이블에 값 삽입
-        
-        setFirstImage(bSideTable.getValueAt(0, 2));  // 첫 번째 곡의 이미지를 플레이리스트 썸네일로 지정
+        if(listType == ListType.VOTE) addRecommendSong();
+        else createListTrack();
     }//GEN-LAST:event_submitButtonMouseClicked
     
     private void submitButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseEntered
@@ -389,6 +479,30 @@ public class SearchFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.submitButton.setIcon(new ImageIcon("./src/resources/layout/component/normal/add_btn.png"));
     }//GEN-LAST:event_submitButtonMouseExited
+
+    private void FrameDragBarMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragBarMouseDragged
+        // TODO add your handling code here:
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        
+        this.setLocation(x - mouseX, y - mouseY);
+    }//GEN-LAST:event_FrameDragBarMouseDragged
+
+    private void FrameDragBarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragBarMousePressed
+        // TODO add your handling code here:
+        mouseX = evt.getX();
+        mouseY = evt.getY();
+    }//GEN-LAST:event_FrameDragBarMousePressed
+
+    private void ExitLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitLabelMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_ExitLabelMouseClicked
+
+    private void ExitLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitLabelMouseEntered
+        // TODO add your handling code here:
+        this.ExitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_ExitLabelMouseEntered
 
     
     /**
@@ -426,11 +540,15 @@ public class SearchFrame extends javax.swing.JFrame {
         });
     }
 
-    public void setIsRelayList(boolean isRelayList) { this.isRelayList = isRelayList; }
-    public void setBsideTable(JTable playlistTable) { this.bSideTable = playlistTable; }
+    
+    public void setListType(ListType listType) { this.listType = listType; }
+    public void setBsideTable(JTable listTable) { this.bSideTable = listTable; }
+    public void setRelaylistId(String relaylistId) { this.relaylistId = relaylistId; }
     public void setCreatePlayImgLabel(JLabel createPlayImgLabel) { this.createPlayImgLabel = createPlayImgLabel; }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ExitLabel;
+    private javax.swing.JLabel FrameDragBar;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JRadioButton bugsRadio;
     private javax.swing.JRadioButton genieRadio;
