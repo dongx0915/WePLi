@@ -8,11 +8,11 @@ import Crawler.Crawler;
 import Crawler.CrawlerFactory.MusicCrawlerFactory;
 import Dto.Playlist.PlaylistDto;
 import Dto.Song.SongDto;
-import Entity.Playlist;
-import Entity.Song;
-import Entity.SongChart;
-import Repository.SongRepository;
-import Repository.SongChartRepository;
+import Entity.Playlist.Playlist;
+import Entity.Song.Song;
+import Entity.SongChart.SongChart;
+import Repository.Song.SongRepository;
+import Repository.SongChart.SongChartRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -132,16 +132,16 @@ public class SongService2 {
     
     
     
-    // list_id 받아와서 song 찾기
-    public ArrayList<SongDto> getSongList(String playlistId){
-        ArrayList<Song> songlist = songRepository.findSonglistById(playlistId);
-        ArrayList<SongDto> dtolist = new ArrayList<>();
-        
-        for (Song song : songlist) 
-            dtolist.add(SongDto.createSongDto(song));
-        
-        return dtolist;
-    }
+//    // list_id 받아와서 song 찾기
+//    public ArrayList<SongDto> getSongList(String playlistId){
+//        ArrayList<Song> songlist = songRepository.findSonglistById(playlistId);
+//        ArrayList<SongDto> dtolist = new ArrayList<>();
+//        
+//        for (Song song : songlist) 
+//            dtolist.add(SongDto.createSongDto(song));
+//        
+//        return dtolist;
+//    }
     
         // playlistcontroller 받은 값 받아서 playlistRepository불러서 해당 레코드 삭제
     public Playlist playBsideTrack(String playlistid, String songid){

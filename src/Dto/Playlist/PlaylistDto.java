@@ -4,8 +4,10 @@
  */
 package Dto.Playlist;
 
-import Entity.Playlist;
+import Dto.Song.SongDto;
+import Entity.Playlist.Playlist;
 import java.sql.Date;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +34,8 @@ public class PlaylistDto {
     public int likes;
     public int downloads;
     public Date createTime;
+    public String image;
+    public ArrayList<SongDto> sideTrack;
     
     public static PlaylistDto createDto(Playlist entity){
         return PlaylistDto.builder()
@@ -41,6 +45,8 @@ public class PlaylistDto {
                 .inform(entity.getInform())
                 .likes(entity.getLikes())
                 .downloads(entity.getDownloads())
+                .createTime(entity.getCreateTime())
+                .image(entity.getImage())
                 .build();
     }
 }

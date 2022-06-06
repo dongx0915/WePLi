@@ -5,7 +5,7 @@
 package WePLi;
 
 import Controller.SongController;
-import Entity.SongChart;
+import Entity.SongChart.SongChart;
 import WePLi.UI.ComponentSetting;
 import WePLi.UI.JFrameSetting;
 import WePLi.UI.JPanelSetting;

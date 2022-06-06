@@ -6,7 +6,7 @@ package Controller;
 
 import Dto.User.PwChangeDto;
 import Entity.PwChange;
-import Service.UserService;
+import Service.User.UserService;
 import WePLi.MainFrame;
 import WePLi.UserFrame.PwChangeJFrame;
 import java.awt.event.ActionEvent;

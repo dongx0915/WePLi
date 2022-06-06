@@ -4,7 +4,7 @@
  */
 package Dto.User;
 
-import Entity.User;
+import Entity.User.User;
 import lombok.*;
 
 /**

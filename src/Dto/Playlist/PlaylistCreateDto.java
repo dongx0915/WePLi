@@ -27,5 +27,6 @@ public class PlaylistCreateDto {
     public String title;
     public String author;   // FK >- User.Id
     public String inform;
+    public String image;
     public Date createTime;
 }

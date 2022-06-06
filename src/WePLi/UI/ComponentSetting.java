@@ -4,6 +4,7 @@
  */
 package WePLi.UI;
 
+import Dto.Song.SongDto;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -48,42 +49,9 @@ public class ComponentSetting {
     }
     
 
-    public static String convertPlaylistToHtml(String title, String author, String inform) {
-        return String.format("<html>\n"
-                + "<head>\n"
-                + "    <style>\n"
-                + "        p {margin-left: 20px;}"
-                + "        #author{\n"
-                + "            color: #a2a2a2;\n"
-                + "            font-size: 10px;\n"
-                + "        }\n"
-                + "        #inform{\n"
-                + "            color: #5D5D5D;\n"
-                + "            font-size: 11px;\n"
-                + "            margin-top: 10px;\n"
-                + "        }\n"
-                + "    </style>\n"
-                + "</head>\n"
-                + "<body>\n"
-                + "    <p id = \"title\">%s</p>\n"
-                + "    <p id = \"author\">%s</p>\n"
-                + "    <p id = \"inform\">%s</p>\n"
-                + "</body>\n"
-                + "</html>", title, author, inform);
-    }
+
     
-    public static String convertSongToHtml(String title, String album, String image) {
-        return String.format("<html>\n"
-                + "<head>\n"
-                + "    <style> #album{color: #a2a2a2;} </style>"
-                + "</head>\n"
-                + "<body>\n"
-                + "    <p id=\"title\">%s</p>\n"
-                + "    <p id=\"album\">%s</p>\n"
-                + "    <input type = \"text\" value = \"%s\" hidden>"                                
-                + "</body>\n"
-                + "</html>", title, album, image);
-    }
+
     
     public static ImageIcon getSmallBlurImage(String url) {
         try {
@@ -146,7 +114,7 @@ public class ComponentSetting {
         return null;
     }
     
-        public static ImageIcon getBigBlurImage(String url) {
+        public static ImageIcon getBigBlurImage(String url, int width, int height) {
         try {
             long before = System.currentTimeMillis();
             URL imgUrl = new URL(url);
@@ -154,7 +122,7 @@ public class ComponentSetting {
             
             // 블러 정도 조절
             int radius = 5;
-            int size = radius * 2 + 1;
+            int size = radius * 3 + 1;
             float weight = 1.0f / (size * size);
             float[] data = new float[size * size];
 
@@ -169,7 +137,7 @@ public class ComponentSetting {
             
             System.out.println((after - before) / 1000);
             
-            return new ImageIcon(blur.getImage().getScaledInstance(912, 912, Image.SCALE_SMOOTH));
+            return new ImageIcon(blur.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
         } catch (IOException ex) { ex.printStackTrace(); }
         
         return null;

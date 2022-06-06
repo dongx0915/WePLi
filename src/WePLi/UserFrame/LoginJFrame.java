@@ -4,16 +4,21 @@
  */
 package WePLi.UserFrame;
 
+import Controller.UserController;
+import Dto.User.UserDto;
+import Entity.User.User;
+import WePLi.MainFrame;
 import WePLi.UI.JFrameSetting;
 import WePLi.UI.JPanelSetting;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
+import java.util.ArrayList;import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -27,8 +32,9 @@ public class LoginJFrame extends javax.swing.JFrame {
     /**
      * Creates new form LoginJFrame
      */
+    private UserController userController = UserController.getInstance();
     private ArrayList<JPanel> panelList = new ArrayList<>();
-
+    
     public LoginJFrame() {
         JFrameSetting.layoutInit();
         
@@ -101,6 +107,9 @@ public class LoginJFrame extends javax.swing.JFrame {
         signUpBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/signUp_btn.png"))); // NOI18N
         signUpBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         signUpBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                signUpBtnMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 signUpBtnMouseEntered(evt);
             }
@@ -163,12 +172,16 @@ public class LoginJFrame extends javax.swing.JFrame {
 
         errorLabel.setBackground(new java.awt.Color(255,255,255,0));
         errorLabel.setForeground(new java.awt.Color(255, 0, 51));
-        loginPanel.add(errorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 360, 210, 20));
+        errorLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        loginPanel.add(errorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 360, 240, 40));
 
         LoginBtn.setBackground(new java.awt.Color(255,255,255,0));
         LoginBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/login_btn.png"))); // NOI18N
         LoginBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         LoginBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LoginBtnMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 LoginBtnMouseEntered(evt);
             }
@@ -251,15 +264,6 @@ public class LoginJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /* 로그인 이벤트 리스너(컨트롤러) 등록 메소드 */
-    public void setLoginListner(ActionListener listener) {
-        this.LoginBtn.addActionListener(listener);
-    }
-    
-    /* 회원가입 이벤트 리스너(컨트롤러) 등록 메소드 */
-    public void setSignUpListner(ActionListener listener){
-        this.signUpBtn.addActionListener(listener);
-    }
 
     /* 회원가입 버튼 마우스 이벤트 */
     private void SignUpTextLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SignUpTextLabelMouseEntered
@@ -390,6 +394,56 @@ public class LoginJFrame extends javax.swing.JFrame {
         this.checkPwLabel.setIcon(new ImageIcon("./src/resources/layout/field/normal/check_field.png"));
         this.checkPwLabel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_checkPwFieldFocusLost
+
+    private void LoginBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginBtnMouseClicked
+        // TODO add your handling code here:
+        errorLabel.setText("");
+        String inputId = idTextField.getText();
+        String inputPw = pwTextField.getText();
+        
+        if("".equals(inputId) || "".equals(inputPw)){
+            errorLabel.setText("빈 칸 없이 입력해주세요.");
+            return;
+        }
+        
+        UserDto user = userController.login(inputId, inputPw);
+        
+        // 로그인 실패 시
+        if(Objects.isNull(user)) {
+            errorLabel.setText("입력 값을 확인해주세요.");
+            return;
+        }
+        
+        MainFrame mainFrame = new MainFrame();
+        mainFrame.setLoginUser(user.getId());
+        
+        this.dispose();
+    }//GEN-LAST:event_LoginBtnMouseClicked
+
+    private void signUpBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signUpBtnMouseClicked
+        // TODO add your handling code here:
+        String inputId = signUpIdTextField.getText();
+        String newPw = signUpPwTextField.getText();
+        String checkPw = checkPwField.getText();
+        
+        if("".equals(inputId) || "".equals(newPw) || "".equals(checkPw)) {
+            JOptionPane.showMessageDialog(null, "빈 칸 없이 입력해주세요.");
+            return;
+        }
+        
+        if(!newPw.equals(checkPw)){
+            JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");
+            return;
+        }
+        
+        UserDto user = userController.signUp(inputId, newPw, checkPw);
+        
+        if(Objects.isNull(user)) JOptionPane.showMessageDialog(null, "이미 등록 된 계정입니다.");
+        else{
+            JOptionPane.showMessageDialog(null, "회원가입이 완료 되었습니다.");
+            JPanelSetting.changePanel(this.panelList, loginPanel);
+        }
+    }//GEN-LAST:event_signUpBtnMouseClicked
     
     /**
      * @param args the command line arguments
@@ -419,89 +473,6 @@ public class LoginJFrame extends javax.swing.JFrame {
             new LoginJFrame().setVisible(true);
         });
     }
-
-    public JLabel getBackgroundLabel() { return BackgroundLabel; }
-
-    public JPanel getBackgroundPanel() {
-        return loginPanel;
-    }
-
-    public JLabel getIdFieldLabel() {
-        return IdFieldLabel;
-    }
-
-    public JLabel getPwFieldLabel() {
-        return PwFieldLabel;
-    }
-
-    public JLabel getSignUpTextLabel() {
-        return SignUpTextLabel;
-    }
-
-    public JButton getLoginBtn() {
-        return LoginBtn;
-    }
-
-    public JTextField getIdTextField() {
-        return idTextField;
-    }
-
-    public JPasswordField getPwTextField() {
-        return pwTextField;
-    }
-
-    public ArrayList<JPanel> getPanelList() {
-        return panelList;
-    }
-
-    public JPasswordField getCheckPwField() {
-        return checkPwField;
-    }
-
-    public JLabel getCheckPwLabel() {
-        return checkPwLabel;
-    }
-
-    public JLabel getErrorLabel() {
-        return errorLabel;
-    }
-
-    public JPanel getLoginPanel() {
-        return loginPanel;
-    }
-
-    public JLabel getLoginTextLabel() {
-        return loginTextLabel;
-    }
-
-    public JButton getSignUpBtn() {
-        return signUpBtn;
-    }
-
-    public JLabel getSignUpIdLabel() {
-        return signUpIdLabel;
-    }
-
-    public JTextField getSignUpIdTextField() {
-        return signUpIdTextField;
-    }
-
-    public JLabel getSignUpLabel() {
-        return signUpLabel;
-    }
-
-    public JPanel getSignUpPanel() {
-        return signUpPanel;
-    }
-
-    public JLabel getSignUpPwLabel() {
-        return signUpPwLabel;
-    }
-
-    public JPasswordField getSignUpPwTextField() {
-        return signUpPwTextField;
-    }
-
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BackgroundLabel;
