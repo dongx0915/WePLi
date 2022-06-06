@@ -60,7 +60,6 @@ public class CrudRepository<T, ID> extends Repository {
             for (int i = 0; i < fieldList.length; i++) 
                 pstmt.setObject(i + 1, fieldList[i].get(entity));
                 
-            System.out.println("SAVE : " + pstmt.toString());
             pstmt.executeUpdate();
                 
             sql = "SELECT * FROM " + tableName + " ORDER BY " + idFieldName + " DESC LIMIT 1;";

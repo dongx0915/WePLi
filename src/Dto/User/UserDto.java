@@ -21,4 +21,8 @@ import lombok.*;
 public class UserDto {
     private String id;
     private String pw;
+    
+    public static UserDto createDto(User entity){
+        return new UserDto(entity.getId(), entity.getPw());
+    }
 }

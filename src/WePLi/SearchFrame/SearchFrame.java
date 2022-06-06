@@ -9,7 +9,7 @@ import Controller.SongController;
 import Dto.RelayBsideTrack.RelayBsideTrackDto;
 import Dto.Song.SongCreateDto;
 import Dto.Song.SongDto;
-import WePLi.ListType;
+import WePLi.Enum.ListType;
 import WePLi.UI.ComponentSetting;
 import WePLi.UI.DataParser;
 import WePLi.UI.JFrameSetting;

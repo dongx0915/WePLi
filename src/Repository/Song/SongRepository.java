@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author kimkyeonghyun
  */
-public class SongRepository extends CrudRepository<Song, String> {
+public class SongRepository extends CrudRepository<Song, Integer> {
 
     public SongRepository() { super.setEntity(new Song()); }
     
