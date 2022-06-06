@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Entity;
 
 import java.sql.Date;
 
-/**
- *
- * @author Donghyeon <20183188>
- */
 public class Relaylist2 {
 
     public String id;       // PK
@@ -36,8 +28,9 @@ public class Relaylist2 {
         this.firstSongSinger = firstSongSinger;
         this.firstSongImage = firstSongImage;
     }
-    
+
     public static class RelaylistBuilder2 {
+
         private String id;       // PK
         private String title;
         private String author;   // FK >- User.Id
