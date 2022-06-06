@@ -35,4 +35,8 @@ public class RelaylistController {
     public ArrayList<RelaylistDto> getRelaylists(){
          return relaylistService.getRelaylists();
     }
+    
+    public void checkRelaylistTime(){
+        relaylistService.checkRelaylistTime();
+    }
 }

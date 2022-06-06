@@ -10,6 +10,9 @@ import Dto.User.UserDto;
 import Entity.PwChange;
 import Entity.User.User;
 import Repository.User.UserRepository;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -25,32 +28,35 @@ public class UserService {
     }
 
     // 로그인 성공 여부 확인
-    public User login(UserDto dto) {
+    public UserDto login(UserDto dto) {
+        // Dto를 Entity로 변경
         User user = User.toEntity(dto);
+        
         // 해당 ID의 유저 정보를 가져옴
         User target = userRepository.findById(user.getId());
-
+        
         // id 가 없을 때 
-        if (target == null) return null;
+        if (Objects.isNull(target)) return null;
 
-        return target.getPw().equals(user.getPw()) ? user : null;
+        // 패스워드 비교
+        return target.getPw().equals(user.getPw()) ? UserDto.createDto(user) : null;
     }
 
     // 회원가입 method
-    public User SignUp(UserSignUpDto dto) {
+    public UserDto SignUp(UserSignUpDto dto) {
         User target = userRepository.findById(dto.getId());
 
-        // id 중복 아닐 때 
-        if (target != null) return null;
+        // 이미 아이디가 존재하는 경우
+        if (!Objects.isNull(target)) return null;
             
-        if (dto.getNewPw().equals(dto.getCheckPw())) {
-            User user = new User(dto.getId(), dto.getNewPw());
-            userRepository.save(user);
-            
-            return user;
-        }
+        // User를 DB에 저장하고 리턴
+        User user = new User(dto.getId(), dto.getNewPw());
+        userRepository.save(user);
         
-        return null;
+        // 회원가입 결과를 조회하여 리턴 (회원가입 실패 시 null)
+        User result = userRepository.findById(user.getId());
+        
+        return Objects.isNull(result) ? null : UserDto.createDto(result);
     }
 
     // 비밀번호 변경 method
@@ -79,5 +85,12 @@ public class UserService {
         } else System.out.println("비밀번호가 맞지 않습니다.");
         
         return null;
+    }
+
+    // 모든 유저를 받아오는 메소드
+    public ArrayList<UserDto> getAllUsers(){
+        return (ArrayList) userRepository.findAll()
+                                         .stream().map(user -> UserDto.createDto(user))
+                                         .collect(Collectors.toList());
     }
 }

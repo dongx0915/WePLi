@@ -24,7 +24,6 @@ public class PlaylistController{
     private static PlaylistController playlistController = new PlaylistController();
     
     private PlaylistService playlistService;
-    private SongService2 songService2;
 
     private PlaylistController() { this.playlistService = new PlaylistService(); }
     
