@@ -12,6 +12,7 @@
             <file>file:/Users/kimkyeonghyun/Desktop/WePLi/src/Service/SongService2.java</file>
         </group>
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UI/JPanelSetting.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/Playlist/Playlist.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/SongController.java</file>
@@ -88,6 +89,28 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/RelayBsideTrackController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/Song/SongService.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/Notification/NotificationService.java</file>
+=======
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/SearchCrawler/BugsSearchCrawler.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Entity/Relaylist2.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/ChartFrame.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/Crawler.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Controller/UserController.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/CrawlerFactory/MusicCrawlerFactory.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Service/SongService2.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/UserFrame/LoginJFrame.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Controller/SongController.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Dto/Song/SongDto.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Controller/PwChangeController.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/SearchCrawler/MelonSearchCrawler.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Dto/Playlist/PlaylistDto.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/MainFrame.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/Main.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Controller/PlaylistController.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Crawler/SearchCrawler/GenieSearchCrawler.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/SearchFrame/SearchFrame.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/Database/Database.java</file>
+            <file>file:/C:/Users/joon/Desktop/WePLi/src/WePLi/UI/JTableSetting.java</file>
+>>>>>>> 6c5a7013621502d72f4a5af6ca99724991ee6bd1
         </group>
     </open-files>
 </project-private>
