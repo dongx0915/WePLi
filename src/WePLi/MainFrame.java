@@ -7,7 +7,6 @@ package WePLi;
 import Controller.Notification.NotificationController;
 import WePLi.Enum.ListType;
 import Controller.PlaylistController;
-import Controller.RelayUserController;
 import Controller.RelaylistController;
 import Controller.SongController;
 import Dto.Notification.NotificationDto;
@@ -64,7 +63,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     private SongController songController = SongController.getInstance();// 컨트롤러 생성
     private PlaylistController playlistController = PlaylistController.getInstance();
     private RelaylistController relaylistController = RelaylistController.getInstance();
-    private RelayUserController relayUserController = RelayUserController.getInstance();
     private NotificationController notificationController = NotificationController.getInstance();
     
 //    private RelayBsideTrackController relayBsideTrackController = RelayBsideTrackController.getInstance();
