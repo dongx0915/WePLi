@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Service.RelayBsideTrack;
+package Service.Relaylist;
 
 import Dto.RelayBsideTrack.RelayBsideTrackDto;
 import Entity.RelayBsideTrack.RelayBsideTrack;
-import Repository.RelayBsideTrack.RelayBsideTrackRepository;
+import Repository.Relaylist.RelayBsideTrackRepository;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Collectors;

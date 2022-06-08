@@ -10,7 +10,7 @@ import Entity.User.User;
 import Service.User.UserService;
 import WePLi.UserFrame.LoginJFrame;
 import WePLi.MainFrame;
-import WePLi.UI.JPanelSetting;
+import WePLi.Setting.JPanelSetting;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;

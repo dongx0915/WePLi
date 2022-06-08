@@ -37,11 +37,33 @@ public class NotificationService {
                                                         .collect(Collectors.toList());
         
         // 모두 DB에 저장
-        ArrayList<Notification> result =  notificationRepository.saveAll(notifies);
+        ArrayList<NotificationDto> result = new ArrayList<>();
         
-        // Dto로 다시 변환하여 리턴
-        return Objects.isNull(result) ? null : (ArrayList) result
-                                                            .stream().map(notify -> NotificationDto.createDto(notify))
-                                                            .collect(Collectors.toList());
+        for (Notification notify : notifies) {
+            // Relaylist 완성 알림이 전송 되었는지 체크
+            boolean isSended = notificationRepository.isExist(notify.getUserId(), notify.getRelaylistId());
+            
+            if(!isSended) {
+                Notification notification = notificationRepository.save(notify);
+                
+                // Save에 실패하는 경우 바로 null 리턴
+                if(Objects.isNull(notification)) return null;
+                
+                result.add(NotificationDto.createDto(notification));
+            }
+        }
+        
+        return result;
+    }
+    
+    // 해당 사용자의 모든 알림을 가져오는 메소드
+    public ArrayList<NotificationDto> getNotifications(String userId){
+        ArrayList<Notification> notifications = notificationRepository.findAllByUserId(userId);
+            
+        return Objects.isNull(notifications) 
+                ? null
+                : (ArrayList) notifications.stream()
+                                           .map(notify -> NotificationDto.createDto(notify))
+                                           .collect(Collectors.toList());
     }
 }

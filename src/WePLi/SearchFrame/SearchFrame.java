@@ -4,16 +4,16 @@
  */
 package WePLi.SearchFrame;
 
-import Controller.RelayBsideTrackController;
+import Controller.RelaylistController;
 import Controller.SongController;
 import Dto.RelayBsideTrack.RelayBsideTrackDto;
 import Dto.Song.SongCreateDto;
 import Dto.Song.SongDto;
 import WePLi.Enum.ListType;
-import WePLi.UI.ComponentSetting;
-import WePLi.UI.DataParser;
-import WePLi.UI.JFrameSetting;
-import WePLi.UI.JTableSetting;
+import WePLi.Setting.ComponentSetting;
+import WePLi.Setting.DataParser;
+import WePLi.Setting.JFrameSetting;
+import WePLi.Setting.JTableSetting;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -66,7 +66,7 @@ class PanelRenderer extends DefaultTableCellRenderer {
 
 public class SearchFrame extends javax.swing.JFrame {
     private SongController songController = SongController.getInstance(); 
-    private RelayBsideTrackController relayBsideTrackController = RelayBsideTrackController.getInstance();
+    private RelaylistController relaylistController = RelaylistController.getInstance();
     
     private JTable bSideTable;
     private JLabel createPlayImgLabel;
@@ -200,7 +200,7 @@ public class SearchFrame extends javax.swing.JFrame {
         }
         
         // 5. 저장된 노래들을 relayBsideTrack에 삽입                
-        ArrayList<RelayBsideTrackDto> result = relayBsideTrackController.addRelayBsideTrack(bSideTrack);
+        ArrayList<RelayBsideTrackDto> result = relaylistController.addRelayBsideTrack(bSideTrack);
         
         if(!Objects.isNull(result)){
             // 위의 작업들이 다 성공하면 릴레이리스트 테이블에 추천 곡 삽입

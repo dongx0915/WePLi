@@ -21,6 +21,7 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Relaylist/RelaylistCreateDto.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/MainFrame.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/ChartCrawler/MelonChartCrawler.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/Notification/Notification.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/BaseRepository/CrudRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/Song/Song.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/Playlist/PlaylistService.java</file>
@@ -29,6 +30,7 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/PwChange.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UserFrame/LoginJFrame.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/ChartCrawler/BugsChartCrawler.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/Notification/NotificationRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/GenieSearchCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/SongChart/SongChartRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/RelayBsideTrack/RelayBsideTrackService.java</file>
@@ -37,11 +39,13 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/BaseRepository/Repository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/Crawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/RelayUser/RelayUser.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Observer/Observer.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/PwChangeController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/SearchCrawler/MelonSearchCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/UserController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/UI/JFrameSetting.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/Song/SongRepository.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Notification/NotificationDto.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/RelayBsideTrack/RelayBsideTrack.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/Playlist/PlaylistRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/SongService2.java</file>
@@ -61,27 +65,29 @@
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/ChartFrame.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/RelayBsideTrack/RelayBsideTrackDto.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/RelaylistController.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/RelayListTimer/RelaylistTimer.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/User/UserService.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/RelayUserController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/RelayUser/RelayUserService.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Playlist/PlaylistCreateDto.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/RelayUser/RelayUserRepository.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/Relaylist2.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/RelayBsideTrack/RelayBsideTrackRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Song/SongDto2.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/Relaylist/RelaylistRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/PlayBsideTrack/PlayBsideTrackDto.java</file>
-            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/WePLi/ListType.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/PlaylistController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Entity/SongChart/SongChart.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Crawler/ChartCrawler/GenieChartCrawler.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Song/SongCreateDto.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Dto/Relaylist/RelaylistDto.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/Notification/NotificationController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Repository/User/UserRepository.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/test/63500239.jpg</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Observer/Subject.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/resources/test/blur.jpeg</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Controller/RelayBsideTrackController.java</file>
             <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/Song/SongService.java</file>
+            <file>file:/C:/Users/Dong/Documents/NetBeansProjects/WePLi/src/Service/Notification/NotificationService.java</file>
         </group>
     </open-files>
 </project-private>

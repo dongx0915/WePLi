@@ -50,6 +50,21 @@ public class PlaylistRepository extends CrudRepository<Playlist, String>{
         String sql = "SELECT * FROM playlist WHERE id IN (SELECT * FROM playlist_article);";
         this.rs = this.executeQuery(sql);
         
-        return resultSetToEntityList(rs);
+        ArrayList<Playlist> result = resultSetToEntityList(rs);
+        db.close();
+        
+        return result;
     }
+    
+    // 해당 유저의 플레이리스트만 가져오는 메소드
+    public ArrayList<Playlist> findAllByUserId(String userId){
+        String sql = "SELECT * FROM playlist WHERE author = \"" + userId + "\";";
+        this.rs = this.executeQuery(sql);
+        
+        ArrayList<Playlist> result = resultSetToEntityList(rs);
+        db.close();
+        
+        return result;
+    }
+    
 }

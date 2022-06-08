@@ -6,12 +6,11 @@ package WePLi;
 
 import Controller.Notification.NotificationController;
 import WePLi.Enum.ListType;
-import Controller.PlayBsideTrackController;
 import Controller.PlaylistController;
-import Controller.RelayBsideTrackController;
 import Controller.RelayUserController;
 import Controller.RelaylistController;
 import Controller.SongController;
+import Dto.Notification.NotificationDto;
 import Dto.PlayBsideTrack.PlayBsideTrackDto;
 import Dto.Playlist.PlaylistCreateDto;
 import Dto.Playlist.PlaylistDto;
@@ -24,25 +23,20 @@ import Dto.Song.SongDto;
 import Entity.SongChart.SongChart;
 import Observer.Observer;
 import WePLi.SearchFrame.SearchFrame;
-import WePLi.UI.ComponentSetting;
-import WePLi.UI.DataParser;
-import WePLi.UI.JFrameSetting;
-import WePLi.UI.JPanelSetting;
-import WePLi.UI.JTableSetting;
-import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
+import WePLi.Setting.ComponentSetting;
+import WePLi.Setting.DataParser;
+import WePLi.Setting.JFrameSetting;
+import WePLi.Setting.JPanelSetting;
+import WePLi.Setting.JTableSetting;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import org.jsoup.Jsoup;
@@ -69,12 +63,12 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     
     private SongController songController = SongController.getInstance();// 컨트롤러 생성
     private PlaylistController playlistController = PlaylistController.getInstance();
-    private PlayBsideTrackController playBsideTrackController = PlayBsideTrackController.getInstance();
-    private RelayBsideTrackController relayBsideTrackController = RelayBsideTrackController.getInstance();
     private RelaylistController relaylistController = RelaylistController.getInstance();
     private RelayUserController relayUserController = RelayUserController.getInstance();
     private NotificationController notificationController = NotificationController.getInstance();
     
+//    private RelayBsideTrackController relayBsideTrackController = RelayBsideTrackController.getInstance();
+//    private PlayBsideTrackController playBsideTrackController = PlayBsideTrackController.getInstance();    
     public MainFrame() {
         JFrameSetting.layoutInit();
         
@@ -138,7 +132,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
                                                .build());
         }
         
-        playBsideTrackController.addPlayBsideTrack(bSideTrackDto);
+        playlistController.addPlayBsideTrack(bSideTrackDto);
         
         JOptionPane.showMessageDialog(null, "플레이리스트 생성이 완료 되었습니다.");
         
@@ -173,10 +167,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         return value;
     }
       
-    private Object[][] getAllPlaylists(DefaultTableModel model){
-        // 플레이리스트를 전부 가져옴
-        ArrayList<PlaylistDto> playlist = playlistController.getAllPlaylists();
-
+    private Object[][] parsePlaylists(DefaultTableModel model, ArrayList<PlaylistDto> playlist){
         Object[][] data = new Object[playlist.size()][];
         
         for (int i = 0; i < playlist.size(); i++) {
@@ -199,14 +190,15 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         
         return data;
     }
-    
+            
     private void initPlaylistPanel(){
         // 테이블 초기화
         DefaultTableModel model = (DefaultTableModel) playlistTable.getModel();
         model.setRowCount(0);
         
         // 플레이리스트 목록을 가져옴
-        Object[][] data = getAllPlaylists(model);
+        ArrayList<PlaylistDto> playlist = playlistController.getAllPlaylists();
+        Object[][] data = parsePlaylists(model, playlist);
         
         // 테이블에 플레이리스트 삽입
         JTableSetting.insertTableRow((DefaultTableModel) playlistTable.getModel(), data);
@@ -254,20 +246,18 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     }
     
     // 릴레이리스트 목록 출력(조회) 메소드
-    private Object[][] getAllRelaylists(DefaultTableModel model){
-        // 1. 모든 릴레이리스트 가져오기
-        ArrayList<RelaylistDto> relaylists = relaylistController.getRelaylists();
-        Object[][] data = new Object[relaylists.size()][];
+    private Object[][] parseRelaylists(DefaultTableModel model, ArrayList<RelaylistDto> relaylist){
+        Object[][] data = new Object[relaylist.size()][];
         
         // 2. 릴레이리스트 정보 추출
-        for (int i = 0; i < relaylists.size(); i++) {
-            String relaylistId = relaylists.get(i).getId();
-            String title = relaylists.get(i).getTitle();
-            String author = relaylists.get(i).getAuthor();
-            String inform = relaylists.get(i).getInform();
-            String imageUrl = relaylists.get(i).getFirstSongImage();
+        for (int i = 0; i < relaylist.size(); i++) {
+            String relaylistId = relaylist.get(i).getId();
+            String title = relaylist.get(i).getTitle();
+            String author = relaylist.get(i).getAuthor();
+            String inform = relaylist.get(i).getInform();
+            String imageUrl = relaylist.get(i).getFirstSongImage();
             ImageIcon image = ComponentSetting.imageToIcon(imageUrl, 100, 100);
-            java.sql.Date createTime = relaylists.get(i).getCreateTime();
+            java.sql.Date createTime = relaylist.get(i).getCreateTime();
             
             data[i] = new Object[]{
                 model.getRowCount() + (i + 1),
@@ -286,7 +276,8 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         model.setRowCount(0);
         
         // 플레이리스트 목록을 가져옴
-        Object[][] data = getAllRelaylists(model);
+        ArrayList<RelaylistDto> relaylist = relaylistController.getRelaylists();
+        Object[][] data = parseRelaylists(model, relaylist);
         
         // 테이블에 플레이리스트 삽입
         JTableSetting.insertTableRow((DefaultTableModel) relaylistTable.getModel(), data);
@@ -332,6 +323,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         notifyScrollPanel = new javax.swing.JScrollPane();
         notifyTable = new javax.swing.JTable();
         profilePanel = new javax.swing.JPanel();
+        profileIdLabel = new javax.swing.JLabel();
         profileBgLabel = new javax.swing.JLabel();
         playlistTabLabel = new javax.swing.JLabel();
         relaylistTabLabel = new javax.swing.JLabel();
@@ -607,12 +599,20 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         profilePanel.setBackground(new java.awt.Color(255, 255, 255));
         profilePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        profileIdLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 0, 36)); // NOI18N
+        profileIdLabel.setForeground(new java.awt.Color(51, 51, 51));
+        profileIdLabel.setText("dongdong");
+        profilePanel.add(profileIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 600, 70));
+
         profileBgLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/profileBackground.png"))); // NOI18N
         profilePanel.add(profileBgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 912, 245));
 
         playlistTabLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/field/normal/myPlaylist.png"))); // NOI18N
         playlistTabLabel.setToolTipText("");
         playlistTabLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                playlistTabLabelMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 playlistTabLabelMouseEntered(evt);
             }
@@ -624,6 +624,9 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
         relaylistTabLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/field/normal/myRelaylist.png"))); // NOI18N
         relaylistTabLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                relaylistTabLabelMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 relaylistTabLabelMouseEntered(evt);
             }
@@ -1589,7 +1592,8 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         DefaultTableModel model = (DefaultTableModel) relaylistTable.getModel();
         model.setRowCount(0);
         
-        Object[][] data = getAllRelaylists(model); // 릴레이리스트 목록 조회 메소드
+        ArrayList<RelaylistDto> relaylist = relaylistController.getRelaylists();
+        Object[][] data = parseRelaylists(model, relaylist); // 릴레이리스트 목록 조회 메소드
         
         // 테이블에 릴레이리스트 삽입
         JTableSetting.insertTableRow((DefaultTableModel) relaylistTable.getModel(), data);
@@ -1604,12 +1608,32 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         // 플레이리스트 목록 초기화(갱신)
         initPlaylistPanel();
     }//GEN-LAST:event_PlaylistLabelMouseClicked
-    
-
 
     
     private void NotifyLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NotifyLabelMouseClicked
-        // TODO add your handling code here:
+        // 테이블 초기화
+        DefaultTableModel model = (DefaultTableModel)notifyTable.getModel();
+        model.setRowCount(0);
+        
+        // 사용자에게 전송 된 알림을 모두 가져옴
+        ArrayList<NotificationDto> notifications = notificationController.getNotifications(LoginUserLabel.getText());
+        
+        // 알림을 테이블 형식으로 변환
+        Object[][] data = new Object[notifications.size()][];
+        
+        for (int i = 0; i < notifications.size(); i++) {
+            String content = notifications.get(i).getContent();
+            java.sql.Date date = notifications.get(i).getDate();
+            Document doc = Jsoup.parse(content);
+            
+            Element element = doc.selectFirst("body");
+            String imageUrl = element.select("#image").attr("value");
+           
+            data[i] = new Object[]{ i + 1, ComponentSetting.imageToIcon(imageUrl, 100, 100), content, date.toString()};
+        }
+        
+        JTableSetting.insertTableRow(model, data);
+        
         this.notifyIconLabel.setVisible(false);
         JPanelSetting.changePanel(this.panelList, this.notifyPanel);
     }//GEN-LAST:event_NotifyLabelMouseClicked
@@ -2078,8 +2102,8 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         DefaultTableModel model = (DefaultTableModel) relayDetailTable.getModel();
         int row = model.getRowCount();
         
-        // 1. 사용자의 voteCnt를 가져옴
-        RelayUserDto relayUser = relayUserController.getRelayUser(listId, userId);
+        // 1. 사용자의 정보를 가져와서 voteCnt를 가져옴
+        RelayUserDto relayUser = relaylistController.getRelayUser(listId, userId);
         
         // 2. 테이블의 row와 개수 비교
         // 2.1 row보다 크거나 같으면 투표 할 수 없음 (이미 모든 곡을 투표 한 경우)
@@ -2120,7 +2144,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         // 마지막 곡인지 체크
         if(voteIndex + 1 >= recommendList.size()){
             
-            boolean voteResult = relayBsideTrackController.updateVoteCnt(votedList);
+            boolean voteResult = relaylistController.updateVoteCnt(votedList);
             
             RelayUserDto relayUser = RelayUserDto.builder()
                                                  .relaylistId(listId)
@@ -2129,7 +2153,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
                                                  .build();
             System.out.println(relayUser);
             
-            boolean userResult = relayUserController.addRelayUser(relayUser);
+            boolean userResult = relaylistController.addRelayUser(relayUser);
             
             boolean result = (voteResult) && (userResult);
             
@@ -2220,6 +2244,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
     private void LoginUserLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginUserLabelMouseClicked
         // TODO add your handling code here:
+        this.profileIdLabel.setText(LoginUserLabel.getText());
         JPanelSetting.changePanel(panelList, profilePanel);
     }//GEN-LAST:event_LoginUserLabelMouseClicked
 
@@ -2235,6 +2260,36 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     private void notifyTableMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_notifyTableMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_notifyTableMouseEntered
+
+    private void playlistTabLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playlistTabLabelMouseClicked
+        // TODO add your handling code here:
+        this.playlistTabLabel.setIcon(new ImageIcon("./src/resources/layout/field/focus/myPlaylist_clicked.png"));
+        this.relaylistTabLabel.setIcon(new ImageIcon("./src/resources/layout/field/normal/myRelaylist.png"));
+        
+        DefaultTableModel model = (DefaultTableModel) myListTable.getModel();
+        model.setRowCount(0);
+        
+        ArrayList<PlaylistDto> playlist = playlistController.getUserPlaylists(LoginUserLabel.getText());
+        if(playlist.size() == 0) JOptionPane.showMessageDialog(null, "플레이리스트가 존재하지 않습니다.");
+        
+        Object[][] data = parsePlaylists(model, playlist);
+        JTableSetting.insertTableRow(model, data);
+    }//GEN-LAST:event_playlistTabLabelMouseClicked
+
+    private void relaylistTabLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relaylistTabLabelMouseClicked
+        // TODO add your handling code here:
+        this.relaylistTabLabel.setIcon(new ImageIcon("./src/resources/layout/field/focus/myRelaylist_clicked.png"));
+        this.playlistTabLabel.setIcon(new ImageIcon("./src/resources/layout/field/normal/myPlaylist.png"));
+        
+        DefaultTableModel model = (DefaultTableModel) myListTable.getModel();
+        model.setRowCount(0);
+        
+        ArrayList<RelaylistDto> relaylist = relaylistController.getUserRelaylists(LoginUserLabel.getText());
+        if(relaylist.size() == 0) JOptionPane.showMessageDialog(null, "릴레이리스트가 존재하지 않습니다.");
+        
+        Object[][] data = parseRelaylists(model, relaylist);
+        JTableSetting.insertTableRow(model, data);
+    }//GEN-LAST:event_relaylistTabLabelMouseClicked
     
     // 투표 버튼(하트) 상태 설정 메소드
     private void initVoteBtn(){
@@ -2389,6 +2444,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel playlistTabLabel;
     private javax.swing.JTable playlistTable;
     private javax.swing.JLabel profileBgLabel;
+    private javax.swing.JLabel profileIdLabel;
     private javax.swing.JPanel profilePanel;
     private javax.swing.JLabel recommendLabel;
     private javax.swing.JScrollPane relayDetailScrollPanel;

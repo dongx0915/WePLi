@@ -4,11 +4,13 @@
  */
 package Controller;
 
+import Dto.PlayBsideTrack.PlayBsideTrackDto;
 import Dto.Playlist.PlaylistCreateDto;
 import Dto.Playlist.PlaylistDto;
 import Dto.Playlist.PlaylistUpdateDto;
 import Entity.Playlist.Playlist;
 import Entity.Song.Song;
+import Service.Playlist.PlayBsideTrackService;
 import Service.SongService2;
 import Service.Playlist.PlaylistService;
 import java.awt.event.ActionEvent;
@@ -24,8 +26,12 @@ public class PlaylistController{
     private static PlaylistController playlistController = new PlaylistController();
     
     private PlaylistService playlistService;
+    private PlayBsideTrackService playBsideTrackService;
 
-    private PlaylistController() { this.playlistService = new PlaylistService(); }
+    private PlaylistController() { 
+        this.playlistService = new PlaylistService(); 
+        this.playBsideTrackService = new PlayBsideTrackService();
+    }
     
     public static PlaylistController getInstance(){ return playlistController; }
     
@@ -47,7 +53,7 @@ public class PlaylistController{
         Playlist result = playlistService.updatePlaylist(dto);
         
         if(result == null) {
-            System.out.println("업데이트 실패");
+            System.err.println("업데이트 실패");
             return null;
         }
         
@@ -61,18 +67,20 @@ public class PlaylistController{
     
     // PlaylistId로 플레이리스트 가져오는 메소드
     public PlaylistDto getPlaylist(String id){
-        PlaylistDto playlist = playlistService.getPlaylist(id);
-        
-        if(Objects.isNull(playlist)) {
-            System.err.println("조회 실패");
-            return null;
-        }
-        
-        return playlist;
+        return playlistService.getPlaylist(id);
     }
     
+    // 모든 플레이리스트 조회
     public ArrayList<PlaylistDto> getAllPlaylists(){
         return playlistService.getAllPlaylists();
     }
-
+    
+    // 특정 유저의 플레이리스트 조회
+    public ArrayList<PlaylistDto> getUserPlaylists(String userId){
+        return playlistService.getUserPlaylists(userId);
+    }
+    
+    public ArrayList<PlayBsideTrackDto> addPlayBsideTrack(ArrayList<PlayBsideTrackDto> bSideTrackDto){
+        return playBsideTrackService.addPlayBsideTrack(bSideTrackDto);
+    }
 }

@@ -6,6 +6,7 @@ package Repository.Relaylist;
 
 import Repository.BaseRepository.CrudRepository;
 import Entity.Relaylist.Relaylist;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,4 +14,15 @@ import Entity.Relaylist.Relaylist;
  */
 public class RelaylistRepository extends CrudRepository<Relaylist, String>{
     public RelaylistRepository() { super.setEntity(new Relaylist());}
+    
+    // 해당 유저의 릴레이리스트만 가져오는 메소드
+    public ArrayList<Relaylist> findAllByUserId(String userId){
+        String sql = "SELECT * FROM relaylist WHERE author = \"" + userId + "\";";
+        this.rs = this.executeQuery(sql);
+        
+        ArrayList<Relaylist> result = resultSetToEntityList(rs);
+        db.close();
+        
+        return result;
+    }
 }

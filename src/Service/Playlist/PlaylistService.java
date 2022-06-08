@@ -72,19 +72,29 @@ public class PlaylistService {
                                             .collect(Collectors.toList());
     }
     
-    
-    // playlist id 리턴 해주기
-    public Playlist findListId(PlaylistDto dto){
-            
-        Playlist target = playlistRepository.findById(dto.getId());
+    // 특정 유저의 플레이리스트 조회
+    public ArrayList<PlaylistDto> getUserPlaylists(String userId){
+        ArrayList<Playlist> playlist = playlistRepository.findAllByUserId(userId);
         
-        if(target == null){
-            System.out.println("저장된 곡이 없습니다.");
-        }
-        // target return
+        if(Objects.isNull(playlist)) return null;
         
-        return target;
+        // Dto 리스트로 변환 후 리턴
+        return (ArrayList) playlist.stream()
+                                   .map(p -> PlaylistDto.createDto(p))
+                                   .collect(Collectors.toList());
     }
+//    // playlist id 리턴 해주기
+//    public Playlist findListId(PlaylistDto dto){
+//            
+//        Playlist target = playlistRepository.findById(dto.getId());
+//        
+//        if(target == null){
+//            System.out.println("저장된 곡이 없습니다.");
+//        }
+//        // target return
+//        
+//        return target;
+//    }
     
     
     // playlistcontroller 받은 값 받아서 playlistRepository불러서 해당 레코드 삭제
@@ -94,15 +104,5 @@ public class PlaylistService {
         playlistRepository.deletePlayBsideTrack(playlistid, songid);
         
         return null;
-    }
-    
-    public static void main(String[] args) {
-        
-        String pid = "P0000002";
-        String sid = "22";
-
-        
-        PlaylistRepository a = new PlaylistRepository();
-        a.deletePlayBsideTrack(pid, sid);
     }
 }

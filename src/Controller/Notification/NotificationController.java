@@ -13,6 +13,7 @@ import Service.Notification.NotificationService;
 import Service.User.UserService;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.Objects;
 /**
  *
  * @author Donghyeon <20183188>
@@ -69,6 +70,12 @@ public class NotificationController implements Subject {
         return result;
     }
     
+    // 해당 유저에게 전송된 알림들을 모두 가져오는 메소드
+    public ArrayList<NotificationDto> getNotifications(String userId){
+        ArrayList<NotificationDto> notifications = notificationService.getNotifications(userId);
+        
+        return Objects.isNull(notifications) ? null : notifications;
+    }
     // 알림으로 전송할 Content를 생성하는 메소드
     private String getContent(RelaylistDto list){
         return String.format(

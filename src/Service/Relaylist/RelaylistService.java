@@ -4,8 +4,10 @@
  */
 package Service.Relaylist;
 
+import Dto.Playlist.PlaylistDto;
 import Dto.Relaylist.RelaylistCreateDto;
 import Dto.Relaylist.RelaylistDto;
+import Entity.Playlist.Playlist;
 import Entity.Relaylist.Relaylist;
 import RelayListTimer.RelaylistTimer;
 import Repository.Relaylist.RelaylistRepository;
@@ -48,6 +50,18 @@ public class RelaylistService {
                                               .collect(Collectors.toList());
     }
 
+    // 특정 유저의 릴레이리스트 조회
+    public ArrayList<RelaylistDto> getUserRelaylists(String userId){
+        ArrayList<Relaylist> playlist = relaylistRepository.findAllByUserId(userId);
+        
+        if(Objects.isNull(playlist)) return null;
+        
+        // Dto 리스트로 변환 후 리턴
+        return (ArrayList) playlist.stream()
+                                   .map(r -> RelaylistDto.createDto(r))
+                                   .collect(Collectors.toList());
+    }
+    
     // 종료되지 않은 릴레이리스트를 체크하는 메소드
     public void checkRelaylistTime(){
         // 모든 릴레이리스트를 가져옴
@@ -63,14 +77,10 @@ public class RelaylistService {
             // 현재 시간 < (생성 시간 + 릴레이 기간) 이면 아직 종료되지 않은 리스트
             if(current < listTime + limitTime){
                 // 타이머 생성 필요 (listTime + limitTime) - current
-                new RelaylistTimer(list, 5000);
+                new RelaylistTimer(list, 10000);
             }
                 // 이미 종료된 리스트면 알림이 보내졌는지 확인하고 전송
                 // NotifyController한테 요청
         }
-    }
-    
-    public void notifyRelaylist(){
-        
     }
 }
