@@ -151,9 +151,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         Element element = doc.selectFirst("body");
         String listId = element.select("#listId").attr("value");
         
-        
-        
-        
         //1. 플레이리스트 아이디로 플레이리스트 가져오기
         PlaylistDto playlist = playlistController.getPlaylist(listId);
         
@@ -166,6 +163,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         else{
             playEditBtn.setVisible(false);
             playDeleteBtn.setVisible(false);
+            playEditOkBtn.setVisible(false);
         }
         
         playImageLabel.setIcon(ComponentSetting.imageToIcon(playlist.getImage(), 260, 260)); // 썸네일 지정
