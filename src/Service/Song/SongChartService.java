@@ -124,35 +124,4 @@ public class SongChartService {
         return today.toString().equals(dbdate.toString());
         
     }
-    
-    
-    
-    // 테스트용
-        public static void main(String[] args) {
-
-        
-        SongChartService a = new SongChartService();
-        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
-        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
-        
-        int i = 1;
-            for (SongDto songDto : subList) {
-                System.out.println("Rank["+ i++ + "] : " + songDto.getRank() + " Title : " + songDto.getTitle() + " Singer : " + songDto.getSinger());
-            }
-            
-//        a.InsertMusicChart(subList);    // DB 올리기
-
-//        ArrayList<SongChart> Chart = a.ShowMusicChart();
-//        System.out.println(Chart);
-        // 검색
-//           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
-//           if(SearchList.isEmpty())
-//                System.out.println("검색된 노래 없음");
-//           else{
-//               System.out.println(SearchList);
-//           }
-    }
-
-
-    
 }

@@ -27,6 +27,7 @@ import WePLi.Setting.DataParser;
 import WePLi.Setting.JFrameSetting;
 import WePLi.Setting.JPanelSetting;
 import WePLi.Setting.JTableSetting;
+import WePLi.UserFrame.LoginJFrame;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.util.ArrayList;
@@ -145,10 +146,23 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         Element element = doc.selectFirst("body");
         String listId = element.select("#listId").attr("value");
         
+        
+        
+        
         //1. 플레이리스트 아이디로 플레이리스트 가져오기
         PlaylistDto playlist = playlistController.getPlaylist(listId);
         
         //2. 플레이리스트 조회 화면 설정
+        // 작성자가 본인인 경우에만 수정, 삭제 버튼 표시
+        if(playlist.getAuthor().equals(LoginUserLabel.getText())){
+            playEditBtn.setVisible(true);
+            playDeleteBtn.setVisible(true);
+        }
+        else{
+            playEditBtn.setVisible(false);
+            playDeleteBtn.setVisible(false);
+        }
+        
         playImageLabel.setIcon(ComponentSetting.imageToIcon(playlist.getImage(), 260, 260)); // 썸네일 지정
         playTitleLabel.setText(playlist.getTitle());                                         // 제목 지정
         playDateLabel.setText(playlist.getCreateTime().toString());                          // 생성 날짜 지정
@@ -157,7 +171,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         playIdLabel.setText(playlist.getId());                                               // 플레이리스트 아이디 지정
         
         //3. 수록곡 가져오기
-        ArrayList<SongDto> sideTrack = songController.getBsideTrack("playBsideTrack", listId);
+        ArrayList<SongDto> sideTrack = songController.getBsideTrack(listId);
         
         //4. 수록곡 테이블에 노래 삽입
         Object[][] value = DataParser.songDtoToObject(sideTrack, 0);
@@ -268,7 +282,39 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         return data;
     }
     
-        private void initRelaylistPanel(){
+        
+    private boolean downloadRelaylist(String relaylistId, String user){
+        // 릴레이리스트 작성자를 본인으로 변경
+        RelaylistDto relaylist = relaylistController.getRelaylist(relaylistId);
+        relaylist.setAuthor(user);
+        
+        // 내 플레이리스트에 저장
+        RelaylistCreateDto createDto = RelaylistCreateDto.createDto(relaylist);
+        RelaylistDto result = relaylistController.createRelaylist(createDto);
+        
+        // 릴레이리스트 저장 실패 시
+        if(Objects.isNull(result)){
+            JOptionPane.showMessageDialog(null, "릴레이리스트 저장에 실패했습니다.");
+            return false;
+        }
+        // 수록곡을 내 릴레이리스트로 옮기기 
+        ArrayList<SongDto> sideTrack = songController.getBsideTrack(relaylistId);
+        ArrayList<RelayBsideTrackDto> trackList = new ArrayList<>();
+        
+        for (SongDto song : sideTrack) {
+            trackList.add(RelayBsideTrackDto.builder()
+                                            .relaylistId(result.getId())
+                                            .songId(song.getId())
+                                            .build());
+        }
+        
+        // 수록곡 저장
+        ArrayList<RelayBsideTrackDto> trackResult = relaylistController.addRelayBsideTrack(trackList);
+        
+        return Objects.isNull(trackResult) ? false : true;
+    }
+    
+    private void initRelaylistPanel(){
         // 테이블 초기화
         DefaultTableModel model = (DefaultTableModel) relaylistTable.getModel();
         model.setRowCount(0);
@@ -305,11 +351,12 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     private void initComponents() {
 
         BackgroundPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        profleLabel = new javax.swing.JLabel();
+        LoginUserLabel = new javax.swing.JLabel();
+        logoutLabel = new javax.swing.JLabel();
         ExitLabel = new javax.swing.JLabel();
         FrameDragBar = new javax.swing.JLabel();
         emptyLabel = new javax.swing.JLabel();
-        LoginUserLabel = new javax.swing.JLabel();
         HomeLabel = new javax.swing.JLabel();
         PlaylistLabel = new javax.swing.JLabel();
         RelaylistLabel = new javax.swing.JLabel();
@@ -317,6 +364,26 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         NotifyLabel = new javax.swing.JLabel();
         HeaderLabel = new javax.swing.JLabel();
         SidebarLabel = new javax.swing.JLabel();
+        playlistDetailPanel = new javax.swing.JPanel();
+        playDeleteBtn = new javax.swing.JButton();
+        playEditBtn = new javax.swing.JButton();
+        playImageLabel = new javax.swing.JLabel();
+        playTitleLabel = new javax.swing.JLabel();
+        playInformLabel = new javax.swing.JLabel();
+        playDateLabel = new javax.swing.JLabel();
+        playAuthorLabel = new javax.swing.JLabel();
+        playIdLabel = new javax.swing.JLabel();
+        playDetailScrollPanel = new javax.swing.JScrollPane();
+        playDetailTable = new javax.swing.JTable();
+        playlistPanel = new javax.swing.JPanel();
+        addPlaylistBtn = new javax.swing.JButton();
+        playlistScrollPanel = new javax.swing.JScrollPane();
+        playlistTable = new javax.swing.JTable();
+        playlistBannerLabel = new javax.swing.JLabel();
+        chartPanel = new javax.swing.JPanel();
+        chartBannerLabel = new javax.swing.JLabel();
+        chartScrollPanel = new javax.swing.JScrollPane();
+        chartTable = new javax.swing.JTable();
         notifyPanel = new javax.swing.JPanel();
         notifyScrollPanel = new javax.swing.JScrollPane();
         notifyTable = new javax.swing.JTable();
@@ -328,13 +395,10 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         myListScrollPanel = new javax.swing.JScrollPane();
         myListTable = new javax.swing.JTable();
         relaylistPanel = new javax.swing.JPanel();
-        addRelaylistBtn = new javax.swing.JButton();
+        RelaylistBGLabel = new javax.swing.JLabel();
         relaylistScrollPanel = new javax.swing.JScrollPane();
         relaylistTable = new javax.swing.JTable();
-        playlistPanel = new javax.swing.JPanel();
-        addPlaylistBtn = new javax.swing.JButton();
-        playlistScrollPanel = new javax.swing.JScrollPane();
-        playlistTable = new javax.swing.JTable();
+        addRelaylistBtn = new javax.swing.JButton();
         relayVotePanel = new javax.swing.JPanel();
         relayVoteImageLabel = new javax.swing.JLabel();
         relayVoteSingerLabel = new javax.swing.JLabel();
@@ -372,6 +436,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         createPlayInformLabel = new javax.swing.JLabel();
         createPlayBGLabel = new javax.swing.JLabel();
         relaylistDetailPanel = new javax.swing.JPanel();
+        downloadLabel = new javax.swing.JLabel();
         relaylistInformLabel = new javax.swing.JLabel();
         firstSongImageLabel = new javax.swing.JLabel();
         firstSongTitleLabel = new javax.swing.JLabel();
@@ -384,20 +449,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         relaylistIdLabel = new javax.swing.JLabel();
         relayDetailScrollPanel = new javax.swing.JScrollPane();
         relayDetailTable = new javax.swing.JTable();
-        playlistDetailPanel = new javax.swing.JPanel();
-        playDeleteBtn = new javax.swing.JButton();
-        playEditBtn = new javax.swing.JButton();
-        playImageLabel = new javax.swing.JLabel();
-        playTitleLabel = new javax.swing.JLabel();
-        playInformLabel = new javax.swing.JLabel();
-        playDateLabel = new javax.swing.JLabel();
-        playAuthorLabel = new javax.swing.JLabel();
-        playIdLabel = new javax.swing.JLabel();
-        playDetailScrollPanel = new javax.swing.JScrollPane();
-        playDetailTable = new javax.swing.JTable();
-        chartPanel = new javax.swing.JPanel();
-        chartScrollPanel = new javax.swing.JScrollPane();
-        chartTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -409,8 +460,38 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         BackgroundPanel.setBackground(new java.awt.Color(255, 255, 255));
         BackgroundPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/profile.png"))); // NOI18N
-        BackgroundPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 680, 24, 23));
+        profleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/profile.png"))); // NOI18N
+        BackgroundPanel.add(profleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, 24, 23));
+
+        LoginUserLabel.setFont(new java.awt.Font("나눔스퀘어", 0, 18)); // NOI18N
+        LoginUserLabel.setForeground(new java.awt.Color(187,187,187));
+        LoginUserLabel.setText("admin");
+        LoginUserLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LoginUserLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                LoginUserLabelMouseEntered(evt);
+            }
+        });
+        BackgroundPanel.add(LoginUserLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 120, 40));
+
+        logoutLabel.setBackground(new java.awt.Color(255,255,255,0));
+        logoutLabel.setFont(new java.awt.Font("나눔스퀘어", 0, 18)); // NOI18N
+        logoutLabel.setForeground(new java.awt.Color(187,187,187));
+        logoutLabel.setText("Logout");
+        logoutLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutLabelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logoutLabelMouseExited(evt);
+            }
+        });
+        BackgroundPanel.add(logoutLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 680, 60, 30));
 
         ExitLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/exit_btn.png"))); // NOI18N
         ExitLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -439,19 +520,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         emptyLabel.setBackground(new java.awt.Color(255, 255, 255));
         emptyLabel.setOpaque(true);
         BackgroundPanel.add(emptyLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 200, 60));
-
-        LoginUserLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 1, 16)); // NOI18N
-        LoginUserLabel.setForeground(new java.awt.Color(187,187,187));
-        LoginUserLabel.setText("admin");
-        LoginUserLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                LoginUserLabelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                LoginUserLabelMouseEntered(evt);
-            }
-        });
-        BackgroundPanel.add(LoginUserLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 673, 110, 40));
 
         HomeLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/menu/normal/home.png"))); // NOI18N
         HomeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -518,8 +586,270 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         BackgroundPanel.add(HeaderLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1080, 74));
 
         SidebarLabel.setBackground(new java.awt.Color(39, 49, 64));
+        SidebarLabel.setForeground(new java.awt.Color(255, 255, 255));
         SidebarLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/sidebar.png"))); // NOI18N
-        BackgroundPanel.add(SidebarLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 168, -1));
+        BackgroundPanel.add(SidebarLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 173, -1));
+
+        playlistDetailPanel.setBackground(new java.awt.Color(255, 255, 255));
+        playlistDetailPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        playDeleteBtn.setBackground(new java.awt.Color(255,255,255,0));
+        playDeleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/delete_btn.png"))); // NOI18N
+        playDeleteBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        playDeleteBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                playDeleteBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                playDeleteBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                playDeleteBtnMouseExited(evt);
+            }
+        });
+        playlistDetailPanel.add(playDeleteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 10, 57, 22));
+
+        playEditBtn.setBackground(new java.awt.Color(255,255,255,0));
+        playEditBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/edit_btn.png"))); // NOI18N
+        playEditBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        playEditBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                playEditBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                playEditBtnMouseExited(evt);
+            }
+        });
+        playlistDetailPanel.add(playEditBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 10, 57, 22));
+
+        playImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/test/younha.jpg"))); // NOI18N
+        playlistDetailPanel.add(playImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 260, 260));
+
+        playTitleLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 0, 36)); // NOI18N
+        playTitleLabel.setForeground(new java.awt.Color(0, 0, 0));
+        playTitleLabel.setText("윤하 노래 모음");
+        playlistDetailPanel.add(playTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, 520, 50));
+
+        playInformLabel.setFont(new java.awt.Font("AppleSDGothicNeoB00", 0, 18)); // NOI18N
+        playInformLabel.setText("<html>초저녁 감성</html>");
+        playInformLabel.setForeground(new Color(187,187,187));
+        playInformLabel.setVerticalAlignment(JLabel.TOP);
+        playlistDetailPanel.add(playInformLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, 530, 90));
+
+        playDateLabel.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 18)); // NOI18N
+        playDateLabel.setText("2022-05-22");
+        playDateLabel.setForeground(new Color(187,187,187));
+        playlistDetailPanel.add(playDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, 510, 20));
+
+        playAuthorLabel.setFont(new java.awt.Font("AppleSDGothicNeoB00", 0, 18)); // NOI18N
+        playAuthorLabel.setForeground(new java.awt.Color(87, 144, 255));
+        playAuthorLabel.setText("by 랄로(Ralo)");
+        playlistDetailPanel.add(playAuthorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 245, 410, 30));
+
+        playIdLabel.setForeground(new java.awt.Color(255, 255, 255));
+        playlistDetailPanel.add(playIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(748, 270, 150, -1));
+
+        playDetailScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
+        );
+        playDetailScrollPanel.setBorder(null);
+        playDetailScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        playDetailScrollPanel.setToolTipText("");
+        playDetailScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        playDetailScrollPanel.setOpaque(false);
+        playDetailScrollPanel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                playDetailScrollPanelMouseWheelMoved(evt);
+            }
+        });
+
+        playDetailTable.setBackground(new java.awt.Color(255,255,255,0));
+        playDetailTable.setOpaque(false);
+        playDetailTable.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 14)); // NOI18N
+        playDetailTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "번호", "커버", "곡/앨범", "가수"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        playDetailTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        playDetailTable.setMinimumSize(new java.awt.Dimension(10, 400));
+        playDetailTable.setOpaque(false);
+        playDetailTable.setRowHeight(80);
+        playDetailTable.setSelectionBackground(new java.awt.Color(216, 229, 255));
+        playDetailTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        playDetailTable.getTableHeader().setResizingAllowed(false);
+        playDetailTable.getTableHeader().setReorderingAllowed(false);
+        playDetailTable.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                playDetailTableMouseWheelMoved(evt);
+            }
+        });
+        playDetailTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                playDetailTableMouseClicked(evt);
+            }
+        });
+        playDetailScrollPanel.setViewportView(playDetailTable);
+        /* PlayDetailTable 기본 디자인 세팅 */
+        JTableSetting.tableInit(playlistScrollPanel, playDetailTable);
+        JTableSetting.tableHeaderInit(playDetailTable, playlistScrollPanel.getWidth(), 40);
+        JTableSetting.songTableSetting(playDetailTable);
+
+        playlistDetailPanel.add(playDetailScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 300, 900, 350));
+
+        BackgroundPanel.add(playlistDetailPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 912, 660));
+        panelList.add(playlistDetailPanel);
+
+        playlistPanel.setBackground(new java.awt.Color(255, 255, 255));
+        playlistPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        addPlaylistBtn.setBackground(new java.awt.Color(255,255,255,0));
+        addPlaylistBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/addTrack_btn.png"))); // NOI18N
+        addPlaylistBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        addPlaylistBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addPlaylistBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addPlaylistBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addPlaylistBtnMouseExited(evt);
+            }
+        });
+        playlistPanel.add(addPlaylistBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 150, 57, 22));
+
+        playlistScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
+        );
+        playlistScrollPanel.setBorder(null);
+        playlistScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        playlistScrollPanel.setToolTipText("");
+        playlistScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        playlistTable.setBackground(new java.awt.Color(255,255,255,0));
+        playlistTable.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 14)); // NOI18N
+        playlistTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "공백", "사진", "플레이리스트                                              ", "날짜"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        playlistTable.setMinimumSize(new java.awt.Dimension(10, 400));
+        playlistTable.setOpaque(false);
+        playlistTable.setRowHeight(100);
+        playlistTable.setSelectionBackground(new java.awt.Color(216, 229, 255));
+        playlistTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        playlistTable.getTableHeader().setResizingAllowed(false);
+        playlistTable.getTableHeader().setReorderingAllowed(false);
+        playlistTable.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                playlistTableMouseWheelMoved(evt);
+            }
+        });
+        playlistTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                playlistTableMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                playlistTableMouseEntered(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                playlistTableMousePressed(evt);
+            }
+        });
+        playlistScrollPanel.setViewportView(playlistTable);
+        /* PlaylistTable 기본 세팅 */
+        JTableSetting.tableInit(playlistScrollPanel, playlistTable);
+        JTableSetting.tableHeaderInit(playlistTable, playlistPanel.getWidth(), 40);
+        JTableSetting.listTableSetting(playlistTable);
+
+        playlistPanel.add(playlistScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 184, 896, 470));
+
+        playlistBannerLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/playlistBanner.png"))); // NOI18N
+        playlistPanel.add(playlistBannerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 912, 180));
+
+        BackgroundPanel.add(playlistPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 912, 660));
+        panelList.add(playlistPanel);
+
+        chartPanel.setBackground(new java.awt.Color(255, 255, 255));
+        chartPanel.setOpaque(false);
+        chartPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        chartBannerLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/chatBanner.png"))); // NOI18N
+        chartPanel.add(chartBannerLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 912, 180));
+
+        chartScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
+        );
+        chartScrollPanel.setBorder(null);
+        chartScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        chartScrollPanel.setToolTipText("");
+        chartScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        chartScrollPanel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                chartScrollPanelMouseWheelMoved(evt);
+            }
+        });
+
+        chartTable.setBackground(new java.awt.Color(255,255,255,0));
+        chartTable.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 14)); // NOI18N
+        chartTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "순위", "커버", "곡/앨범", "가수"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        chartTable.setMinimumSize(new java.awt.Dimension(10, 400));
+        chartTable.setOpaque(false);
+        chartTable.setRowHeight(80);
+        chartTable.setSelectionBackground(new java.awt.Color(216, 229, 255));
+        chartTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        chartTable.getTableHeader().setResizingAllowed(false);
+        chartTable.getTableHeader().setReorderingAllowed(false);
+        chartTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                chartTableMouseClicked(evt);
+            }
+        });
+        chartScrollPanel.setViewportView(chartTable);
+        /* ChartTable 기본 디자인 세팅 */
+        JTableSetting.tableInit(chartScrollPanel, chartTable);
+        JTableSetting.tableHeaderInit(chartTable, chartScrollPanel.getWidth(), 40);
+        JTableSetting.songTableSetting(chartTable);
+
+        chartPanel.add(chartScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 184, 896, 470));
+
+        BackgroundPanel.add(chartPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 910, 660));
+        panelList.add(chartPanel);
 
         notifyPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -581,17 +911,17 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
             .addGroup(notifyPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(notifyScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 896, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         notifyPanelLayout.setVerticalGroup(
             notifyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, notifyPanelLayout.createSequentialGroup()
-                .addContainerGap(154, Short.MAX_VALUE)
-                .addComponent(notifyScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(notifyScrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        BackgroundPanel.add(notifyPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 910, 660));
+        BackgroundPanel.add(notifyPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 912, 660));
         panelList.add(notifyPanel);
 
         profilePanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -693,21 +1023,8 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         relaylistPanel.setBackground(new java.awt.Color(255, 255, 255));
         relaylistPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        addRelaylistBtn.setBackground(new java.awt.Color(255,255,255,0));
-        addRelaylistBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/addTrack_btn.png"))); // NOI18N
-        addRelaylistBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        addRelaylistBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addRelaylistBtnMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                addRelaylistBtnMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                addRelaylistBtnMouseExited(evt);
-            }
-        });
-        relaylistPanel.add(addRelaylistBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 120, 57, 22));
+        RelaylistBGLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/relaylistBanner.png"))); // NOI18N
+        relaylistPanel.add(RelaylistBGLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 912, 180));
 
         relaylistScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
         );
@@ -760,88 +1077,26 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         JTableSetting.tableHeaderInit(relaylistTable, relaylistPanel.getWidth(), 40);
         JTableSetting.listTableSetting(relaylistTable);
 
-        relaylistPanel.add(relaylistScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 154, 896, 500));
+        relaylistPanel.add(relaylistScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 184, 896, 470));
+
+        addRelaylistBtn.setBackground(new java.awt.Color(255,255,255,0));
+        addRelaylistBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/addTrack_btn.png"))); // NOI18N
+        addRelaylistBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        addRelaylistBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addRelaylistBtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addRelaylistBtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addRelaylistBtnMouseExited(evt);
+            }
+        });
+        relaylistPanel.add(addRelaylistBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 160, 57, 22));
 
         BackgroundPanel.add(relaylistPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 910, 660));
         panelList.add(relaylistPanel);
-
-        playlistPanel.setBackground(new java.awt.Color(255, 255, 255));
-        playlistPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        addPlaylistBtn.setBackground(new java.awt.Color(255,255,255,0));
-        addPlaylistBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/addTrack_btn.png"))); // NOI18N
-        addPlaylistBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        addPlaylistBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addPlaylistBtnMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                addPlaylistBtnMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                addPlaylistBtnMouseExited(evt);
-            }
-        });
-        playlistPanel.add(addPlaylistBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 120, 57, 22));
-
-        playlistScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
-        );
-        playlistScrollPanel.setBorder(null);
-        playlistScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        playlistScrollPanel.setToolTipText("");
-        playlistScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-        playlistTable.setBackground(new java.awt.Color(255,255,255,0));
-        playlistTable.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 14)); // NOI18N
-        playlistTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "공백", "사진", "플레이리스트                                              ", "날짜"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        playlistTable.setMinimumSize(new java.awt.Dimension(10, 400));
-        playlistTable.setOpaque(false);
-        playlistTable.setRowHeight(100);
-        playlistTable.setSelectionBackground(new java.awt.Color(216, 229, 255));
-        playlistTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        playlistTable.getTableHeader().setResizingAllowed(false);
-        playlistTable.getTableHeader().setReorderingAllowed(false);
-        playlistTable.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
-                playlistTableMouseWheelMoved(evt);
-            }
-        });
-        playlistTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                playlistTableMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                playlistTableMouseEntered(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                playlistTableMousePressed(evt);
-            }
-        });
-        playlistScrollPanel.setViewportView(playlistTable);
-        /* PlaylistTable 기본 세팅 */
-        JTableSetting.tableInit(playlistScrollPanel, playlistTable);
-        JTableSetting.tableHeaderInit(playlistTable, playlistPanel.getWidth(), 40);
-        JTableSetting.listTableSetting(playlistTable);
-
-        playlistPanel.add(playlistScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 154, 896, 500));
-
-        BackgroundPanel.add(playlistPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 910, 660));
-        panelList.add(playlistPanel);
 
         relayVotePanel.setBackground(new java.awt.Color(255, 255, 255));
         relayVotePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1196,6 +1451,20 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         relaylistDetailPanel.setBackground(new java.awt.Color(255, 255, 255));
         relaylistDetailPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        downloadLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/component/normal/download_btn.png"))); // NOI18N
+        downloadLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                downloadLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                downloadLabelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                downloadLabelMouseExited(evt);
+            }
+        });
+        relaylistDetailPanel.add(downloadLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(859, 22, 23, 18));
+
         relaylistInformLabel.setFont(new java.awt.Font("AppleSDGothicNeoSB00", 0, 14)); // NOI18N
         relaylistInformLabel.setForeground(new java.awt.Color(204, 204, 204));
         relaylistInformLabel.setText("도토리를 훔쳐간 싸이월드 BGM");
@@ -1327,183 +1596,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
         BackgroundPanel.add(relaylistDetailPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 912, 660));
         panelList.add(relaylistDetailPanel);
-
-        playlistDetailPanel.setBackground(new java.awt.Color(255, 255, 255));
-        playlistDetailPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        playDeleteBtn.setBackground(new java.awt.Color(255,255,255,0));
-        playDeleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/delete_btn.png"))); // NOI18N
-        playDeleteBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        playDeleteBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                playDeleteBtnMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                playDeleteBtnMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                playDeleteBtnMouseExited(evt);
-            }
-        });
-        playlistDetailPanel.add(playDeleteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 10, 57, 22));
-
-        playEditBtn.setBackground(new java.awt.Color(255,255,255,0));
-        playEditBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/edit_btn.png"))); // NOI18N
-        playEditBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        playEditBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                playEditBtnMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                playEditBtnMouseExited(evt);
-            }
-        });
-        playlistDetailPanel.add(playEditBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 10, 57, 22));
-
-        playImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/test/younha.jpg"))); // NOI18N
-        playlistDetailPanel.add(playImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 260, 260));
-
-        playTitleLabel.setFont(new java.awt.Font("나눔스퀘어 Bold", 0, 36)); // NOI18N
-        playTitleLabel.setForeground(new java.awt.Color(0, 0, 0));
-        playTitleLabel.setText("윤하 노래 모음");
-        playlistDetailPanel.add(playTitleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, 520, 50));
-
-        playInformLabel.setFont(new java.awt.Font("AppleSDGothicNeoB00", 0, 18)); // NOI18N
-        playInformLabel.setText("<html>초저녁 감성</html>");
-        playInformLabel.setForeground(new Color(187,187,187));
-        playInformLabel.setVerticalAlignment(JLabel.TOP);
-        playlistDetailPanel.add(playInformLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, 530, 90));
-
-        playDateLabel.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 18)); // NOI18N
-        playDateLabel.setText("2022-05-22");
-        playDateLabel.setForeground(new Color(187,187,187));
-        playlistDetailPanel.add(playDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, 510, 20));
-
-        playAuthorLabel.setFont(new java.awt.Font("AppleSDGothicNeoB00", 0, 18)); // NOI18N
-        playAuthorLabel.setForeground(new java.awt.Color(87, 144, 255));
-        playAuthorLabel.setText("by 랄로(Ralo)");
-        playlistDetailPanel.add(playAuthorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 245, 410, 30));
-
-        playIdLabel.setForeground(new java.awt.Color(255, 255, 255));
-        playlistDetailPanel.add(playIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(748, 270, 150, -1));
-
-        playDetailScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
-        );
-        playDetailScrollPanel.setBorder(null);
-        playDetailScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        playDetailScrollPanel.setToolTipText("");
-        playDetailScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        playDetailScrollPanel.setOpaque(false);
-        playDetailScrollPanel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
-                playDetailScrollPanelMouseWheelMoved(evt);
-            }
-        });
-
-        playDetailTable.setBackground(new java.awt.Color(255,255,255,0));
-        playDetailTable.setOpaque(false);
-        playDetailTable.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 14)); // NOI18N
-        playDetailTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "번호", "커버", "곡/앨범", "가수"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        playDetailTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        playDetailTable.setMinimumSize(new java.awt.Dimension(10, 400));
-        playDetailTable.setOpaque(false);
-        playDetailTable.setRowHeight(80);
-        playDetailTable.setSelectionBackground(new java.awt.Color(216, 229, 255));
-        playDetailTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        playDetailTable.getTableHeader().setResizingAllowed(false);
-        playDetailTable.getTableHeader().setReorderingAllowed(false);
-        playDetailTable.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
-                playDetailTableMouseWheelMoved(evt);
-            }
-        });
-        playDetailTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                playDetailTableMouseClicked(evt);
-            }
-        });
-        playDetailScrollPanel.setViewportView(playDetailTable);
-        /* PlayDetailTable 기본 디자인 세팅 */
-        JTableSetting.tableInit(playlistScrollPanel, playDetailTable);
-        JTableSetting.tableHeaderInit(playDetailTable, playlistScrollPanel.getWidth(), 40);
-        JTableSetting.songTableSetting(playDetailTable);
-
-        playlistDetailPanel.add(playDetailScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 300, 900, 350));
-
-        BackgroundPanel.add(playlistDetailPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 912, 660));
-        panelList.add(playlistDetailPanel);
-
-        chartPanel.setBackground(new java.awt.Color(255, 255, 255));
-        chartPanel.setOpaque(false);
-        chartPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        chartScrollPanel.setBackground(new java.awt.Color(255,255,255,0)
-        );
-        chartScrollPanel.setBorder(null);
-        chartScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        chartScrollPanel.setToolTipText("");
-        chartScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        chartScrollPanel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
-                chartScrollPanelMouseWheelMoved(evt);
-            }
-        });
-
-        chartTable.setBackground(new java.awt.Color(255,255,255,0));
-        chartTable.setFont(new java.awt.Font("AppleSDGothicNeoR00", 0, 14)); // NOI18N
-        chartTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "순위", "커버", "곡/앨범", "가수"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        chartTable.setMinimumSize(new java.awt.Dimension(10, 400));
-        chartTable.setOpaque(false);
-        chartTable.setRowHeight(80);
-        chartTable.setSelectionBackground(new java.awt.Color(216, 229, 255));
-        chartTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        chartTable.getTableHeader().setResizingAllowed(false);
-        chartTable.getTableHeader().setReorderingAllowed(false);
-        chartTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                chartTableMouseClicked(evt);
-            }
-        });
-        chartScrollPanel.setViewportView(chartTable);
-        /* ChartTable 기본 디자인 세팅 */
-        JTableSetting.tableInit(chartScrollPanel, chartTable);
-        JTableSetting.tableHeaderInit(chartTable, chartScrollPanel.getWidth(), 40);
-        JTableSetting.songTableSetting(chartTable);
-
-        chartPanel.add(chartScrollPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 125, 896, 529));
-
-        BackgroundPanel.add(chartPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 60, 910, 660));
-        panelList.add(chartPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1716,7 +1808,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         firstSongSingerLabel.setText(relaylist.getFirstSongSinger());                                           // 첫 곡 가수 지정
         
         // 3. 수록곡 테이블에 노래 삽입
-        ArrayList<SongDto> sideTrack = songController.getBsideTrack("relayBsideTrack", listId);
+        ArrayList<SongDto> sideTrack = songController.getBsideTrack(listId);
         
         Object[][] value = DataParser.songDtoToObject(sideTrack, 0);
         
@@ -1863,10 +1955,16 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
     private void playDeleteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playDeleteBtnMouseClicked
         // TODO add your handling code here:
-        boolean result = playlistController.deletePlaylist(playIdLabel.getText());
+        int result = JOptionPane.showConfirmDialog(null, "플레이리스트를 삭제하시겠습니까 ?", "confirm", JOptionPane.YES_NO_OPTION);
+
+        if(result == JOptionPane.YES_OPTION){
+            boolean deleted = playlistController.deletePlaylist(playIdLabel.getText());
         
-        if(result) JOptionPane.showMessageDialog(null, "플레이리스트가 삭제 되었습니다.");
-        else JOptionPane.showMessageDialog(null, "플레이리스트 삭제에 실패 했습니다.");
+            if(deleted) JOptionPane.showMessageDialog(null, "플레이리스트가 삭제 되었습니다.");
+            else JOptionPane.showMessageDialog(null, "플레이리스트 삭제에 실패 했습니다.");
+            
+            JPanelSetting.changePanel(panelList, playlistPanel);
+        }
     }//GEN-LAST:event_playDeleteBtnMouseClicked
 
     private void createRelayInformTextAreaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_createRelayInformTextAreaFocusGained
@@ -1971,7 +2069,9 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
     private void ExitLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitLabelMouseClicked
         // TODO add your handling code here:
-        this.dispose();
+        int result = JOptionPane.showConfirmDialog(null, "종료하시겠습니까 ?", "confirm", JOptionPane.YES_NO_OPTION);
+        
+        if(result == JOptionPane.YES_OPTION) this.dispose();
     }//GEN-LAST:event_ExitLabelMouseClicked
 
     private void ExitLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitLabelMouseEntered
@@ -2052,10 +2152,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         
         // 투표한 곡을 저장
         votedList.add(votedSong);
-        
-        for (RelayBsideTrackDto song : votedList) {
-            System.out.println(song);
-        }
     }//GEN-LAST:event_relayVoteNotPickBtnMouseClicked
 
     
@@ -2075,10 +2171,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         
         // 투표 취소한 곡을 리스트에서 제거
         votedList.remove(votedSong);
-        
-        for (RelayBsideTrackDto song : votedList) {
-            System.out.println(song);
-        }
     }//GEN-LAST:event_relayVotePickBtnMouseClicked
 
     private void relayVoteNotPickBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relayVoteNotPickBtnMouseEntered
@@ -2149,7 +2241,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
                                                  .userId(LoginUserLabel.getText())
                                                  .voteCnt(recommendList.size())
                                                  .build();
-            System.out.println(relayUser);
             
             boolean userResult = relaylistController.addRelayUser(relayUser);
             
@@ -2288,7 +2379,54 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         Object[][] data = parseRelaylists(model, relaylist);
         JTableSetting.insertTableRow(model, data);
     }//GEN-LAST:event_relaylistTabLabelMouseClicked
-    
+
+    private void downloadLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_downloadLabelMouseEntered
+        // TODO add your handling code here:
+        this.downloadLabel.setIcon(new ImageIcon("./src/resources/layout/component/focus/download_btn_hover.png"));
+        this.downloadLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_downloadLabelMouseEntered
+
+    private void downloadLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_downloadLabelMouseExited
+        // TODO add your handling code here:
+        this.downloadLabel.setIcon(new ImageIcon("./src/resources/layout/component/normal/download_btn.png"));
+        
+    }//GEN-LAST:event_downloadLabelMouseExited
+
+    // 릴레이리스트 저장 버튼
+    private void downloadLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_downloadLabelMouseClicked
+        // TODO add your handling code here:
+        String user = LoginUserLabel.getText();
+        String relaylistId = relaylistIdLabel.getText();
+        
+        boolean result = downloadRelaylist(relaylistId, user);
+        
+        if(Objects.isNull(result)) JOptionPane.showMessageDialog(null, "릴레이리스트 저장에 실패했습니다.");
+        else JOptionPane.showMessageDialog(null, "릴레이리스트 저장이 완료 되었습니다.");
+    }//GEN-LAST:event_downloadLabelMouseClicked
+
+    private void logoutLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseEntered
+        // TODO add your handling code here:
+        this.logoutLabel.setForeground(new Color(0, 142, 244));
+        this.logoutLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_logoutLabelMouseEntered
+
+    private void logoutLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseExited
+        // TODO add your handling code here:
+        this.logoutLabel.setForeground(new Color(187,187,187));
+    }//GEN-LAST:event_logoutLabelMouseExited
+
+    private void logoutLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutLabelMouseClicked
+        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(null, "로그아웃 하시겠습니까 ?", "confirm", JOptionPane.YES_NO_OPTION);
+
+        if(result == JOptionPane.YES_OPTION){
+            LoginUserLabel.setText("");
+            new LoginJFrame();
+        
+            this.dispose();
+        }
+    }//GEN-LAST:event_logoutLabelMouseClicked
+
     // 투표 버튼(하트) 상태 설정 메소드
     private void initVoteBtn(){
         RelayBsideTrackDto currentSong = getCurrentVoteSong();
@@ -2386,6 +2524,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel LoginUserLabel;
     private javax.swing.JLabel NotifyLabel;
     private javax.swing.JLabel PlaylistLabel;
+    private javax.swing.JLabel RelaylistBGLabel;
     private javax.swing.JLabel RelaylistLabel;
     private javax.swing.JLabel SidebarLabel;
     private javax.swing.JButton addPlaylistBtn;
@@ -2393,6 +2532,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton addSongBtn;
     private javax.swing.JButton addTrackBtn;
     private javax.swing.JLabel blurLabel;
+    private javax.swing.JLabel chartBannerLabel;
     private javax.swing.JPanel chartPanel;
     private javax.swing.JScrollPane chartScrollPanel;
     private javax.swing.JTable chartTable;
@@ -2412,11 +2552,12 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel createRelayPanel;
     private javax.swing.JTextField createRelayTitleField;
     private javax.swing.JLabel createRelayTitleLabel;
+    private javax.swing.JLabel downloadLabel;
     private javax.swing.JLabel emptyLabel;
     private javax.swing.JLabel firstSongImageLabel;
     private javax.swing.JLabel firstSongSingerLabel;
     private javax.swing.JLabel firstSongTitleLabel;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel logoutLabel;
     private javax.swing.JScrollPane myListScrollPanel;
     private javax.swing.JTable myListTable;
     private javax.swing.JLabel notifyIconLabel;
@@ -2436,6 +2577,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel playInformLabel;
     private javax.swing.JScrollPane playInformScrollPanel;
     private javax.swing.JLabel playTitleLabel;
+    private javax.swing.JLabel playlistBannerLabel;
     private javax.swing.JPanel playlistDetailPanel;
     private javax.swing.JPanel playlistPanel;
     private javax.swing.JScrollPane playlistScrollPanel;
@@ -2444,6 +2586,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel profileBgLabel;
     private javax.swing.JLabel profileIdLabel;
     private javax.swing.JPanel profilePanel;
+    private javax.swing.JLabel profleLabel;
     private javax.swing.JLabel recommendLabel;
     private javax.swing.JScrollPane relayDetailScrollPanel;
     private javax.swing.JTable relayDetailTable;

@@ -68,7 +68,7 @@ public class RelaylistService {
         ArrayList<RelaylistDto> relaylist = getRelaylists();
         
         long current = System.currentTimeMillis();
-        long limitTime = new Date(1000 * 60 * 60 * 24 * 2).getTime();     // 릴레이리스트 기간은 1일로 지정  
+        long limitTime = new Date(1000 * 60 * 60 * 24 * 2).getTime();     // 릴레이리스트 기간은 2일로 지정  
         
         // 종료시간 체크 후 진행 중인 릴레이리스트가 있으면 타이머 생성
         for (RelaylistDto list : relaylist) {
@@ -79,8 +79,6 @@ public class RelaylistService {
                 // 타이머 생성 필요 (listTime + limitTime) - current
                 new RelaylistTimer(list, 10000);
             }
-                // 이미 종료된 리스트면 알림이 보내졌는지 확인하고 전송
-                // NotifyController한테 요청
         }
     }
 }

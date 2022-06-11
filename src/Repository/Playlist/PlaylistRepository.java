@@ -40,8 +40,6 @@ public class PlaylistRepository extends CrudRepository<Playlist, String>{
         executeUpdate("DELETE FROM playBsideTrack "
                 + "WHERE playlistid = '" + playlistId + "' and songid = '" + songId + "';");
       
-        System.out.println("DELETE FROM playBsideTrack "
-                + "WHERE playlistid = '" + playlistId + "' and songid = '" + songId + "';");
         db.close();
     }
 

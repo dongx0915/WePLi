@@ -6,13 +6,16 @@ package Service.Song;
 
 import Crawler.Crawler;
 import Crawler.CrawlerFactory.MusicCrawlerFactory;
+import Dto.Relaylist.RelaylistDto;
 import Dto.Song.SongCreateDto;
 import Dto.Song.SongDto;
 import Entity.Song.Song;
 import Repository.Song.SongRepository;
+import Service.Relaylist.RelaylistService;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.sql.Date;
 
 /**
  *
@@ -22,10 +25,12 @@ public class SongService {
     
     // Repository
     private SongRepository songRepository;
+    private RelaylistService relaylistService;
     private MusicCrawlerFactory musicFactory = new MusicCrawlerFactory();
-
+    
     public SongService() {
         this.songRepository = new SongRepository();
+        this.relaylistService = new RelaylistService();
     }
     
     public ArrayList<SongDto> musicSearch(String type, String keyword) {
@@ -57,36 +62,28 @@ public class SongService {
     }
     
     // 수록곡 가져오는 메소드 (BsideTrack의 테이블 이름으로 플레이리스트, 릴레이리스트를 구분함)
-    public ArrayList<SongDto> getBsideTrack(String bSideTable, String listId){
-        ArrayList<Song> sideTrack = songRepository.getBsideTrack(bSideTable, listId);
+    public ArrayList<SongDto> getBsideTrack(String listId){
+        ArrayList<Song> sideTrack;
+
+        // 릴레이리스트인 경우 완료된 릴레이리스트면 상위 10곡만 가져옴
+        if(listId.matches("^R[0-9]{7}$")){
+            RelaylistDto relaylist = relaylistService.getRelaylist(listId);
+            
+            long createTime = relaylist.getCreateTime().getTime();
+            long limitTime = new Date(1000 * 60 * 60 * 24).getTime();
+        
+            long current = System.currentTimeMillis();
+        
+            // 이미 완성된 리스트인 경우 상위 10개의 수록곡만 가져옴
+            if(current >= createTime + limitTime) sideTrack = songRepository.getTop10SideTrack(listId);
+            // 완성되지 않았으면(투표가 진행 중이면) 모든 수록곡을 가져옴
+            else sideTrack = songRepository.getBsideTrack(listId);
+        }
+        // 플레이리스트인 경우 그냥 수록곡 조회
+        else sideTrack = songRepository.getBsideTrack(listId);
 
         return (ArrayList) sideTrack.stream().map(song -> SongDto.createSongDto(song))
                                     .collect(Collectors.toList());        
     }
 }
-    
-//  검색 테스트용
-//    public static void main(String[] args) {
-////
-////        // 인기차트 컨트롤러에 있어야함
-//        SongService a = new SongService();
-//////        ArrayList<SongDto> ChartList = a.musicChart();  // 인기차트 리스트
-//////        ArrayList<SongDto> subList = new ArrayList<>(ChartList.subList(0,100)); // 100위까지 짜르기
-//////        a.InsertMusicChart(subList);    // DB 올리기
-////
-//////        ArrayList<SongChart> Chart = a.ShowMusicChart();
-//////        System.out.println(Chart);
-////        // 검색
-//////           ArrayList<SongDto> SearchList = a.musicSearch("melon","싸이");   // 검색 리스트
-//////           if(SearchList.isEmpty())
-//////                System.out.println("검색된 노래 없음");
-//////           else{
-//////               System.out.println(SearchList);
-//////           }
-//            ArrayList<SongDto> SearchList = a.musicSearch("bugs","빅뱅");
-//            System.out.println(SearchList.get(0).getAlbum());        
-////        //a.musicSearch("bugs","드라마 아이유");
-////        //a.musicSearch("bugs","my universe 방탄소년단");
-//    }
-//
-//}
+

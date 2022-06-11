@@ -65,7 +65,7 @@ public class CrudRepository<T, ID> extends Repository {
             sql = "SELECT * FROM " + tableName + " ORDER BY " + idFieldName + " DESC LIMIT 1;";
             
             pstmt = con.prepareStatement(sql);
-            
+            System.out.println(pstmt);
             // 성공 시 entity 리턴
             return resultSetToEntity(pstmt.executeQuery());
         } 

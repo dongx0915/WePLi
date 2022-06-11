@@ -64,8 +64,8 @@ public class NotificationController implements Subject {
         // 모든 유저에게 알림을 전송
         ArrayList<NotificationDto> result = notificationService.notifyAllUsers(notifies);
         
-        // 옵저버를 호출하여 뷰 화면에 알림 표시
-        notifyObservers();
+        // 알림이 정상적으로 저장되면 옵저버를 호출하여 뷰 화면에 알림 표시
+        if(!Objects.isNull(result)) notifyObservers();
         
         return result;
     }

@@ -32,6 +32,7 @@ public class LoginJFrame extends javax.swing.JFrame {
     /**
      * Creates new form LoginJFrame
      */
+    private int mouseX, mouseY;
     private UserController userController = UserController.getInstance();
     private ArrayList<JPanel> panelList = new ArrayList<>();
     
@@ -62,6 +63,8 @@ public class LoginJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ExitLabel = new javax.swing.JLabel();
+        FrameDragBar = new javax.swing.JLabel();
         signUpPanel = new javax.swing.JPanel();
         loginTextLabel = new javax.swing.JLabel();
         signUpBtn = new javax.swing.JButton();
@@ -83,6 +86,31 @@ public class LoginJFrame extends javax.swing.JFrame {
         BackgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        ExitLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/button/normal/exit_btn.png"))); // NOI18N
+        ExitLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ExitLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ExitLabelMouseEntered(evt);
+            }
+        });
+        getContentPane().add(ExitLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 50, 60));
+
+        FrameDragBar.setBackground(new java.awt.Color(255,255,255,0));
+        FrameDragBar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                FrameDragBarMouseDragged(evt);
+            }
+        });
+        FrameDragBar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                FrameDragBarMousePressed(evt);
+            }
+        });
+        getContentPane().add(FrameDragBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 60));
 
         signUpPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -167,6 +195,8 @@ public class LoginJFrame extends javax.swing.JFrame {
         signUpLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/SignUp.png"))); // NOI18N
         signUpPanel.add(signUpLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 570));
 
+        getContentPane().add(signUpPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         loginPanel.setBackground(new java.awt.Color(255, 255, 255));
         loginPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -240,26 +270,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         BackgroundLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/layout/background/Login.png"))); // NOI18N
         loginPanel.add(BackgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(loginPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(signUpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(loginPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(signUpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        getContentPane().add(loginPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -444,6 +455,33 @@ public class LoginJFrame extends javax.swing.JFrame {
             JPanelSetting.changePanel(this.panelList, loginPanel);
         }
     }//GEN-LAST:event_signUpBtnMouseClicked
+
+    private void FrameDragBarMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragBarMouseDragged
+        // TODO add your handling code here:
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+
+        this.setLocation(x - mouseX, y - mouseY);
+    }//GEN-LAST:event_FrameDragBarMouseDragged
+
+    private void FrameDragBarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragBarMousePressed
+        // TODO add your handling code here:
+        mouseX = evt.getX();
+        mouseY = evt.getY();
+
+    }//GEN-LAST:event_FrameDragBarMousePressed
+
+    private void ExitLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitLabelMouseClicked
+        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(null, "종료하시겠습니까 ?", "confirm", JOptionPane.YES_NO_OPTION);
+        
+        if(result == JOptionPane.YES_OPTION) this.dispose();
+    }//GEN-LAST:event_ExitLabelMouseClicked
+
+    private void ExitLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitLabelMouseEntered
+        // TODO add your handling code here:
+        this.ExitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_ExitLabelMouseEntered
     
     /**
      * @param args the command line arguments
@@ -476,6 +514,8 @@ public class LoginJFrame extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BackgroundLabel;
+    private javax.swing.JLabel ExitLabel;
+    private javax.swing.JLabel FrameDragBar;
     private javax.swing.JLabel IdFieldLabel;
     private javax.swing.JButton LoginBtn;
     private javax.swing.JLabel PwFieldLabel;

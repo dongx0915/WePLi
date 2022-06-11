@@ -53,6 +53,7 @@ public class DataParser {
     public static String convertSongToHtml(int songId, String title, String album, String image, String singer) {
         return String.format("<html>\n"
                 + "<head>\n"
+                + "    <meta chartset=\"utf-8\">"
                 + "    <style> #album{color: #a2a2a2;} </style>\n"
                 + "</head>\n"
                 + "<body>\n"

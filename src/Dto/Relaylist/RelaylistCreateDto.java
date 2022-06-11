@@ -31,4 +31,17 @@ public class RelaylistCreateDto {
     public String firstSongSinger;
     public String firstSongImage;
     public String firstSongAlbum;
+    
+    public static RelaylistCreateDto createDto(RelaylistDto dto){
+        return RelaylistCreateDto.builder()
+                                 .title(dto.getTitle())
+                                 .author(dto.getAuthor())
+                                 .inform(dto.getInform())
+                                 .createTime(dto.getCreateTime())
+                                 .firstSongTitle(dto.getFirstSongTitle())
+                                 .firstSongSinger(dto.getFirstSongSinger())
+                                 .firstSongImage(dto.getFirstSongImage())
+                                 .firstSongAlbum(dto.getFirstSongAlbum())
+                                 .build();
+    }
 }

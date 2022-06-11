@@ -34,7 +34,6 @@ public class RelayUserService {
     }
     
     public RelayUserDto getRelayUser(String relaylistId, String userId){
-        System.out.println("listid = " + relaylistId + " userId " + userId);
         RelayUser relayUser = relayUserRepository.findById(relaylistId, userId);
         
         // 존재하지 않는 유저이면 먼저 저장
