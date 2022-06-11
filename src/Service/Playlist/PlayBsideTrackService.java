@@ -36,4 +36,9 @@ public class PlayBsideTrackService {
                             .stream().map(playBsideTrack -> PlayBsideTrackDto.createPlayBsideTrackDto(playBsideTrack))
                             .collect(Collectors.toList());
     }
+    
+    // 특정 플레이리스트의 수록곡을 모두 삭제하는 메소드
+    public boolean deleteBsideTrack(String playlistId){
+        return playBsideTrackRepository.deleteByListId(playlistId);
+    }
 }

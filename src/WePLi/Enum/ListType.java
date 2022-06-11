@@ -11,5 +11,6 @@ package WePLi.Enum;
 public enum ListType {
     PLAYLIST,
     RELAYLIST,
-    VOTE
+    VOTE,
+    EDIT
 }

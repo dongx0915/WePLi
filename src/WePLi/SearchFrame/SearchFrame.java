@@ -170,6 +170,32 @@ public class SearchFrame extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "선택한 곡이 추가 되었습니다.");
     }
     
+    /* 플레이리스트 수정 노래 추가 메소드 */
+    private void editSong(){
+        int[] rows = this.searchTable.getSelectedRows();
+        TableModel model = this.searchTable.getModel();
+        
+        //선택 된 노래(행) 개수 만큼 생성
+        Object[][] obj = new Object[rows.length][];
+        
+        // 검색 데이터를 플레이리스트 테이블로 옮기기 위해 Object로 변환
+        for (int i = 0; i < rows.length; i++) {
+            int rowCnt = bSideTable.getRowCount();
+            
+            obj[i] = new Object[]{
+                                    rowCnt + (i + 1),  
+                                    model.getValueAt(rows[i], 1),
+                                    model.getValueAt(rows[i], 2),
+                                    model.getValueAt(rows[i], 3),
+                                };
+        }
+        
+        DefaultTableModel tableModel = (DefaultTableModel) bSideTable.getModel();
+        JTableSetting.insertTableRow(tableModel, obj);   // 테이블에 값 삽입
+        
+        JOptionPane.showMessageDialog(null, "선택한 곡이 추가 되었습니다.");
+    }
+    
     /* 추천곡 추가 메소드 */
     private void addRecommendSong(){
         int[] rows = this.searchTable.getSelectedRows();
@@ -466,6 +492,7 @@ public class SearchFrame extends javax.swing.JFrame {
     private void submitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitButtonMouseClicked
         // TODO add your handling code here:
         if(listType == ListType.VOTE) addRecommendSong();
+        else if(listType == ListType.EDIT) editSong();
         else createListTrack();
     }//GEN-LAST:event_submitButtonMouseClicked
     

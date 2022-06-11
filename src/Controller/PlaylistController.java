@@ -77,7 +77,12 @@ public class PlaylistController{
         return playlistService.getUserPlaylists(userId);
     }
     
+    // 수록곡을 등록하는 메소드
     public ArrayList<PlayBsideTrackDto> addPlayBsideTrack(ArrayList<PlayBsideTrackDto> bSideTrackDto){
         return playBsideTrackService.addPlayBsideTrack(bSideTrackDto);
+    }
+    
+    public boolean deletePlayBsideTrack(String playlistId){
+        return playBsideTrackService.deleteBsideTrack(playlistId);
     }
 }
