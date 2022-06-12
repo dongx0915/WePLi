@@ -42,7 +42,8 @@ public class RelaylistController {
     public RelaylistDto getRelaylist(String relaylistId){
         return relaylistService.getRelaylist(relaylistId);
     }
- 
+    
+    // 릴레이리스트를 저장하는 메소드
     public RelaylistDto downloadRelaylist(RelaylistCreateDto dto){
         return relaylistService.downloadRelaylist(dto);
     }
