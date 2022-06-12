@@ -19,8 +19,8 @@ public class SongRepository extends CrudRepository<Song, Integer> {
     public SongRepository() { super.setEntity(new Song()); }
     
     // 제목과 앨범으로 노래 검색하는 메소드
-    public Song findSongByTitleAlbum(String title, String album){
-        String sql = String.format("SELECT * FROM song WHERE title = \"%s\" AND album = \"%s\";", title, album);
+    public Song findSongByTitleAlbum(String title, String singer){
+        String sql = String.format("SELECT * FROM song WHERE title = \"%s\" AND singer = \"%s\";", title, singer);
         Song song = null;
         
         try{

@@ -36,6 +36,14 @@ public class RelaylistService {
         return Objects.isNull(result) ? null : RelaylistDto.createDto(result);
     }
     
+    public RelaylistDto downloadRelaylist(RelaylistCreateDto dto){
+        Relaylist relaylist = Relaylist.toEntity(dto);
+        
+        Relaylist result = relaylistRepository.saveMyRelaylist(relaylist);
+        
+        return Objects.isNull(result) ? null : RelaylistDto.createDto(result);
+    }
+    
     // RelaylistId로 릴레이리스트를 가져오는 메소드
     public RelaylistDto getRelaylist(String relaylistId){
         Relaylist relaylist = relaylistRepository.findById(relaylistId);

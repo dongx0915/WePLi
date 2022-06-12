@@ -33,10 +33,15 @@ public class SongService {
         this.relaylistService = new RelaylistService();
     }
     
+    // 노래 검색 메소드
     public ArrayList<SongDto> musicSearch(String type, String keyword) {
-        Crawler crawler;
-        crawler = musicFactory.getSearchCrawler(type);
+        // 팩토리 패턴
+        // 사용자가 선택한 음악 사이트의 검색 크롤러 객체를 받아옴
+        Crawler crawler = musicFactory.getSearchCrawler(type);
+        
+        // URL 생성
         String SearchURL = crawler.getURL() + keyword;
+        // 검색 결과 받아오기
         ArrayList<SongDto> SongList = crawler.getSongList(SearchURL);
 
         return SongList;
@@ -49,7 +54,7 @@ public class SongService {
         for (SongCreateDto songCreateDto : songlist) {
             Song song = Song.toEntity(songCreateDto);
             // 제목과 가수로 Song 검색
-            Song result = songRepository.findSongByTitleAlbum(song.getTitle(), song.getAlbum());
+            Song result = songRepository.findSongByTitleAlbum(song.getTitle(), song.getSinger());
             
             // 저장된 노래가 없다면 Save
             if(Objects.isNull(result)) result = songRepository.save(song);

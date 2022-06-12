@@ -40,7 +40,7 @@ public class SongController {
          return songService.getBsideTrack(listId);
     }
     
-    public ArrayList<SongDto> SongSearch(String site, String text) {
+    public ArrayList<SongDto> searchSong(String site, String text) {
         ArrayList<SongDto> SearchList = songService.musicSearch(site, text);
 
         return SearchList;

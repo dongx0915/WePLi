@@ -4,7 +4,7 @@
  */
 package RelayListTimer;
 
-import Controller.Notification.NotificationController;
+import Controller.NotificationController;
 import Dto.Notification.NotificationDto;
 import Dto.Relaylist.RelaylistDto;
 import java.util.Timer;
@@ -16,19 +16,19 @@ import java.util.TimerTask;
  */
 public class RelaylistTimer {
     private NotificationController notificationController = NotificationController.getInstance();
-    
+    // 릴레이리스트의 완료 시간을 체크하는 타이머
     public RelaylistTimer(RelaylistDto list, long time) {
         Timer timer = new Timer();
-        System.out.println(list.getId() + " 생성 됨");
         
         TimerTask task = new TimerTask(){
             @Override
             public void run() {
+                // 시간이 다 되면 알림을 보내고 타이머 종료
                 notificationController.sendNotification(list);
                 timer.cancel();
             }
         };
-        
+     
         timer.schedule(task, time);
     }
 }

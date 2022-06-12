@@ -33,12 +33,11 @@ public class SongChartService {
     {
         Crawler crawler;
         crawler = musicFactory.getSearchCrawler("melon");
+        
         String SearchURL = crawler.getURL() + keyword;
         ArrayList<SongDto> SongList = crawler.getSongList(SearchURL);
 
-        if (SongList.isEmpty()) {
-            return null;
-        }
+        if (SongList.isEmpty()) return null;
 
         return SongList.get(0);
     }

@@ -4,7 +4,7 @@
  */
 package WePLi;
 
-import Controller.Notification.NotificationController;
+import Controller.NotificationController;
 import WePLi.Enum.ListType;
 import Controller.PlaylistController;
 import Controller.RelaylistController;
@@ -83,10 +83,13 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         
         JPanelSetting.changePanel(panelList, chartPanel);
         
+        
         // 옵저버로 등록        
         notificationController.registerObserver(this);
         // 진행 중인 릴레이리스트가 있는지 확인
         relaylistController.checkRelaylistTime();
+        
+        
     }
     
     @Override
@@ -115,7 +118,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         // 1. 선택한 곡 Song 테이블에 저장
         ArrayList<SongDto> songDtolist = songController.addSongList(songlist);
         
-        // 2. 플레이리스트 저장
+        // 플레이리스트 저장
         PlaylistCreateDto playlistCreateDto = PlaylistCreateDto.builder()
                                     .title(createPlayTitleField.getText())
                                     .inform(createPlayInformTextArea.getText())
@@ -123,7 +126,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
                                     .image(songlist.get(0).getImage())
                                     .createTime(new java.sql.Date(new java.util.Date().getTime()))
                                     .build();
-        
+        // VIEW에서 직접 Controller에게 요청
         PlaylistDto playlistDto = playlistController.createPlaylist(playlistCreateDto);
         
         // 3. 수록곡 저장
@@ -293,7 +296,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         
         // 내 플레이리스트에 저장
         RelaylistCreateDto createDto = RelaylistCreateDto.createDto(relaylist);
-        RelaylistDto result = relaylistController.createRelaylist(createDto);
+        RelaylistDto result = relaylistController.downloadRelaylist(createDto);
         
         // 릴레이리스트 저장 실패 시
         if(Objects.isNull(result)){
@@ -2023,6 +2026,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
             else JOptionPane.showMessageDialog(null, "플레이리스트 삭제에 실패 했습니다.");
             
             JPanelSetting.changePanel(panelList, playlistPanel);
+            initPlaylistPanel();
         }
     }//GEN-LAST:event_playDeleteBtnMouseClicked
 

@@ -30,10 +30,10 @@ public class Repository {
                 
             pstmt.executeUpdate();
             
-            // 성공 시 entity 리턴
-            return true;
+            return true; // 성공 시 true 리턴
         } 
-        catch (IllegalArgumentException | SQLException e) { return false; }                                    // 쿼리 오류 발생 시 null 리턴 
+        // 쿼리 오류 발생 시 false 리턴 
+        catch (IllegalArgumentException | SQLException e) { return false; }                                    
         finally{ db.close(); }
     }
     
@@ -48,7 +48,8 @@ public class Repository {
         } 
         catch (IllegalArgumentException | SQLException e) {
             e.printStackTrace();
+            // 쿼리 오류 발생 시 null 리턴 
             return null; 
-        }                                    // 쿼리 오류 발생 시 null 리턴 
+        }                                    
     }
 }

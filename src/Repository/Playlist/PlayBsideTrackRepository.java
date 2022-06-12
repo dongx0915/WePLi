@@ -15,8 +15,18 @@ import Entity.PlayBsideTrack.PlayBsideTrack;
 public class PlayBsideTrackRepository extends CrudRepository<PlayBsideTrack, String>{
     public PlayBsideTrackRepository() { this.setEntity(new PlayBsideTrack()); }
     
+    public PlayBsideTrack findPlayBsideTrack(String playlistId, int songId){
+        String sql = "SELECT * FROM playBsideTrack WHERE playlistId = \"" + playlistId + "\" AND songId = " + songId + ";";
+        this.rs = this.executeQuery(sql);
+        
+        PlayBsideTrack sideTrack = resultSetToEntity(rs);
+        db.close();
+        
+        return sideTrack;
+    }
+    
     public boolean deleteByListId(String listId){
-        String sql = "DELETE FROM playBsideTrack WHERE playlistId = \"" + listId + "\"";
+        String sql = "DELETE FROM playBsideTrack WHERE playlistId = \"" + listId + "\";";
         
         boolean result =  this.executeUpdate(sql);
         db.close();

@@ -30,8 +30,6 @@ public class Database {
             
             // 2. 접속하기 위한 메소드 (1.접속url 2.계정명 3.계정암호)
             con = DriverManager.getConnection(url, id, pw);
-            
-            System.out.println("접속 : " + con);
             return con;
         } 
         catch(Exception e)  {  System.out.println("DB 접속 오류 : " + e);  }
@@ -41,7 +39,6 @@ public class Database {
     
     public void close(){
         try{
-            System.out.println("close 됨");
             if(con != null) con.close();
             if(pstmt != null) pstmt.close();
             if(rs != null) rs.close();

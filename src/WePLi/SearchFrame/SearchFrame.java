@@ -440,7 +440,7 @@ public class SearchFrame extends javax.swing.JFrame {
         String musicSite = siteRadioGroup.getSelection().getActionCommand();
         String searchText = searchTextField.getText();
 
-        ArrayList<SongDto> searchResult = songController.SongSearch(musicSite, searchText); //검색 결과 리턴
+        ArrayList<SongDto> searchResult = songController.searchSong(musicSite, searchText); //검색 결과 리턴
         
         // 검색 결과를 테이블 형식으로 변경
         Object[][] values = DataParser.songDtoToObject(searchResult, 0);

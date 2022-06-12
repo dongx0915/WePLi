@@ -26,7 +26,7 @@ public class PlaylistService {
     public PlaylistDto createPlaylist(PlaylistCreateDto dto){
         // Dto를 Entity로 변환
         Playlist playlist = Playlist.toEntity(dto);
-        
+        // DB에 플레이리스트 저장 요청
         Playlist result = playlistRepository.sharePlaylist(playlist);
         
         return Objects.isNull(result) ? null : PlaylistDto.createDto(result);

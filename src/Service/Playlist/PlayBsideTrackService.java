@@ -9,6 +9,7 @@ import Entity.PlayBsideTrack.PlayBsideTrack;
 import Repository.Playlist.PlayBsideTrackRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -28,8 +29,17 @@ public class PlayBsideTrackService {
         ArrayList<PlayBsideTrack> bSideTrack = (ArrayList) bSideTrackDto
                                                             .stream().map(dto -> PlayBsideTrack.toEntity(dto))
                                                             .collect(Collectors.toList());
+        ArrayList<PlayBsideTrack> result = new ArrayList<>();
         
-        ArrayList<PlayBsideTrack> result = playBsideTrackRepository.saveAll(bSideTrack);
+        for (PlayBsideTrack pbt : bSideTrack) {
+            
+            PlayBsideTrack target = playBsideTrackRepository.findPlayBsideTrack(pbt.getPlaylistId(), pbt.getSongId());
+            
+            // 존재하지 않으면 삽입
+            if(Objects.isNull(target)) playBsideTrackRepository.save(pbt);
+            else result.add(target);             
+
+        }
         
         // PlayBsideTrack(엔티티) 리스트를 DTO 리스트로 변환
         return (ArrayList) result

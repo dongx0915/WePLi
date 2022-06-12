@@ -42,14 +42,10 @@ public class RelaylistController {
     public RelaylistDto getRelaylist(String relaylistId){
         return relaylistService.getRelaylist(relaylistId);
     }
-    
-    // 공유된 릴레이리스트를 다운로드하는 메소드
-//    public ArrayList<RelaylistDto> downloadList(String relaylistId, String nickname){
-//        RelaylistDto relaylist = relaylistService.getRelaylist(relaylistId);
-//        
-//        // 작성자를 본인으로 변경
-//        relaylist.setAuthor(nickname);
-//    }
+ 
+    public RelaylistDto downloadRelaylist(RelaylistCreateDto dto){
+        return relaylistService.downloadRelaylist(dto);
+    }
     
     // 모든 릴레이리스트를 가져오는 메소드
     public ArrayList<RelaylistDto> getRelaylists(){

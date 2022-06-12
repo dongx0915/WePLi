@@ -34,10 +34,12 @@ public class PlaylistController{
     
     // 플레이리스트 등록 메소드
     public PlaylistDto createPlaylist(PlaylistCreateDto playlistDto) {
+        // 서비스에게 요청 전달
         PlaylistDto result = playlistService.createPlaylist(playlistDto);
         
         return Objects.isNull(result) ? null : result;
     }
+    
     
     public Playlist updatePlaylist(/* PlaylistUpdateDto 필요 */){
         PlaylistUpdateDto dto = PlaylistUpdateDto.builder()
